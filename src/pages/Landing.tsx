@@ -98,6 +98,15 @@ const Landing: React.FC = () => {
                   Get Started
                 </motion.button>
               </Link>
+              <Link to="/admin/login">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl smooth-transition text-caption"
+                >
+                  Admin
+                </motion.button>
+              </Link>
             </div>
           </div>
         </motion.header>

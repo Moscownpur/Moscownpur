@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
     "@supabase/supabase-js": "^2.52.0",
+    "@types/uuid": "^10.0.0",
     "bcryptjs": "^3.0.2",
     "framer-motion": "^12.23.6",
     "lucide-react": "^0.525.0",
