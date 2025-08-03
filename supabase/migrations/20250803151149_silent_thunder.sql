@@ -33,7 +33,7 @@
   3. Indexes
     - Add indexes for efficient querying by world, event, and character
 */
-</sql>
+
 
 -- Create scenes table
 CREATE TABLE IF NOT EXISTS scenes (
