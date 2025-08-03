@@ -38,46 +38,7 @@ export const useAdminData = () => {
   const fetchUsers = async () => {
     try {
       if (!supabase) {
-        // Mock data for demo mode
-        const mockUsers: UserStatistics[] = [
-          {
-            id: '1',
-            username: 'alice_writer',
-            email: 'alice@example.com',
-            full_name: 'Alice Johnson',
-            created_at: '2024-01-15T10:30:00Z',
-            is_admin: false,
-            world_count: 3,
-            character_count: 12,
-            region_count: 8,
-            event_count: 25
-          },
-          {
-            id: '2',
-            username: 'bob_creator',
-            email: 'bob@example.com',
-            full_name: 'Bob Smith',
-            created_at: '2024-01-20T14:20:00Z',
-            is_admin: false,
-            world_count: 2,
-            character_count: 8,
-            region_count: 5,
-            event_count: 18
-          },
-          {
-            id: '3',
-            username: 'carol_dm',
-            email: 'carol@example.com',
-            full_name: 'Carol Davis',
-            created_at: '2024-02-01T09:15:00Z',
-            is_admin: false,
-            world_count: 5,
-            character_count: 20,
-            region_count: 15,
-            event_count: 42
-          }
-        ];
-        setUsers(mockUsers);
+        setUsers([]);
         return;
       }
 
@@ -97,46 +58,7 @@ export const useAdminData = () => {
   const fetchWorlds = async () => {
     try {
       if (!supabase) {
-        // Mock data for demo mode
-        const mockWorlds: WorldWithDetails[] = [
-          {
-            id: '1',
-            name: 'Aethermoor',
-            type: 'Magical Realm',
-            description: 'A mystical realm where magic flows through crystalline formations',
-            created_by: '1',
-            created_at: '2024-01-15T10:30:00Z',
-            user_name: 'alice_writer',
-            character_count: 5,
-            region_count: 3,
-            event_count: 12
-          },
-          {
-            id: '2',
-            name: 'Neo-Tokyo 2387',
-            type: 'Timeline Variant',
-            description: 'A cyberpunk metropolis where neon lights pierce through perpetual rain',
-            created_by: '2',
-            created_at: '2024-01-20T14:20:00Z',
-            user_name: 'bob_creator',
-            character_count: 4,
-            region_count: 2,
-            event_count: 8
-          },
-          {
-            id: '3',
-            name: 'Dragonspire Kingdoms',
-            type: 'Universe',
-            description: 'An epic fantasy universe with warring kingdoms and ancient dragons',
-            created_by: '3',
-            created_at: '2024-02-01T09:15:00Z',
-            user_name: 'carol_dm',
-            character_count: 8,
-            region_count: 6,
-            event_count: 20
-          }
-        ];
-        setWorlds(mockWorlds);
+        setWorlds([]);
         return;
       }
 
@@ -171,14 +93,7 @@ export const useAdminData = () => {
   const toggleUserStatus = async (userId: string, isActive: boolean) => {
     try {
       if (!supabase) {
-        // Mock toggle for demo mode
-        setUsers(prev => prev.map(user => 
-          user.id === userId 
-            ? { ...user, is_admin: !user.is_admin }
-            : user
-        ));
-        toast.success(`User ${isActive ? 'activated' : 'deactivated'} successfully! (Demo Mode)`);
-        return;
+        throw new Error('Database connection not available');
       }
 
       const { error } = await supabase
@@ -199,10 +114,7 @@ export const useAdminData = () => {
   const deleteWorld = async (worldId: string) => {
     try {
       if (!supabase) {
-        // Mock deletion for demo mode
-        setWorlds(prev => prev.filter(w => w.id !== worldId));
-        toast.success('World deleted successfully! (Demo Mode)');
-        return;
+        throw new Error('Database connection not available');
       }
 
       const { error } = await supabase

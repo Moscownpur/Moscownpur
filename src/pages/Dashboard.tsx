@@ -12,10 +12,10 @@ const Dashboard: React.FC = () => {
 
   const stats = [
     { name: 'Worlds', value: worlds.length, icon: Globe, color: 'purple', emoji: '🌍' },
-    { name: 'Characters', value: 24, icon: Users, color: 'blue', emoji: '👥' },
-    { name: 'Regions', value: 18, icon: MapPin, color: 'green', emoji: '🗺️' },
-    { name: 'Timeline Events', value: 47, icon: Clock, color: 'yellow', emoji: '⏰' },
-    { name: 'Stories', value: 12, icon: BookOpen, color: 'pink', emoji: '📚' },
+    { name: 'Characters', value: 0, icon: Users, color: 'blue', emoji: '👥' },
+    { name: 'Regions', value: 0, icon: MapPin, color: 'green', emoji: '🗺️' },
+    { name: 'Timeline Events', value: 0, icon: Clock, color: 'yellow', emoji: '⏰' },
+    { name: 'Stories', value: 0, icon: BookOpen, color: 'pink', emoji: '📚' },
   ];
 
   const containerVariants = {

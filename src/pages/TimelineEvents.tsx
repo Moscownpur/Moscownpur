@@ -14,30 +14,7 @@ interface TimelineEvent {
 }
 
 const TimelineEvents: React.FC = () => {
-  const [events] = useState<TimelineEvent[]>([
-    {
-      id: '1',
-      title: 'The Great Convergence',
-      type: 'War',
-      description: 'The final battle between the Crystal Mages and the Shadow Lords',
-      date: '1247-03-15',
-      involvedCharacters: ['Lyralei Starweaver', 'Theron Shadowbane'],
-      region: 'Crystal Peaks',
-      worldId: '1',
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '2',
-      title: 'Corporate Uprising',
-      type: 'Rebellion',
-      description: 'Hackers infiltrate the central AI system',
-      date: '2387-08-23',
-      involvedCharacters: ['Marcus Chen', 'Nova Blackstone'],
-      region: 'Neon District',
-      worldId: '2',
-      createdAt: '2024-01-12'
-    }
-  ]);
+  const [events] = useState<TimelineEvent[]>([]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('');

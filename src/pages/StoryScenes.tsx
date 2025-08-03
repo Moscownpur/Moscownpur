@@ -13,28 +13,7 @@ interface Story {
 }
 
 const StoryScenes: React.FC = () => {
-  const [stories] = useState<Story[]>([
-    {
-      id: '1',
-      title: 'The Crystal\'s Whisper',
-      content: 'The ancient crystal hummed with an otherworldly melody as Lyralei approached...',
-      linkedCharacters: ['Lyralei Starweaver'],
-      linkedEvents: ['The Great Convergence'],
-      worldId: '1',
-      createdAt: '2024-01-15',
-      lastModified: '2024-01-16'
-    },
-    {
-      id: '2',
-      title: 'Neon Shadows',
-      content: 'Marcus\'s fingers danced across the holographic interface, his cybernetic implants glowing...',
-      linkedCharacters: ['Marcus Chen'],
-      linkedEvents: ['Corporate Uprising'],
-      worldId: '2',
-      createdAt: '2024-01-12',
-      lastModified: '2024-01-14'
-    }
-  ]);
+  const [stories] = useState<Story[]>([]);
 
   const [searchTerm, setSearchTerm] = useState('');
 

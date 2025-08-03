@@ -21,19 +21,7 @@ class AdminAuthService {
 
   async login(credentials: AdminLoginCredentials): Promise<AdminUser> {
     if (!supabase) {
-      // Mock admin for demo mode
-      const mockAdmin: AdminUser = {
-        id: 'admin-1',
-        username: credentials.username,
-        email: 'admin@eworld.com',
-        full_name: 'System Administrator',
-        role: 'super_admin',
-        is_active: true,
-        created_at: new Date().toISOString()
-      };
-      this.currentAdmin = mockAdmin;
-      localStorage.setItem('admin_user', JSON.stringify(mockAdmin));
-      return mockAdmin;
+      throw new Error('Database connection not available');
     }
 
     try {

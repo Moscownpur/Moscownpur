@@ -16,34 +16,7 @@ interface Character {
 }
 
 const CharacterManagement: React.FC = () => {
-  const [characters] = useState<Character[]>([
-    {
-      id: '1',
-      name: 'Lyralei Starweaver',
-      species: 'Elf',
-      age: 342,
-      occupation: 'Archmage',
-      personality: ['Wise', 'Patient', 'Mysterious'],
-      appearance: 'Tall with silver hair and glowing blue eyes',
-      worldId: '1',
-      relationshipCount: 5,
-      eventCount: 8,
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '2',
-      name: 'Marcus Chen',
-      species: 'Enhanced Human',
-      age: 28,
-      occupation: 'Corporate Hacker',
-      personality: ['Rebellious', 'Clever', 'Cynical'],
-      appearance: 'Cybernetic implants with neon tattoos',
-      worldId: '2',
-      relationshipCount: 3,
-      eventCount: 12,
-      createdAt: '2024-01-12'
-    }
-  ]);
+  const [characters] = useState<Character[]>([]);
 
   const [searchTerm, setSearchTerm] = useState('');
 

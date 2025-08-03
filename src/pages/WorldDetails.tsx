@@ -5,17 +5,23 @@ import { Globe, Users, MapPin, Clock, BookOpen } from 'lucide-react';
 const WorldDetails: React.FC = () => {
   const { id } = useParams();
 
-  // Mock data - in real app this would come from API
-  const world = {
-    id: '1',
-    name: 'Aethermoor',
-    type: 'Fantasy',
-    description: 'A realm where magic flows through crystalline formations',
-    creationMyth: 'Born from the tears of the first celestial being, Aethermoor was shaped by divine sorrow and hope.',
-    governingLaws: ['Magic', 'Honor', 'Balance'],
-    dominantSpecies: 'Elves',
-    theme: 'mystical'
-  };
+  // TODO: Fetch world data from API using the id parameter
+  const world = null;
+
+  if (!world) {
+    return (
+      <div className="flex items-center justify-center py-32">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+            World not found
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400">
+            The requested world could not be loaded.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">

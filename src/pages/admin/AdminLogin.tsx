@@ -131,7 +131,7 @@ const AdminLogin: React.FC = () => {
           </p>
           <div className="mt-4 p-3 glass-card rounded-xl">
             <p className="text-xs text-white/40">
-              Demo credentials: admin / admin123
+              Use your admin credentials to access the dashboard
             </p>
           </div>
         </motion.div>

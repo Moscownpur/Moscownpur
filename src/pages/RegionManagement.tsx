@@ -15,32 +15,7 @@ interface Region {
 }
 
 const RegionManagement: React.FC = () => {
-  const [regions] = useState<Region[]>([
-    {
-      id: '1',
-      name: 'Crystal Peaks',
-      type: 'Mountain Range',
-      climate: 'Alpine',
-      culture: 'Mystic Scholars',
-      politics: 'Council of Elders',
-      history: 'Ancient seat of magical learning',
-      language: 'Ethereal',
-      worldId: '1',
-      createdAt: '2024-01-15'
-    },
-    {
-      id: '2',
-      name: 'Neon District',
-      type: 'Urban Zone',
-      climate: 'Controlled',
-      culture: 'Corporate Elite',
-      politics: 'Megacorp Controlled',
-      history: 'Built after the great collapse',
-      language: 'Neo-English',
-      worldId: '2',
-      createdAt: '2024-01-12'
-    }
-  ]);
+  const [regions] = useState<Region[]>([]);
 
   const [searchTerm, setSearchTerm] = useState('');
 

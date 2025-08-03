@@ -26,17 +26,7 @@ class AuthService {
 
   async login(credentials: LoginCredentials): Promise<AuthUser> {
     if (!supabase) {
-      // Mock authentication for demo mode
-      const mockUser: AuthUser = {
-        id: '1',
-        username: credentials.username,
-        email: `${credentials.username}@example.com`,
-        full_name: 'Demo User',
-        created_at: new Date().toISOString()
-      };
-      this.currentUser = mockUser;
-      localStorage.setItem('auth_user', JSON.stringify(mockUser));
-      return mockUser;
+      throw new Error('Database connection not available');
     }
 
     try {
@@ -81,17 +71,7 @@ class AuthService {
 
   async signup(credentials: SignupCredentials): Promise<AuthUser> {
     if (!supabase) {
-      // Mock signup for demo mode
-      const mockUser: AuthUser = {
-        id: '1',
-        username: credentials.username,
-        email: credentials.email,
-        full_name: credentials.full_name,
-        created_at: new Date().toISOString()
-      };
-      this.currentUser = mockUser;
-      localStorage.setItem('auth_user', JSON.stringify(mockUser));
-      return mockUser;
+      throw new Error('Database connection not available');
     }
 
     try {
