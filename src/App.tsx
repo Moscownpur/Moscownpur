@@ -18,6 +18,7 @@ import CharacterManagement from './pages/CharacterManagement';
 import TimelineEvents from './pages/TimelineEvents';
 import StoryScenes from './pages/StoryScenes';
 import WorldDetails from './pages/WorldDetails';
+import SceneManagement from './pages/SceneManagement';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
                   <Route path="regions" element={<RegionManagement />} />
                   <Route path="characters" element={<CharacterManagement />} />
                   <Route path="timeline" element={<TimelineEvents />} />
+                  <Route path="scenes" element={<SceneManagement />} />
                   <Route path="stories" element={<StoryScenes />} />
                 </Route>
               </Routes>

@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
-import { Users, Globe, MapPin, Clock, Search, Filter, Eye, Trash2, UserCheck, UserX } from 'lucide-react';
+import { Users, Globe, MapPin, Clock, Search, Filter, Eye, Trash2, UserCheck, UserX, ChevronRight, Film } from 'lucide-react';
 import { motion } from 'framer-motion';
+import TimelineView from '../../components/TimelineView';
 import { useAdminData } from '../../hooks/useAdminData';
+import { useTimeline } from '../../hooks/useTimeline';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
+import Modal from '../../components/Modal';
 
 const AdminDashboard: React.FC = () => {
   const { users, worlds, loading, toggleUserStatus, deleteWorld } = useAdminData();
   const { admin, logout } = useAdminAuth();
+  const [selectedWorldId, setSelectedWorldId] = useState<string | null>(null);
+  const [showTimelineModal, setShowTimelineModal] = useState(false);
+  const { events: timelineEvents, loading: timelineLoading } = useTimeline(selectedWorldId || undefined);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
-  const [activeTab, setActiveTab] = useState<'users' | 'worlds'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'worlds' | 'timeline'>('users');
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -127,7 +133,7 @@ const AdminDashboard: React.FC = () => {
 
           {/* Tab Navigation */}
           <motion.div variants={itemVariants}>
-            <div className="flex space-x-1 glass-card rounded-2xl p-2 w-fit">
+            <div className="flex space-x-1 glass-card rounded-2xl p-2 w-fit flex-wrap">
               <button
                 onClick={() => setActiveTab('users')}
                 className={`px-6 py-3 rounded-xl smooth-transition ${
@@ -147,6 +153,16 @@ const AdminDashboard: React.FC = () => {
                 }`}
               >
                 World Overview
+              </button>
+              <button
+                onClick={() => setActiveTab('timeline')}
+                className={`px-6 py-3 rounded-xl smooth-transition ${
+                  activeTab === 'timeline'
+                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white soft-glow-orange'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                Timeline Overview
               </button>
             </div>
           </motion.div>
@@ -188,7 +204,89 @@ const AdminDashboard: React.FC = () => {
             </div>
           ) : (
             <motion.div variants={itemVariants}>
-              {activeTab === 'users' ? (
+              {activeTab === 'timeline' ? (
+                <div className="space-y-6">
+                  <div className="glass-card rounded-3xl p-8">
+                    <div className="text-center mb-8">
+                      <h2 className="text-subheading gradient-text-orange mb-4">
+                        Global Timeline Overview
+                      </h2>
+                      <p className="text-body text-white/60">
+                        View timeline events and scenes across all worlds
+                      </p>
+                    </div>
+                    
+                    {selectedWorldId ? (
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-subheading text-white">
+                            Timeline for: {worlds.find(w => w.id === selectedWorldId)?.name}
+                          </h3>
+                          <button
+                            onClick={() => {
+                              setSelectedWorldId(null);
+                              setShowTimelineModal(false);
+                            }}
+                            className="px-4 py-2 text-white/60 hover:text-white hover:glass-card rounded-xl smooth-transition"
+                          >
+                            ← Back to Worlds
+                          </button>
+                        </div>
+                        
+                        {timelineLoading ? (
+                          <div className="flex items-center justify-center py-20">
+                            <div className="animate-spin rounded-full h-12 w-12 border-2 border-white/20 border-t-white/80"></div>
+                          </div>
+                        ) : (
+                          <TimelineView
+                            events={timelineEvents}
+                            showActions={false}
+                          />
+                        )}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {worlds.map((world) => (
+                          <motion.div
+                            key={world.id}
+                            whileHover={{ scale: 1.02, y: -4 }}
+                            className="glass-card rounded-2xl p-6 cursor-pointer hover:soft-glow smooth-transition"
+                            onClick={() => setSelectedWorldId(world.id)}
+                          >
+                            <div className="flex items-center justify-between mb-4">
+                              <div className="flex items-center space-x-3">
+                                <div className="p-3 glass-card rounded-xl">
+                                  <Globe className="w-6 h-6 text-white/80" />
+                                </div>
+                                <div>
+                                  <h3 className="text-subheading gradient-text-orange">{world.name}</h3>
+                                  <p className="text-caption text-white/60">by @{world.user_name}</p>
+                                </div>
+                              </div>
+                              <ChevronRight className="w-5 h-5 text-white/40" />
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <div className="flex justify-between text-caption">
+                                <span className="text-white/60">Events:</span>
+                                <span className="text-orange-400">{world.event_count}</span>
+                              </div>
+                              <div className="flex justify-between text-caption">
+                                <span className="text-white/60">Characters:</span>
+                                <span className="text-blue-400">{world.character_count}</span>
+                              </div>
+                              <div className="flex justify-between text-caption">
+                                <span className="text-white/60">Regions:</span>
+                                <span className="text-green-400">{world.region_count}</span>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : activeTab === 'users' ? (
                 <div className="glass-card rounded-3xl overflow-hidden">
                   <div className="p-6 border-b border-white/5">
                     <h2 className="text-subheading gradient-text-blue">
@@ -297,6 +395,13 @@ const AdminDashboard: React.FC = () => {
                           className="p-2 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-lg smooth-transition"
                         >
                           <Trash2 size={16} />
+                        </button>
+                        <button
+                          onClick={() => setSelectedWorldId(world.id)}
+                          className="p-2 text-white/40 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg smooth-transition"
+                          title="View Timeline"
+                        >
+                          <Film size={16} />
                         </button>
                       </div>
                       

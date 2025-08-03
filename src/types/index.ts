@@ -100,3 +100,39 @@ export interface TimelineEvent {
   created_at: string;
   updated_at: string;
 }
+
+export interface Scene {
+  id: string;
+  title: string;
+  description: string;
+  dialogue: string;
+  event_id: string;
+  region_id: string | null;
+  world_id: string;
+  scene_order: number;
+  ai_image_prompt: string;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SceneCharacter {
+  id: string;
+  scene_id: string;
+  character_id: string;
+  role_in_scene: 'protagonist' | 'antagonist' | 'ally' | 'enemy' | 'witness' | 'narrator' | 'participant';
+  character_state: 'normal' | 'injured' | 'dead' | 'transformed' | 'missing' | 'empowered' | 'weakened';
+  importance_level: 'primary' | 'secondary' | 'background';
+  created_at: string;
+}
+
+export interface TimelineEventWithScenes extends TimelineEvent {
+  scene_count: number;
+  scenes: Array<{
+    id: string;
+    title: string;
+    description: string;
+    scene_order: number;
+    region_name: string | null;
+  }>;
+}

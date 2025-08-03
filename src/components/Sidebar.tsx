@@ -6,7 +6,8 @@ import {
   MapPin, 
   Users, 
   Clock, 
-  BookOpen 
+  BookOpen,
+  Film
 } from 'lucide-react';
 
 const navigation = [
@@ -15,6 +16,7 @@ const navigation = [
   { name: 'Regions', href: '/dashboard/regions', icon: MapPin },
   { name: 'Characters', href: '/dashboard/characters', icon: Users },
   { name: 'Timeline', href: '/dashboard/timeline', icon: Clock },
+  { name: 'Scenes', href: '/dashboard/scenes', icon: Film },
   { name: 'Stories', href: '/dashboard/stories', icon: BookOpen },
 ];
 
