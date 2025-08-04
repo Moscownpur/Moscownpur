@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
-import { Plus, Film, Edit, Trash2, Search, Users, MapPin, Clock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Plus, Film, Edit, Trash2, Search, Users, MapPin, Clock, Globe, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTimeline } from '../hooks/useTimeline';
 import { useWorlds } from '../hooks/useWorlds';
 import Modal from '../components/Modal';
+import { Scene, World, TimelineEvent } from '../types';
+import { supabase } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
+import toast from 'react-hot-toast';
 
 const SceneManagement: React.FC = () => {
-  const { scenes, loading, refetch } = useTimeline();
+  const { scenes, loading, refetch, createScene } = useTimeline();
   const { worlds } = useWorlds();
+  const { user } = useAuth();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedWorld, setSelectedWorld] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [events, setEvents] = useState<TimelineEvent[]>([]);
+  const [regions, setRegions] = useState<any[]>([]);
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    event_id: '',
+    region_id: '',
+    world_id: '',
+    scene_order: 1,
+    ai_image_prompt: ''
+  });
 
   const filteredScenes = scenes.filter(scene => {
     const matchesSearch = scene.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -19,6 +38,73 @@ const SceneManagement: React.FC = () => {
     const matchesWorld = !selectedWorld || scene.world_id === selectedWorld;
     return matchesSearch && matchesWorld;
   });
+
+  // Fetch events and regions when component mounts
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!supabase || !user) return;
+
+      try {
+        // Fetch events
+        const { data: eventsData } = await supabase
+          .from('timeline_events')
+          .select('id, title, date')
+          .eq('created_by', user.id)
+          .order('date', { ascending: true });
+
+        // Fetch regions
+        const { data: regionsData } = await supabase
+          .from('regions')
+          .select('id, name, world_id')
+          .eq('created_by', user.id)
+          .order('name', { ascending: true });
+
+        setEvents(eventsData || []);
+        setRegions(regionsData || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [user]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.title.trim() || !formData.world_id) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    try {
+      await createScene({
+        ...formData,
+        world_id: formData.world_id,
+        event_id: formData.event_id || '',
+        region_id: formData.region_id || null,
+        dialogue: '',
+        created_by: user?.id || ''
+      });
+      
+      setShowCreateModal(false);
+      setFormData({
+        title: '',
+        description: '',
+        event_id: '',
+        region_id: '',
+        world_id: '',
+        scene_order: 1,
+        ai_image_prompt: ''
+      });
+    } catch (error) {
+      console.error('Error creating scene:', error);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string | number) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const getRoleColor = (role: string) => {
     const colors = {
@@ -67,7 +153,7 @@ const SceneManagement: React.FC = () => {
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-purple flex items-center space-x-3"
+                      className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3"
         >
           <Film size={20} />
           <span className="text-body">Create Scene</span>
@@ -129,7 +215,7 @@ const SceneManagement: React.FC = () => {
           </p>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-blue flex items-center gap-3 mx-auto"
+            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3 mx-auto"
           >
             <Film size={20} />
             <span>Create Your First Scene</span>
@@ -143,13 +229,14 @@ const SceneManagement: React.FC = () => {
           className="grid grid-cols-1 lg:grid-cols-2 gap-8"
         >
           {filteredScenes.map((scene, index) => (
+            <Link to={`/dashboard/scenes/${scene.id}`}>
             <motion.div
               key={scene.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.02, y: -4 }}
-              className="glass-card rounded-2xl p-8 group smooth-transition hover:soft-glow"
+                className="glass-card rounded-2xl p-8 group smooth-transition hover:soft-glow cursor-pointer"
             >
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center space-x-3">
@@ -157,7 +244,7 @@ const SceneManagement: React.FC = () => {
                     <Film className="w-7 h-7 text-white/80" />
                   </div>
                   <div>
-                    <h3 className="text-subheading gradient-text-purple group-hover:gradient-text-pink smooth-transition">
+                    <h3 className="text-subheading gradient-text-orange group-hover:gradient-text-sunset smooth-transition">
                       {scene.title}
                     </h3>
                     <span className="text-caption text-white/60 font-medium">
@@ -166,6 +253,7 @@ const SceneManagement: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex space-x-2">
+                  <Link to={`/dashboard/scenes/${scene.id}`}>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -173,6 +261,7 @@ const SceneManagement: React.FC = () => {
                   >
                     <Edit size={18} />
                   </motion.button>
+                  </Link>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -232,6 +321,7 @@ const SceneManagement: React.FC = () => {
                 </div>
               </div>
             </motion.div>
+            </Link>
           ))}
         </motion.div>
       )}
@@ -242,9 +332,141 @@ const SceneManagement: React.FC = () => {
         onClose={() => setShowCreateModal(false)}
         title="Create New Scene"
       >
-        <div className="text-center py-8">
-          <p className="text-white/60">Scene creation form coming soon...</p>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Title */}
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              Scene Title *
+            </label>
+            <input
+              type="text"
+              value={formData.title}
+              onChange={(e) => handleInputChange('title', e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white placeholder-white/50 focus:outline-none focus:border-purple-500/50"
+              placeholder="Enter scene title..."
+              required
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              Description
+            </label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => handleInputChange('description', e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white placeholder-white/50 focus:outline-none focus:border-purple-500/50 resize-none"
+              placeholder="Describe the scene..."
+              rows={3}
+            />
+          </div>
+
+          {/* World Selection */}
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              World *
+            </label>
+            <select
+              value={formData.world_id}
+              onChange={(e) => handleInputChange('world_id', e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
+              required
+            >
+              <option value="">Select a world...</option>
+              {worlds.map(world => (
+                <option key={world.id} value={world.id} className="bg-black">
+                  {world.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Event Selection */}
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              Timeline Event
+            </label>
+            <select
+              value={formData.event_id}
+              onChange={(e) => handleInputChange('event_id', e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
+            >
+              <option value="">Select an event (optional)...</option>
+              {events.map(event => (
+                <option key={event.id} value={event.id} className="bg-black">
+                  {event.title} - {new Date(event.date).toLocaleDateString()}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Region Selection */}
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              Region
+            </label>
+            <select
+              value={formData.region_id}
+              onChange={(e) => handleInputChange('region_id', e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
+            >
+              <option value="">Select a region (optional)...</option>
+              {regions
+                .filter(region => !formData.world_id || region.world_id === formData.world_id)
+                .map(region => (
+                  <option key={region.id} value={region.id} className="bg-black">
+                    {region.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          {/* Scene Order */}
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              Scene Order
+            </label>
+            <input
+              type="number"
+              value={formData.scene_order}
+              onChange={(e) => handleInputChange('scene_order', parseInt(e.target.value) || 1)}
+              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
+              min="1"
+            />
+          </div>
+
+          {/* AI Image Prompt */}
+          <div>
+            <label className="block text-sm font-medium text-white/80 mb-2">
+              AI Image Prompt
+            </label>
+            <textarea
+              value={formData.ai_image_prompt}
+              onChange={(e) => handleInputChange('ai_image_prompt', e.target.value)}
+              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white placeholder-white/50 focus:outline-none focus:border-purple-500/50 resize-none"
+              placeholder="Describe the visual style for AI image generation..."
+              rows={2}
+            />
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex justify-end gap-3 pt-4">
+            <button
+              type="button"
+              onClick={() => setShowCreateModal(false)}
+              className="px-6 py-3 text-white/60 hover:text-white hover:bg-white/10 rounded-lg smooth-transition"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-lg font-semibold hover:scale-105 smooth-transition soft-glow-orange"
+            >
+              Create Scene
+            </button>
         </div>
+        </form>
       </Modal>
     </motion.div>
   );

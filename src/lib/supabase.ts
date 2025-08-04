@@ -104,12 +104,74 @@ export type Database = {
           type: string;
           consequences: string;
           world_id: string;
+          chapter_id: string | null;
           created_by: string;
           created_at: string;
           updated_at: string;
         };
         Insert: Omit<Database['public']['Tables']['timeline_events']['Row'], 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Database['public']['Tables']['timeline_events']['Insert']>;
+      };
+      chapters: {
+        Row: {
+          id: string;
+          world_id: string;
+          title: string;
+          description: string;
+          order_index: number;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['chapters']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['chapters']['Insert']>;
+      };
+      scenes: {
+        Row: {
+          id: string;
+          title: string;
+          description: string;
+          dialogue: string;
+          event_id: string;
+          region_id: string | null;
+          world_id: string;
+          scene_order: number;
+          ai_image_prompt: string;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['scenes']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['scenes']['Insert']>;
+      };
+      scene_characters: {
+        Row: {
+          id: string;
+          scene_id: string;
+          character_id: string;
+          role_in_scene: string;
+          character_state: string;
+          importance_level: string;
+          created_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['scene_characters']['Row'], 'id' | 'created_at'>;
+        Update: Partial<Database['public']['Tables']['scene_characters']['Insert']>;
+      };
+      scene_lines: {
+        Row: {
+          id: string;
+          scene_id: string;
+          type: string;
+          character_id: string | null;
+          display_name: string;
+          text: string;
+          order_index: number;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['scene_lines']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['scene_lines']['Insert']>;
       };
     };
   };

@@ -96,6 +96,7 @@ export interface TimelineEvent {
   type: 'Birth' | 'Death' | 'War' | 'Marriage' | 'Political' | 'Mystical' | 'Invention' | 'Encounter' | 'Vision' | 'Betrayal' | 'Coronation';
   consequences: string;
   world_id: string;
+  chapter_id?: string | null;
   created_by: string;
   created_at: string;
   updated_at: string;
@@ -126,7 +127,55 @@ export interface SceneCharacter {
   created_at: string;
 }
 
+export interface SceneLine {
+  id: string;
+  scene_id: string;
+  type: 'character' | 'narration';
+  character_id: string | null;
+  display_name: string;
+  text: string;
+  order_index: number;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SceneLineWithCharacter extends SceneLine {
+  character_name?: string;
+  character_role?: string;
+}
+
+export interface SceneWithDialogue extends Scene {
+  line_count: number;
+  dialogue_lines: SceneLineWithCharacter[];
+}
+
+export interface Chapter {
+  id: string;
+  world_id: string;
+  title: string;
+  description: string;
+  order_index: number;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface TimelineEventWithScenes extends TimelineEvent {
+  scene_count: number;
+  scenes: Array<{
+    id: string;
+    title: string;
+    description: string;
+    scene_order: number;
+    region_name: string | null;
+  }>;
+}
+
+export interface TimelineEventWithChapters extends TimelineEvent {
+  chapter_id?: string;
+  chapter_title?: string;
+  chapter_order?: number;
   scene_count: number;
   scenes: Array<{
     id: string;
