@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  body {
+    background: #000000;
+    color: #ffffff;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+  }
+  
+  html {
+    background: #000000;
+  }
+}
+
+@layer utilities {
+  /* Professional Gradient Text Classes */
+  .gradient-text-orange {
+    background: linear-gradient(135deg, #F37335 0%, #FDC830 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-red {
+    background: linear-gradient(135deg, #dd1818 0%, #333333 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-purple {
+    background: linear-gradient(135deg, #8f94fb 0%, #4e54c8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-pink {
+    background: linear-gradient(135deg, #f80759 0%, #bc4e9c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-green {
+    background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-lime {
+    background: linear-gradient(135deg, #96c93d 0%, #00b09b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-blue {
+    background: linear-gradient(135deg, #0575E6 0%, #00F260 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-sunset {
+    background: linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .gradient-text-cosmic {
+    background: linear-gradient(135deg, #fdeff9 0%, #ec38bc 25%, #7303c0 75%, #03001e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Glass Morphism Effects */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .glass-navbar {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .glass-sidebar {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Soft Glow Effects */
+  .soft-glow {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  
+  .soft-glow-orange {
+    box-shadow: 0 0 30px rgba(253, 200, 48, 0.2);
+  }
+  
+  .soft-glow-purple {
+    box-shadow: 0 0 30px rgba(143, 148, 251, 0.2);
+  }
+  
+  .soft-glow-pink {
+    box-shadow: 0 0 30px rgba(248, 7, 89, 0.2);
+  }
+  
+  .soft-glow-green {
+    box-shadow: 0 0 30px rgba(56, 239, 125, 0.2);
+  }
+  
+  .soft-glow-blue {
+    box-shadow: 0 0 30px rgba(5, 117, 230, 0.2);
+  }
+  
+  /* Smooth Transitions */
+  .smooth-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Typography Hierarchy */
+  .text-display {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  
+  .text-heading {
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+  
+  .text-subheading {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  
+  .text-body {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+  }
+  
+  .text-caption {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Selection */
+::selection {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
