@@ -20,6 +20,7 @@ import StoryScenes from './pages/StoryScenes';
 import WorldDetails from './pages/WorldDetails';
 import SceneManagement from './pages/SceneManagement';
 import SceneDetail from './pages/SceneDetail';
+import ChapterManagement from './pages/ChapterManagement';
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
                   <Route path="regions" element={<RegionManagement />} />
                   <Route path="characters" element={<CharacterManagement />} />
                   <Route path="timeline" element={<TimelineEvents />} />
+                  <Route path="chapters" element={<ChapterManagement />} />
                   <Route path="scenes" element={<SceneManagement />} />
                   <Route path="scenes/:id" element={<SceneDetail />} />
                   <Route path="stories" element={<StoryScenes />} />

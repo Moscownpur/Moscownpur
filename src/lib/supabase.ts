@@ -104,12 +104,27 @@ export type Database = {
           type: string;
           consequences: string;
           world_id: string;
+          chapter_id: string | null;
           created_by: string;
           created_at: string;
           updated_at: string;
         };
         Insert: Omit<Database['public']['Tables']['timeline_events']['Row'], 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Database['public']['Tables']['timeline_events']['Insert']>;
+      };
+      chapters: {
+        Row: {
+          id: string;
+          world_id: string;
+          title: string;
+          description: string;
+          order_index: number;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['chapters']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['chapters']['Insert']>;
       };
       scenes: {
         Row: {

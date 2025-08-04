@@ -56,6 +56,14 @@ Yellow-orange gradient theme throughout the app
 
 Consistent with Timeline Events styling
 
+✅ Chapter Support System (Phase 1)
+
+Chapter management with drag-and-drop reordering
+
+Timeline events grouped under chapters
+
+Chapter assignment for better story structure
+
 🔜 Upcoming Focus
 Export tools (chronological storybook, visual timelines)
 
