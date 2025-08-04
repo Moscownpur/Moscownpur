@@ -183,7 +183,7 @@ const DialogueEditor: React.FC<DialogueEditorProps> = ({
             </p>
             <button
               onClick={() => setShowAddMenu(true)}
-              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-purple"
+              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange"
             >
               Add First Line
             </button>

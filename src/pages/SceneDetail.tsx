@@ -101,9 +101,9 @@ const SceneDetail: React.FC = () => {
             The requested scene could not be loaded.
           </p>
           <Link to="/dashboard/scenes">
-            <button className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-purple">
-              Back to Scenes
-            </button>
+                            <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange">
+                  Back to Scenes
+                </button>
           </Link>
         </div>
       </div>
@@ -143,7 +143,7 @@ const SceneDetail: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setShowDialogueEditor(!showDialogueEditor)}
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-blue flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-2"
           >
             <MessageSquare className="w-5 h-5" />
             {showDialogueEditor ? 'Hide' : 'Edit'} Dialogue

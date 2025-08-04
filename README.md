@@ -50,6 +50,12 @@ Scene narration for descriptions and transitions
 
 Role-based color coding and drag-and-drop reordering
 
+✅ Updated Color Scheme
+
+Yellow-orange gradient theme throughout the app
+
+Consistent with Timeline Events styling
+
 🔜 Upcoming Focus
 Export tools (chronological storybook, visual timelines)
 

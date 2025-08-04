@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
             </p>
           </div>
           <Link to="/dashboard/worlds">
-            <button className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-purple flex items-center space-x-3">
+            <button className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3">
               <Sparkles size={20} />
               <span className="text-body">Create World</span>
             </button>
@@ -125,7 +125,7 @@ const Dashboard: React.FC = () => {
                   Time to create your first universe and let your imagination run wild
                 </p>
                 <Link to="/dashboard/worlds">
-                  <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-blue flex items-center gap-3">
+                  <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3">
                     <Zap size={18} />
                     <span>Start Creating</span>
                   </button>

@@ -93,7 +93,7 @@ const Landing: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-semibold soft-glow-purple smooth-transition"
+                  className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold soft-glow-orange smooth-transition"
                 >
                   Get Started
                 </motion.button>
@@ -144,7 +144,7 @@ const Landing: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-semibold rounded-2xl soft-glow-purple smooth-transition flex items-center gap-3"
+                  className="px-10 py-5 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-lg font-semibold rounded-2xl soft-glow-orange smooth-transition flex items-center gap-3"
                 >
                   <Sparkles size={24} />
                   Start Creating
@@ -326,7 +326,7 @@ const Landing: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-10 py-5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-lg font-semibold rounded-2xl soft-glow-purple smooth-transition flex items-center gap-3"
+                    className="px-10 py-5 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-lg font-semibold rounded-2xl soft-glow-orange smooth-transition flex items-center gap-3"
                   >
                     <Sparkles size={24} />
                     Create Your First World

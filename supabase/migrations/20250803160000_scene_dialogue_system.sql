@@ -117,8 +117,8 @@ SELECT
         'character_name', c.name,
         'character_role', sc.role_in_scene
       )
-    END
-  ) FILTER (WHERE sl.id IS NOT NULL) ORDER BY sl.order_index as dialogue_lines
+    END ORDER BY sl.order_index
+  ) FILTER (WHERE sl.id IS NOT NULL) as dialogue_lines
 FROM scenes s
 LEFT JOIN scene_lines sl ON s.id = sl.scene_id
 LEFT JOIN characters c ON sl.character_id = c.id
