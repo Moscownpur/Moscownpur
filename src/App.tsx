@@ -21,6 +21,7 @@ import WorldDetails from './pages/WorldDetails';
 import SceneManagement from './pages/SceneManagement';
 import SceneDetail from './pages/SceneDetail';
 import ChapterManagement from './pages/ChapterManagement';
+import AITest from './components/AITest';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
                   <Route path="scenes" element={<SceneManagement />} />
                   <Route path="scenes/:id" element={<SceneDetail />} />
                   <Route path="stories" element={<StoryScenes />} />
+                  <Route path="ai-test" element={<AITest />} />
                 </Route>
               </Routes>
             </div>
