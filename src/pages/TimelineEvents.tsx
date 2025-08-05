@@ -126,7 +126,7 @@ const TimelineEvents: React.FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-display gradient-text-cosmic mb-4">
+          <h1 className="text-display gradient-text-sunset mb-4">
             Timeline Events
           </h1>
           <p className="text-subheading text-white/60">

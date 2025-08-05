@@ -64,10 +64,38 @@ Timeline events grouped under chapters
 
 Chapter assignment for better story structure
 
+✅ Google Gemini AI Integration
+
+AI utility functions for text and image generation
+
+Scene suggestions, dialogue drafting, plot continuation
+
+Test suite for API verification
+
 🔜 Upcoming Focus
 Export tools (chronological storybook, visual timelines)
 
-AI-assisted tools (scene draft, dialogue suggestions)
+Enhanced AI integration (character generation, world building assistance)
+
+## 🚀 Setup Instructions
+
+### Environment Variables
+Create a `.env` file in the root directory with:
+
+```env
+# Supabase Configuration
+VITE_SUPABASE_URL=your_supabase_url_here
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+
+# Google Gemini AI Configuration
+VITE_GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### AI Integration Testing
+1. Navigate to `/dashboard/ai-test` in the application
+2. Run individual tests or use "Run All Tests" to verify API integration
+3. Check environment variables are properly set
+4. Test various AI features: text generation, scene suggestions, dialogue, plot continuation
 
 🧠 Key Takeaway
 We’re not building “just a writing app.”

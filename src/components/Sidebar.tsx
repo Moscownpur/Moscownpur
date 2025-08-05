@@ -8,7 +8,8 @@ import {
   Clock, 
   BookOpen,
   Film,
-  FileText
+  FileText,
+  Bot
 } from 'lucide-react';
 
 const navigation = [
@@ -20,6 +21,7 @@ const navigation = [
   { name: 'Chapters', href: '/dashboard/chapters', icon: FileText },
   { name: 'Scenes', href: '/dashboard/scenes', icon: Film },
   { name: 'Stories', href: '/dashboard/stories', icon: BookOpen },
+  { name: 'AI Test', href: '/dashboard/ai-test', icon: Bot },
 ];
 
 const Sidebar: React.FC = () => {
