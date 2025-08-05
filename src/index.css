@@ -80,7 +80,7 @@
   }
   
   .gradient-text-cosmic {
-    background: linear-gradient(135deg, #fdeff9 0%, #ec38bc 25%, #7303c0 75%, #03001e 100%);
+    background: var(--cosmic-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -108,6 +108,13 @@
     border-right: 1px solid rgba(255, 255, 255, 0.05);
   }
   
+  .glass-card-cosmic {
+    background: var(--cosmic-gradient);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
   /* Soft Glow Effects */
   .soft-glow {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
@@ -131,6 +138,9 @@
   
   .soft-glow-blue {
     box-shadow: 0 0 30px rgba(5, 117, 230, 0.2);
+  }
+  .soft-glow-cosmic {
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
   }
   
   /* Smooth Transitions */
@@ -174,7 +184,9 @@
     letter-spacing: 0;
   }
 }
-
+:root {
+  --cosmic-gradient: linear-gradient(135deg, #ffffff 0%, #93c900 25%, #13c003 55%, #6cf900 100%);
+}
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
