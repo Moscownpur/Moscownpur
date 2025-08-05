@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           className="text-heading gradient-text-cosmic"
         >
-          eWorld Creator
+          Moscownpur
         </motion.h1>
         
         <div className="flex items-center space-x-6">
