@@ -144,7 +144,7 @@ const SceneManagement: React.FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-display gradient-text-cosmic mb-4">
+          <h1 className="text-display gradient-text-purple mb-4">
             Scene Management
           </h1>
           <p className="text-subheading text-white/60">
@@ -153,7 +153,7 @@ const SceneManagement: React.FC = () => {
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-                      className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3"
+                      className="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3"
         >
           <Film size={20} />
           <span className="text-body">Create Scene</span>
@@ -207,7 +207,7 @@ const SceneManagement: React.FC = () => {
           <div className="w-24 h-24 glass-card rounded-3xl flex items-center justify-center mx-auto mb-8">
             <Film className="w-12 h-12 text-white/60" />
           </div>
-          <h3 className="text-heading gradient-text-cosmic mb-6">
+          <h3 className="text-heading gradient-text-purple mb-6">
             No scenes found!
           </h3>
           <p className="text-body text-white/60 mb-10">
@@ -215,7 +215,7 @@ const SceneManagement: React.FC = () => {
           </p>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3 mx-auto"
+            className="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3 mx-auto"
           >
             <Film size={20} />
             <span>Create Your First Scene</span>

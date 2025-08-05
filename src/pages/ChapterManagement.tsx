@@ -104,7 +104,7 @@ const ChapterManagement: React.FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-display gradient-text-cosmic mb-4">
+          <h1 className="text-display gradient-text-blue mb-4">
             Chapter Management
           </h1>
           <p className="text-subheading text-white/60">
@@ -117,7 +117,7 @@ const ChapterManagement: React.FC = () => {
             setFormData({ title: '', description: '', world_id: '' });
             setShowCreateModal(true);
           }}
-          className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3"
+          className="px-8 py-4 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3"
         >
           <BookOpen size={20} />
           <span className="text-body">Create Chapter</span>
@@ -171,7 +171,7 @@ const ChapterManagement: React.FC = () => {
           <div className="w-24 h-24 glass-card rounded-3xl flex items-center justify-center mx-auto mb-8">
             <BookOpen className="w-12 h-12 text-white/60" />
           </div>
-          <h3 className="text-heading gradient-text-cosmic mb-6">
+          <h3 className="text-heading gradient-text-blue mb-6">
             No chapters found!
           </h3>
           <p className="text-body text-white/60 mb-10">
@@ -183,7 +183,7 @@ const ChapterManagement: React.FC = () => {
               setFormData({ title: '', description: '', world_id: '' });
               setShowCreateModal(true);
             }}
-            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3 mx-auto"
+            className="px-8 py-4 bg-gradient-to-r from-blue-500 to-green-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3 mx-auto"
           >
             <BookOpen size={20} />
             <span>Create Your First Chapter</span>
