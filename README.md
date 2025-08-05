@@ -1,6 +1,6 @@
-Welcome to the eWorld Creator Project 🚀
+Welcome to the Moscownpur Project 🚀
 🌟 Vision
-eWorld Creator is a creative worldbuilding and storytelling SaaS platform.
+Moscownpur is a creative worldbuilding and storytelling SaaS platform.
 We are building a Narrative Operating System where creators can design Worlds, Characters, Regions, Timelines, and Scenes — all interlinked to maintain story consistency.
 
 The goal is simple:

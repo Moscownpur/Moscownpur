@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const user = await authService.signup(credentials);
       setUser(user);
-      toast.success(`Welcome to eWorld Creator, ${user.full_name}! 🌟`);
+      toast.success(`Welcome to Moscownpur, ${user.full_name}! 🌟`);
       // Redirect to dashboard after successful signup
       window.location.href = '/dashboard';
     } catch (error) {

@@ -76,7 +76,7 @@ const AdminDashboard: React.FC = () => {
               Admin Dashboard
             </h1>
             <p className="text-caption text-white/60">
-              eWorld Creator Management Portal
+              Moscownpur Management Portal
             </p>
           </div>
           <div className="flex items-center space-x-4">

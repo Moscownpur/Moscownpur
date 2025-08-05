@@ -76,7 +76,7 @@ const Landing: React.FC = () => {
                 <Globe className="w-8 h-8 text-white" />
               </div>
               <h1 className="text-2xl font-bold gradient-text-cosmic">
-                eWorld Creator
+                Moscownpur
               </h1>
             </div>
             <div className="flex items-center space-x-4">
@@ -251,7 +251,7 @@ const Landing: React.FC = () => {
                 <div className="space-y-6">
                   <p className="text-lg text-white/80 leading-relaxed">
                     We believe every creator deserves powerful tools to bring their imagination to life. 
-                    eWorld Creator was born from the frustration of scattered notes, inconsistent lore, 
+                    Moscownpur was born from the frustration of scattered notes, inconsistent lore, 
                     and the challenge of maintaining complex fictional universes.
                   </p>
                   <p className="text-lg text-white/80 leading-relaxed">
@@ -357,7 +357,7 @@ const Landing: React.FC = () => {
                 <Globe className="w-6 h-6 text-white/80" />
               </div>
               <span className="text-xl font-bold gradient-text-cosmic">
-                eWorld Creator
+                Moscownpur
               </span>
             </div>
             <p className="text-white/60">

@@ -44,7 +44,7 @@ const Login: React.FC = () => {
             transition={{ delay: 0.2 }}
             className="text-heading gradient-text-cosmic mb-3"
           >
-            eWorld Creator
+            Moscownpur
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
