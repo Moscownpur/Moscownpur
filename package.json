@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run generate-sitemap && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "generate-sitemap-dynamic": "node scripts/generate-sitemap-with-dynamic.js"
   },
   "dependencies": {
     "@google/genai": "^1.12.0",
@@ -22,6 +24,7 @@
     "react-hook-form": "^7.60.0",
     "react-hot-toast": "^2.5.2",
     "react-router-dom": "^7.7.0",
+    "sitemap": "^8.0.0",
     "uuid": "^11.1.0",
     "yup": "^1.6.1"
   },
