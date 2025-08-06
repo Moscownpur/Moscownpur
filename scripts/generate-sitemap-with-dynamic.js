@@ -6,98 +6,16 @@ import { createClient } from '@supabase/supabase-js';
 // Define your base URL
 const baseURL = 'https://www.moscownpur.in';
 
-// Static routes with their metadata
-const staticRoutes = [
+// Public routes that should be indexed by search engines
+const publicRoutes = [
   {
     url: '/',
     changefreq: 'weekly',
     priority: 1.0,
     lastmod: new Date().toISOString(),
   },
-  {
-    url: '/login',
-    changefreq: 'monthly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/signup',
-    changefreq: 'monthly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/forgot-password',
-    changefreq: 'monthly',
-    priority: 0.6,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/admin/login',
-    changefreq: 'monthly',
-    priority: 0.7,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/admin/dashboard',
-    changefreq: 'daily',
-    priority: 0.9,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard',
-    changefreq: 'daily',
-    priority: 0.9,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/worlds',
-    changefreq: 'weekly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/regions',
-    changefreq: 'weekly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/characters',
-    changefreq: 'weekly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/timeline',
-    changefreq: 'weekly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/chapters',
-    changefreq: 'weekly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/scenes',
-    changefreq: 'weekly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/stories',
-    changefreq: 'weekly',
-    priority: 0.8,
-    lastmod: new Date().toISOString(),
-  },
-  {
-    url: '/dashboard/ai-test',
-    changefreq: 'monthly',
-    priority: 0.6,
-    lastmod: new Date().toISOString(),
-  },
+  // Note: Removed all private routes (/login, /signup, /admin/*, /dashboard/*)
+  // These should not be indexed by search engines
 ];
 
 async function fetchDynamicRoutes() {
@@ -171,10 +89,10 @@ async function generateSitemap() {
     // Create a sitemap stream
     const sitemap = new SitemapStream({ hostname: baseURL });
     
-    // Add static routes to the sitemap
-    staticRoutes.forEach(route => {
+    // Add public routes to the sitemap
+    publicRoutes.forEach(route => {
       sitemap.write(route);
-      console.log(`✅ Added static route: ${route.url}`);
+      console.log(`✅ Added public route: ${route.url}`);
     });
     
     // Fetch and add dynamic routes
@@ -195,10 +113,11 @@ async function generateSitemap() {
     writeStream.write(sitemapXML);
     writeStream.end();
     
-    const totalRoutes = staticRoutes.length + dynamicRoutes.length;
+    const totalRoutes = publicRoutes.length + dynamicRoutes.length;
     console.log(`✅ Sitemap generated successfully at: ${outputPath}`);
-    console.log(`📊 Total routes: ${totalRoutes} (${staticRoutes.length} static + ${dynamicRoutes.length} dynamic)`);
+    console.log(`📊 Total routes: ${totalRoutes} (${publicRoutes.length} public + ${dynamicRoutes.length} dynamic)`);
     console.log(`🌐 Sitemap URL: ${baseURL}/sitemap.xml`);
+    console.log(`🔒 Private routes excluded: /login, /signup, /admin/*, /dashboard/*`);
     
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);

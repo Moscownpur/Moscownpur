@@ -4,9 +4,21 @@ Allow: /
 # Sitemap
 Sitemap: https://www.moscownpur.in/sitemap.xml
 
-# Disallow admin and private routes
+# Disallow private, admin, and auth routes
 Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /login
 Disallow: /signup
-Disallow: /forgot-password 
+Disallow: /forgot-password
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Allow only public content
+Allow: /$
+Allow: /about
+Allow: /features
+Allow: /pricing
+Allow: /contact
+Allow: /blog/
+Allow: /help/ 

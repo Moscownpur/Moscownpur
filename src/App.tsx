@@ -22,6 +22,13 @@ import SceneManagement from './pages/SceneManagement';
 import SceneDetail from './pages/SceneDetail';
 import ChapterManagement from './pages/ChapterManagement';
 import AITest from './components/AITest';
+import { useSEO } from './hooks/useSEO';
+
+// Component to handle SEO updates
+const SEOUpdater: React.FC = () => {
+  useSEO();
+  return null;
+};
 
 function App() {
   return (
@@ -29,6 +36,7 @@ function App() {
       <AuthProvider>
         <AdminAuthProvider>
           <Router>
+            <SEOUpdater />
             <div className="min-h-screen bg-black">
               <Routes>
                 <Route path="/" element={<Landing />} />

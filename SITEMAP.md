@@ -42,26 +42,19 @@ For the dynamic sitemap generator, ensure these environment variables are set:
 
 ## Routes Included
 
-### Static Routes
+### Public Routes (Indexed by Search Engines)
 - `/` - Homepage (priority: 1.0)
-- `/login` - Login page (priority: 0.8)
-- `/signup` - Signup page (priority: 0.8)
-- `/forgot-password` - Password reset (priority: 0.6)
-- `/admin/login` - Admin login (priority: 0.7)
-- `/admin/dashboard` - Admin dashboard (priority: 0.9)
-- `/dashboard` - User dashboard (priority: 0.9)
-- `/dashboard/worlds` - World management (priority: 0.8)
-- `/dashboard/regions` - Region management (priority: 0.8)
-- `/dashboard/characters` - Character management (priority: 0.8)
-- `/dashboard/timeline` - Timeline events (priority: 0.8)
-- `/dashboard/chapters` - Chapter management (priority: 0.8)
-- `/dashboard/scenes` - Scene management (priority: 0.8)
-- `/dashboard/stories` - Story scenes (priority: 0.8)
-- `/dashboard/ai-test` - AI test page (priority: 0.6)
+
+### Private Routes (Excluded from Sitemap)
+The following routes are intentionally excluded from the sitemap as they should not be indexed by search engines:
+- `/login` - Login page
+- `/signup` - Signup page  
+- `/forgot-password` - Password reset
+- `/admin/*` - All admin pages
+- `/dashboard/*` - All dashboard pages (require authentication)
 
 ### Dynamic Routes (when using advanced generator)
-- `/dashboard/worlds/:id` - Individual world pages
-- `/dashboard/scenes/:id` - Individual scene pages
+Currently disabled for privacy. If you want to include public content pages, they should be added to the `publicRoutes` array.
 
 ## SEO Benefits
 
