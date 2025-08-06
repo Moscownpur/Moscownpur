@@ -4,6 +4,7 @@ export interface SEOConfig {
   keywords: string;
   image?: string;
   type?: 'website' | 'article';
+  structuredDataType?: 'WebApplication' | 'WebSite' | 'Organization' | 'Article';
 }
 
 export const seoConfig: Record<string, SEOConfig> = {
@@ -12,7 +13,8 @@ export const seoConfig: Record<string, SEOConfig> = {
     title: 'MosCownpur - Fictional Universe Management App',
     description: 'Create, manage, and explore fictional universes with MosCownpur. Build worlds, characters, timelines, and stories with our comprehensive universe management platform.',
     keywords: 'fictional universe, world building, character management, story creation, timeline events, creative writing, universe management',
-    type: 'website'
+    type: 'website',
+    structuredDataType: 'WebApplication'
   },
 
   // Auth pages

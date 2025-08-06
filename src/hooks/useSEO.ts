@@ -9,6 +9,71 @@ export const useSEO = () => {
     const seo = getSEOConfig(location.pathname);
     const currentUrl = `https://www.moscownpur.in${location.pathname}`;
 
+    // Update structured data if component is available
+    const updateStructuredData = () => {
+      const existingScript = document.querySelector('script[data-structured-data]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+
+      const structuredData = {
+        "@context": "https://schema.org",
+        "@type": seo.structuredDataType || "WebApplication",
+        "name": seo.title,
+        "description": seo.description,
+        "url": currentUrl,
+        "image": seo.image || "https://www.moscownpur.in/og-image.png",
+        "author": {
+          "@type": "Organization",
+          "name": "MosCownpur",
+          "url": "https://www.moscownpur.in"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "MosCownpur",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.moscownpur.in/og-image.png"
+          }
+        },
+        "inLanguage": "en-US",
+        "datePublished": "2024-01-01",
+        "dateModified": new Date().toISOString().split('T')[0]
+      };
+
+      // Add WebApplication specific properties
+      if (seo.structuredDataType === 'WebApplication') {
+        Object.assign(structuredData, {
+          "applicationCategory": "CreativeApplication",
+          "operatingSystem": "Web Browser",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "screenshot": seo.image || "https://www.moscownpur.in/og-image.png",
+          "featureList": [
+            "World Building",
+            "Character Management", 
+            "Timeline Events",
+            "Story Creation",
+            "Scene Management",
+            "Chapter Organization"
+          ],
+          "keywords": seo.keywords
+        });
+      }
+
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-structured-data', 'true');
+      script.textContent = JSON.stringify(structuredData, null, 2);
+      document.head.appendChild(script);
+    };
+
+    // Update structured data
+    updateStructuredData();
+
     // Update document title
     document.title = seo.title;
 

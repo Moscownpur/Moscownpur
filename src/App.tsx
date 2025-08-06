@@ -23,11 +23,17 @@ import SceneDetail from './pages/SceneDetail';
 import ChapterManagement from './pages/ChapterManagement';
 import AITest from './components/AITest';
 import { useSEO } from './hooks/useSEO';
+import StructuredData from './components/StructuredData';
 
 // Component to handle SEO updates
 const SEOUpdater: React.FC = () => {
   useSEO();
   return null;
+};
+
+// Component to handle structured data
+const StructuredDataUpdater: React.FC = () => {
+  return <StructuredData type="WebApplication" />;
 };
 
 function App() {
@@ -37,6 +43,7 @@ function App() {
         <AdminAuthProvider>
           <Router>
             <SEOUpdater />
+            <StructuredDataUpdater />
             <div className="min-h-screen bg-black">
               <Routes>
                 <Route path="/" element={<Landing />} />
