@@ -72,10 +72,30 @@ Scene suggestions, dialogue drafting, plot continuation
 
 Test suite for API verification
 
+✅ AI Memory Engine System (Phase 2)
+
+Advanced memory management for characters, worlds, and scenes
+
+Memory versioning with rollback capabilities
+
+Smart tagging system (emotions, plot, lore, relationships)
+
+Context-aware AI responses using memory context
+
+Character chat simulator with personality consistency
+
+Automatic memory learning from interactions
+
+Memory relevance scoring and analytics
+
 🔜 Upcoming Focus
 Export tools (chronological storybook, visual timelines)
 
-Enhanced AI integration (character generation, world building assistance)
+Memory visualization and graph analytics
+
+Advanced AI features (image generation, voice synthesis)
+
+Collaborative storytelling features
 
 ## 🚀 Setup Instructions
 
@@ -96,6 +116,13 @@ VITE_GEMINI_API_KEY=your_gemini_api_key_here
 2. Run individual tests or use "Run All Tests" to verify API integration
 3. Check environment variables are properly set
 4. Test various AI features: text generation, scene suggestions, dialogue, plot continuation
+
+### AI Memory Engine Features
+1. Navigate to `/dashboard/ai-integration/:worldId` for the AI Integration Hub
+2. Use the Memory Manager to create and manage entity memories
+3. Chat with AI-powered characters using the Character Chat Simulator
+4. Generate plot suggestions based on world context and memories
+5. View memory analytics and relevance scores
 
 🧠 Key Takeaway
 We’re not building “just a writing app.”
