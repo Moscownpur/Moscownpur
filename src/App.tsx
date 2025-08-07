@@ -27,6 +27,7 @@ const SceneManagement = lazy(() => import('./pages/SceneManagement'));
 const SceneDetail = lazy(() => import('./pages/SceneDetail'));
 const ChapterManagement = lazy(() => import('./pages/ChapterManagement'));
 const AITest = lazy(() => import('./components/AITest'));
+const AIIntegration = lazy(() => import('./pages/AIIntegration'));
 
 // Component to handle SEO updates
 const SEOUpdater: React.FC = () => {
@@ -68,6 +69,7 @@ function App() {
                     <Route path="scenes/:id" element={<SceneDetail />} />
                     <Route path="stories" element={<StoryScenes />} />
                     <Route path="ai-test" element={<AITest />} />
+                    <Route path="ai-integration/:worldId" element={<AIIntegration />} />
                   </Route>
                 </Routes>
               </Suspense>
