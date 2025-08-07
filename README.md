@@ -124,6 +124,11 @@ VITE_GEMINI_API_KEY=your_gemini_api_key_here
 4. Generate plot suggestions based on world context and memories
 5. View memory analytics and relevance scores
 
+### Analytics & Performance Monitoring
+- **Vercel Analytics**: Automatic visitor and page view tracking
+- **Speed Insights**: Real-time performance metrics and Core Web Vitals
+- **Performance Monitoring**: Track LCP, FCP, CLS, and other performance indicators
+
 🧠 Key Takeaway
 We’re not building “just a writing app.”
 We’re building a structured creative playground where users can design and manage their entire fictional universe — visually, interactively, and with deep connections.
