@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap } from 'lucide-react';
+import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ogImage from '/og-image.png';
 
@@ -176,7 +176,7 @@ const Landing: React.FC = () => {
               className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
             >
               {[
-                { label: 'Worlds Created', value: '10K+', icon: LogoIcon },
+                { label: 'Worlds Created', value: '10K+', icon: Globe },
                 { label: 'Active Creators', value: '2.5K+', icon: Users },
                 { label: 'Characters Born', value: '50K+', icon: Star },
                 { label: 'Stories Told', value: '15K+', icon: BookOpen }
