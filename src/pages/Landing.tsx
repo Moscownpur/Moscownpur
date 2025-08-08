@@ -12,7 +12,7 @@ const LogoIcon: React.FC<{ className?: string }> = ({ className }) => (
 const Landing: React.FC = () => {
   const features = [
     {
-      icon: LogoIcon,
+      icon: Globe,
       title: 'Create Worlds',
       description: 'Build immersive universes with detailed lore, physics, and mythology',
       gradient: 'from-purple-500 to-pink-500'
