@@ -1,12 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap } from 'lucide-react';
+import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
+import ogImage from '/og-image.png';
+
+// Custom Logo component for features
+const LogoIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <img src={ogImage} alt="Moscownpur Logo" className={className || "w-40 h-40"} />
+);
 
 const Landing: React.FC = () => {
   const features = [
     {
-      icon: Globe,
+      icon: LogoIcon,
       title: 'Create Worlds',
       description: 'Build immersive universes with detailed lore, physics, and mythology',
       gradient: 'from-purple-500 to-pink-500'
@@ -72,8 +78,8 @@ const Landing: React.FC = () => {
         >
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="p-2 glass-card rounded-xl soft-glow">
-                <Globe className="w-8 h-8 text-white" />
+              <div className="">
+                <img src={ogImage} alt="Moscownpur Logo" className="w-20 h-20" />
               </div>
               <h1 className="text-2xl font-bold gradient-text-cosmic">
                 Moscownpur
@@ -170,7 +176,7 @@ const Landing: React.FC = () => {
               className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
             >
               {[
-                { label: 'Worlds Created', value: '10K+', icon: Globe },
+                { label: 'Worlds Created', value: '10K+', icon: LogoIcon },
                 { label: 'Active Creators', value: '2.5K+', icon: Users },
                 { label: 'Characters Born', value: '50K+', icon: Star },
                 { label: 'Stories Told', value: '15K+', icon: BookOpen }
@@ -275,7 +281,7 @@ const Landing: React.FC = () => {
                   <div className="glass-card rounded-2xl p-8 space-y-6">
                     <div className="flex items-center gap-4">
                       <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
-                        <Globe className="w-6 h-6 text-white" />
+                        <LogoIcon className="w-6 h-6" />
                       </div>
                       <div>
                         <h4 className="text-white font-semibold">Unified Workspace</h4>
@@ -354,7 +360,7 @@ const Landing: React.FC = () => {
           <div className="max-w-7xl mx-auto text-center">
             <div className="flex items-center justify-center space-x-3 mb-4">
               <div className="p-2 glass-card rounded-xl">
-                <Globe className="w-6 h-6 text-white/80" />
+                <LogoIcon className="w-12 h-12" />
               </div>
               <span className="text-xl font-bold gradient-text-cosmic">
                 Moscownpur
