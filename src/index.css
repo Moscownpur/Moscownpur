@@ -91,7 +91,7 @@
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: none;
   }
   
   .glass-navbar {
@@ -112,7 +112,7 @@
     background: var(--cosmic-gradient);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: none;
   }
   
   /* Soft Glow Effects */
@@ -185,7 +185,7 @@
   }
 }
 :root {
-  --cosmic-gradient: linear-gradient(135deg, #ffffff 0%, #93c900 25%, #13c003 55%, #6cf900 100%);
+  --cosmic-gradient: linear-gradient(135deg, #4e0263 0%, #6902c9 25%, #03a1c0 50%, #6cf900 100%);
 }
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
