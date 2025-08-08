@@ -53,10 +53,10 @@ export default defineConfig({
       'react',
       'react-dom',
       'react-router-dom',
+      '@supabase/supabase-js',
     ],
     exclude: [
       '@google/genai',
-      '@supabase/supabase-js', // Exclude from pre-bundling to reduce initial load
       'framer-motion',
       'lucide-react',
       'react-hook-form',
@@ -66,6 +66,9 @@ export default defineConfig({
       'bcryptjs',
       'react-hot-toast',
     ],
+    esbuildOptions: {
+      target: 'es2020',
+    },
   },
   esbuild: {
     drop: ['console', 'debugger'], // Remove console and debugger in production
