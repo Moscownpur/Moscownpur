@@ -6,14 +6,11 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
-import { AdminAuthProvider } from './contexts/AdminAuthContext';
 import Layout from './components/Layout';
 import { useSEO } from './hooks/useSEO';
 import StructuredData from './components/StructuredData';
 import LoadingSpinner from './components/LoadingSpinner';
 
-import AdminLogin from './pages/admin/AdminLogin';
-import AdminDashboard from './pages/admin/AdminDashboard';
 // Lazy load pages for better performance
 const Landing = lazy(() => import('./pages/Landing'));
 const Login = lazy(() => import('./pages/auth/Login'));
@@ -66,26 +63,20 @@ function App() {
                   <Route path="/admin/dashboard" element={<AdminDashboard />} />
                   <Route path="/dashboard" element={<Layout />}>
                     <Route index element={<Dashboard />} />
-        <AdminAuthProvider>
-          <Router>
-            <div className="min-h-screen bg-black">
-              <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/dashboard" element={<Layout />}>
-                  <Route index element={<Dashboard />} />
-                  <Route path="worlds" element={<WorldManagement />} />
-                  <Route path="worlds/:id" element={<WorldDetails />} />
-                  <Route path="regions" element={<RegionManagement />} />
-                  <Route path="characters" element={<CharacterManagement />} />
-                  <Route path="timeline" element={<TimelineEvents />} />
-                  <Route path="stories" element={<StoryScenes />} />
-                </Route>
-              </Routes>
+                    <Route path="worlds" element={<WorldManagement />} />
+                    <Route path="worlds/:id" element={<WorldDetails />} />
+                    <Route path="regions" element={<RegionManagement />} />
+                    <Route path="characters" element={<CharacterManagement />} />
+                    <Route path="timeline" element={<TimelineEvents />} />
+                    <Route path="chapters" element={<ChapterManagement />} />
+                    <Route path="scenes" element={<SceneManagement />} />
+                    <Route path="scenes/:id" element={<SceneDetail />} />
+                    <Route path="stories" element={<StoryScenes />} />
+                    <Route path="ai-test" element={<AITest />} />
+                    <Route path="ai-integration/:worldId" element={<AIIntegration />} />
+                  </Route>
+                </Routes>
+              </Suspense>
             </div>
             <Toaster 
               position="top-right"
@@ -102,6 +93,8 @@ function App() {
                 },
               }}
             />
+            <Analytics />
+            <SpeedInsights />
           </Router>
         </AdminAuthProvider>
       </AuthProvider>
