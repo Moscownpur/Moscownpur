@@ -25,6 +25,7 @@ export const useWorlds = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+      
       setWorlds(data || []);
     } catch (error) {
       console.error('Error fetching worlds:', error);

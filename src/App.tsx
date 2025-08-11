@@ -30,6 +30,7 @@ const SceneDetail = lazy(() => import('./pages/SceneDetail'));
 const ChapterManagement = lazy(() => import('./pages/ChapterManagement'));
 const AITest = lazy(() => import('./components/AITest'));
 const AIIntegration = lazy(() => import('./pages/AIIntegration'));
+const SupabaseTest = lazy(() => import('./pages/SupabaseTest'));
 
 // Component to handle SEO updates
 const SEOUpdater: React.FC = () => {
@@ -54,6 +55,7 @@ function App() {
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
                   <Route path="/" element={<Landing />} />
+                  <Route path="/supabase-test" element={<SupabaseTest />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />

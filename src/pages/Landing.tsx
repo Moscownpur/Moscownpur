@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ogImage from '/og-image.png';
+import SupabaseExample from '../components/SupabaseExample';
 
 // Custom Logo component for features
 const LogoIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -102,6 +103,15 @@ const Landing: React.FC = () => {
                   className="px-6 py-3 glass-card-cosmic text-white rounded-xl font-semibold soft-glow-cosmic smooth-transition"
                 >
                   Get Started
+                </motion.button>
+              </Link>
+              <Link to="/supabase-test">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-3 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-xl smooth-transition text-caption"
+                >
+                  Test DB
                 </motion.button>
               </Link>
               <Link to="/admin/login">
@@ -309,6 +319,26 @@ const Landing: React.FC = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Supabase Test Section */}
+        <motion.section 
+          variants={itemVariants}
+          className="px-8 py-20"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="glass-card rounded-3xl p-12 md:p-16">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
+                  Database Connection Test
+                </h2>
+                <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                  Testing Supabase connection and data fetching
+                </p>
+              </div>
+              <SupabaseExample />
             </div>
           </div>
         </motion.section>

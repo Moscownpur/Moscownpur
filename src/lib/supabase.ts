@@ -3,28 +3,16 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-let supabaseClient: SupabaseClient | null = null;
+// Create the Supabase client
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// Lazy initialization of Supabase client
-const initializeSupabase = async (): Promise<SupabaseClient | null> => {
-  if (supabaseClient) return supabaseClient;
-  
-  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'https://your-project-id.supabase.co' || supabaseAnonKey === 'your-anon-key-here') {
-    console.warn('Supabase not configured. Using mock data mode.');
-    return null;
-  }
-  
-  supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
-  return supabaseClient;
+// Export the client for direct use
+export { supabase };
+
+// For backward compatibility, export a function that returns the client
+export const getSupabase = async (): Promise<SupabaseClient> => {
+  return supabase;
 };
-
-// Export a function that returns the client when needed
-export const getSupabase = async (): Promise<SupabaseClient | null> => {
-  return await initializeSupabase();
-};
-
-// For backward compatibility, export a promise that resolves to the client
-export const supabase = initializeSupabase();
 
 export type Database = {
   public: {
