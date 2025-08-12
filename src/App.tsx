@@ -13,6 +13,12 @@ import LoadingSpinner from './components/LoadingSpinner';
 
 // Lazy load pages for better performance
 const Landing = lazy(() => import('./pages/Landing'));
+const Features = lazy(() => import('./pages/Features'));
+const WorldBuildingGuide = lazy(() => import('./pages/WorldBuildingGuide'));
+const Pricing = lazy(() => import('./pages/Pricing'));
+const Blog = lazy(() => import('./pages/Blog'));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
+const About = lazy(() => import('./pages/About'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Signup = lazy(() => import('./pages/auth/Signup'));
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'));
@@ -55,6 +61,12 @@ function App() {
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
                   <Route path="/" element={<Landing />} />
+                  <Route path="/features" element={<Features />} />
+                  <Route path="/world-building-guide" element={<WorldBuildingGuide />} />
+                  <Route path="/pricing" element={<Pricing />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogPostPage />} />
+                  <Route path="/about" element={<About />} />
                   <Route path="/supabase-test" element={<SupabaseTest />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
