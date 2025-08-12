@@ -85,6 +85,53 @@ const Landing: React.FC = () => {
                 Moscownpur
               </h1>
             </div>
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/features">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 text-white/80 hover:text-white smooth-transition"
+                >
+                  Features
+                </motion.button>
+              </Link>
+              <Link to="/world-building-guide">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 text-white/80 hover:text-white smooth-transition"
+                >
+                  Guide
+                </motion.button>
+              </Link>
+              <Link to="/pricing">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 text-white/80 hover:text-white smooth-transition"
+                >
+                  Pricing
+                </motion.button>
+              </Link>
+              <Link to="/blog">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 text-white/80 hover:text-white smooth-transition"
+                >
+                  Blog
+                </motion.button>
+              </Link>
+              <Link to="/about">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 text-white/80 hover:text-white smooth-transition"
+                >
+                  About
+                </motion.button>
+              </Link>
+            </div>
             <div className="flex items-center space-x-4">
               <Link to="/login">
                 <motion.button

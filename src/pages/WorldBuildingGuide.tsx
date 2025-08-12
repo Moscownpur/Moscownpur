@@ -1,18 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Container, Row, Col, Card, Accordion, Badge, Alert } from 'react-bootstrap';
-import { 
-  Book, 
-  Lightbulb, 
-  CheckCircle, 
-  InfoCircle, 
-  Star,
-  Globe,
-  Users,
-  Map,
-  Clock,
-  PenTool
-} from 'react-bootstrap-icons';
+import { Book, Lightbulb, CheckCircle, Info, Star, Globe, Users, Map, Clock, PenTool } from 'lucide-react';
 
 const WorldBuildingGuide: React.FC = () => {
   const worldBuildingSteps = [
@@ -146,160 +134,149 @@ const WorldBuildingGuide: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/world-building-guide" />
       </Helmet>
 
-      <div className="min-vh-100 bg-black text-white py-5">
-        <Container>
+      <div className="min-h-screen bg-black text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
-          <Row className="text-center mb-5">
-            <Col>
-              <h1 className="display-4 fw-bold mb-4">
-                Complete <span className="text-primary">World Building Guide</span>
-              </h1>
-              <p className="lead mb-4">
-                Master the art of creating immersive fictional universes. This comprehensive guide 
-                will teach you everything you need to know about world building, from basic concepts 
-                to advanced techniques used by professional authors and game designers.
-              </p>
-              <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Badge bg="primary" className="fs-6 px-3 py-2">Step-by-Step Tutorial</Badge>
-                <Badge bg="success" className="fs-6 px-3 py-2">Professional Tips</Badge>
-                <Badge bg="warning" className="fs-6 px-3 py-2">Common Mistakes</Badge>
-                <Badge bg="info" className="fs-6 px-3 py-2">Tools & Resources</Badge>
-              </div>
-            </Col>
-          </Row>
+          <div className="text-center mb-16">
+            <h1 className="text-display mb-6">
+              Complete <span className="gradient-text-cosmic">World Building Guide</span>
+            </h1>
+            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+              Master the art of creating immersive fictional universes. This comprehensive guide 
+              will teach you everything you need to know about world building, from basic concepts 
+              to advanced techniques used by professional authors and game designers.
+            </p>
+            <div className="flex justify-center gap-4 flex-wrap">
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">Step-by-Step Tutorial</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Professional Tips</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">Common Mistakes</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">Tools & Resources</span>
+            </div>
+          </div>
 
           {/* What is World Building */}
-          <Row className="mb-5">
-            <Col>
-              <Card className="bg-dark border-0 shadow-lg">
-                <Card.Body className="p-4">
-                  <div className="d-flex align-items-center mb-3">
-                    <Globe className="text-primary me-3" size={40} />
-                    <h2>What is World Building?</h2>
-                  </div>
-                  <p className="lead">
-                    World building is the process of creating an imaginary world or universe for your story, 
-                    game, or creative project. It involves developing every aspect of your fictional setting, 
-                    from geography and history to cultures and characters.
-                  </p>
-                  <p>
-                    Whether you're writing a novel, creating a tabletop RPG campaign, or developing a video game, 
-                    effective world building creates a foundation that makes your story believable and engaging. 
-                    It's about creating a living, breathing world that readers or players can immerse themselves in.
-                  </p>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+          <div className="mb-16">
+            <div className="glass-card rounded-2xl p-8 soft-glow-cosmic">
+              <div className="flex items-center mb-6">
+                <Globe className="gradient-text-cosmic mr-4" size={40} />
+                <h2 className="text-heading">What is World Building?</h2>
+              </div>
+              <p className="text-subheading text-gray-300 mb-4">
+                World building is the process of creating an imaginary world or universe for your story, 
+                game, or creative project. It involves developing every aspect of your fictional setting, 
+                from geography and history to cultures and characters.
+              </p>
+              <p className="text-body text-gray-400">
+                Whether you're writing a novel, creating a tabletop RPG campaign, or developing a video game, 
+                effective world building creates a foundation that makes your story believable and engaging. 
+                It's about creating a living, breathing world that readers or players can immerse themselves in.
+              </p>
+            </div>
+          </div>
 
           {/* Step-by-Step Guide */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">5-Step World Building Process</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {worldBuildingSteps.map((step, index) => (
-              <Col key={index} lg={6}>
-                <Card className="h-100 bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <div className="d-flex align-items-center mb-3">
-                      <Badge bg="primary" className="fs-5 me-3 px-3 py-2">Step {step.step}</Badge>
-                      <h4 className="mb-0">{step.title}</h4>
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-purple">5-Step World Building Process</h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {worldBuildingSteps.map((step, index) => (
+                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                  <div className="flex items-center mb-4">
+                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium soft-glow-blue mr-4">Step {step.step}</span>
+                    <h4 className="text-subheading mb-0">{step.title}</h4>
+                  </div>
+                  <p className="text-body text-gray-400 mb-4">{step.description}</p>
+                  <h6 className="text-subheading mb-3">Key Elements:</h6>
+                  <ul className="mb-4 space-y-2">
+                    {step.elements.map((element, idx) => (
+                      <li key={idx} className="text-body text-gray-300 flex items-start">
+                        <span className="text-green-400 mr-2 mt-1">•</span>
+                        {element}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="glass-card bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
+                    <div className="flex items-start">
+                      <Info className="text-blue-400 mr-3 mt-1 flex-shrink-0" size={20} />
+                      <div>
+                        <strong className="text-blue-400">Pro Tip:</strong>
+                        <p className="text-body text-gray-300 mt-1">{step.tips}</p>
+                      </div>
                     </div>
-                    <p className="text-muted mb-3">{step.description}</p>
-                    <h6 className="mb-2">Key Elements:</h6>
-                    <ul className="mb-3">
-                      {step.elements.map((element, idx) => (
-                        <li key={idx} className="mb-1">{element}</li>
-                      ))}
-                    </ul>
-                    <Alert variant="info" className="mb-0">
-                      <InfoCircle className="me-2" />
-                      <strong>Pro Tip:</strong> {step.tips}
-                    </Alert>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Common Mistakes */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Common World Building Mistakes to Avoid</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {commonMistakes.map((mistake, index) => (
-              <Col key={index} lg={6}>
-                <Card className="h-100 bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <h5 className="text-danger mb-3">
-                      <CheckCircle className="me-2" />
-                      {mistake.mistake}
-                    </h5>
-                    <p className="text-muted mb-3">{mistake.description}</p>
-                    <Alert variant="success" className="mb-0">
-                      <Lightbulb className="me-2" />
-                      <strong>Solution:</strong> {mistake.solution}
-                    </Alert>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-orange">Common World Building Mistakes to Avoid</h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {commonMistakes.map((mistake, index) => (
+                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                  <h5 className="text-subheading text-red-400 mb-4 flex items-center">
+                    <CheckCircle className="mr-2" size={20} />
+                    {mistake.mistake}
+                  </h5>
+                  <p className="text-body text-gray-400 mb-4">{mistake.description}</p>
+                  <div className="glass-card bg-green-500/10 border border-green-500/20 rounded-xl p-4">
+                    <div className="flex items-start">
+                      <Lightbulb className="text-green-400 mr-3 mt-1 flex-shrink-0" size={20} />
+                      <div>
+                        <strong className="text-green-400">Solution:</strong>
+                        <p className="text-body text-gray-300 mt-1">{mistake.solution}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* Tools and Resources */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Essential Tools and Resources</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {toolsAndResources.map((category, index) => (
-              <Col key={index} lg={4}>
-                <Card className="h-100 bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <h4 className="mb-4">{category.category}</h4>
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-green">Essential Tools and Resources</h2>
+            <div className="grid lg:grid-cols-3 gap-8">
+              {toolsAndResources.map((category, index) => (
+                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                  <h4 className="text-subheading mb-6">{category.category}</h4>
+                  <div className="space-y-4">
                     {category.tools.map((tool, idx) => (
-                      <div key={idx} className="mb-3">
-                        <div className="d-flex align-items-center mb-1">
-                          <h6 className="mb-0">{tool.name}</h6>
+                      <div key={idx} className="border-b border-gray-700 pb-4 last:border-b-0">
+                        <div className="flex items-center mb-2">
+                          <h6 className="text-body font-semibold">{tool.name}</h6>
                           {tool.featured && (
-                            <Star className="text-warning ms-2" size={16} />
+                            <Star className="text-yellow-400 ml-2" size={16} />
                           )}
                         </div>
-                        <p className="text-muted small mb-0">{tool.description}</p>
+                        <p className="text-caption text-gray-400">{tool.description}</p>
                       </div>
                     ))}
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* CTA Section */}
-          <Row className="text-center">
-            <Col>
-              <div className="bg-gradient-primary p-5 rounded-4">
-                <h3 className="mb-4">Ready to Start Building Your World?</h3>
-                <p className="lead mb-4">
-                  Put these world building techniques into practice with MosCownpur's comprehensive 
-                  universe management tools.
-                </p>
-                <div className="d-flex justify-content-center gap-3 flex-wrap">
-                  <a href="/signup" className="btn btn-primary btn-lg px-4">
-                    Start Building Free
-                  </a>
-                  <a href="/features" className="btn btn-outline-light btn-lg px-4">
-                    Explore Features
-                  </a>
-                </div>
+          <div className="text-center">
+            <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic">
+              <h3 className="text-heading mb-6">Ready to Start Building Your World?</h3>
+              <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
+                Put these world building techniques into practice with MosCownpur's comprehensive 
+                universe management tools.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                  Start Building Free
+                </a>
+                <a href="/features" className="glass-card border border-white text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                  Explore Features
+                </a>
               </div>
-            </Col>
-          </Row>
-        </Container>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
