@@ -9,9 +9,9 @@ import {
   Globe,
   Book,
   Star,
-  Zap,
+  Lightning,
   Shield,
-  Target
+  Bullseye
 } from 'react-bootstrap-icons';
 
 const About: React.FC = () => {
@@ -154,11 +154,11 @@ const About: React.FC = () => {
                       </p>
                       <div className="d-flex gap-3 flex-wrap">
                         <Badge bg="primary" className="fs-6 px-3 py-2">
-                          <Target className="me-2" />
+                          <Bullseye className="me-2" />
                           Creator-First Design
                         </Badge>
                         <Badge bg="success" className="fs-6 px-3 py-2">
-                          <Zap className="me-2" />
+                          <Lightning className="me-2" />
                           Innovation Driven
                         </Badge>
                         <Badge bg="warning" className="fs-6 px-3 py-2">

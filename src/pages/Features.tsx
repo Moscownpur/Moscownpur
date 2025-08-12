@@ -3,15 +3,15 @@ import { Helmet } from 'react-helmet-async';
 import { Container, Row, Col, Card, Badge } from 'react-bootstrap';
 import { 
   Globe, 
-  Users, 
+  People, 
   Clock, 
   Book, 
   Map, 
-  PenTool, 
-  Brain, 
+  Pencil, 
+  Lightbulb, 
   Layers,
   Star,
-  Zap,
+  Lightning,
   Shield,
   Cloud
 } from 'react-bootstrap-icons';
@@ -26,7 +26,7 @@ const Features: React.FC = () => {
       category: "Core"
     },
     {
-      icon: <Users className="text-success" size={40} />,
+      icon: <People className="text-success" size={40} />,
       title: "Character Management System",
       description: "Develop complex characters with detailed profiles, relationships, and character arcs. Track character development across your entire story universe.",
       keywords: ["character management", "character development", "character profiles", "character relationships"],
@@ -54,14 +54,14 @@ const Features: React.FC = () => {
       category: "Advanced"
     },
     {
-      icon: <PenTool className="text-secondary" size={40} />,
+      icon: <Pencil className="text-secondary" size={40} />,
       title: "Creative Writing Tools",
       description: "Enhance your creative writing process with specialized tools for story development, dialogue creation, and narrative planning.",
       keywords: ["creative writing", "story development", "dialogue creation", "narrative planning"],
       category: "Advanced"
     },
     {
-      icon: <Brain className="text-primary" size={40} />,
+      icon: <Lightbulb className="text-primary" size={40} />,
       title: "AI-Powered Story Assistance",
       description: "Leverage artificial intelligence to enhance your storytelling. Get suggestions for plot development, character interactions, and world building ideas.",
       keywords: ["AI storytelling", "artificial intelligence", "story assistance", "creative AI"],
@@ -83,7 +83,7 @@ const Features: React.FC = () => {
       description: "Create publication-ready content with our professional-grade tools and features."
     },
     {
-      icon: <Zap className="text-info" size={30} />,
+      icon: <Lightning className="text-info" size={30} />,
       title: "Lightning Fast",
       description: "Optimized performance ensures smooth operation even with complex world building projects."
     },
