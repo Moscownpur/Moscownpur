@@ -1,18 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Container, Row, Col, Card, Badge } from 'react-bootstrap';
-import { 
-  Heart, 
-  Lightbulb, 
-  People, 
-  Award, 
-  Globe,
-  Book,
-  Star,
-  Lightning,
-  Shield,
-  Bullseye
-} from 'react-bootstrap-icons';
+import { Heart, Lightbulb, Users, Award, Globe, Book, Star, Zap, Shield, Target } from 'lucide-react';
 
 const About: React.FC = () => {
   const teamMembers = [
@@ -48,22 +36,22 @@ const About: React.FC = () => {
 
   const values = [
     {
-      icon: <Heart className="text-danger" size={40} />,
+      icon: <Heart className="text-red-500" size={40} />,
       title: "Passion for Creativity",
       description: "We believe every creator deserves powerful tools to bring their imagination to life."
     },
     {
-      icon: <Lightbulb className="text-warning" size={40} />,
+      icon: <Lightbulb className="text-yellow-500" size={40} />,
       title: "Innovation First",
       description: "Constantly pushing boundaries to create the most advanced world building platform."
     },
     {
-      icon: <People className="text-primary" size={40} />,
+      icon: <Users className="text-blue-500" size={40} />,
       title: "Community Driven",
       description: "Our community of creators inspires every feature and improvement we make."
     },
     {
-      icon: <Shield className="text-success" size={40} />,
+      icon: <Shield className="text-green-500" size={40} />,
       title: "Trust & Security",
       description: "Your creative work is precious - we protect it with enterprise-grade security."
     }
@@ -112,189 +100,159 @@ const About: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/about" />
       </Helmet>
 
-      <div className="min-vh-100 bg-black text-white py-5">
-        <Container>
+      <div className="min-h-screen bg-black text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
-          <Row className="text-center mb-5">
-            <Col>
-              <h1 className="display-4 fw-bold mb-4">
-                About <span className="text-primary">MosCownpur</span>
-              </h1>
-              <p className="lead mb-4">
-                We're a team of passionate creators, developers, and storytellers dedicated to 
-                building the world's most powerful platform for fictional universe creation and management.
-              </p>
-              <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Badge bg="primary" className="fs-6 px-3 py-2">World Building</Badge>
-                <Badge bg="success" className="fs-6 px-3 py-2">Creative Tools</Badge>
-                <Badge bg="warning" className="fs-6 px-3 py-2">AI Technology</Badge>
-                <Badge bg="info" className="fs-6 px-3 py-2">Community</Badge>
-              </div>
-            </Col>
-          </Row>
+          <div className="text-center mb-16">
+            <h1 className="text-display mb-6">
+              About <span className="gradient-text-cosmic">MosCownpur</span>
+            </h1>
+            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+              We're a team of passionate creators, developers, and storytellers dedicated to 
+              building the world's most powerful platform for fictional universe creation and management.
+            </p>
+            <div className="flex justify-center gap-4 flex-wrap">
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">World Building</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Creative Tools</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">AI Technology</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">Community</span>
+            </div>
+          </div>
 
           {/* Mission Section */}
-          <Row className="mb-5">
-            <Col>
-              <Card className="bg-dark border-0 shadow-lg">
-                <Card.Body className="p-5">
-                  <div className="row align-items-center">
-                    <div className="col-lg-8">
-                      <h2 className="mb-4">Our Mission</h2>
-                      <p className="lead mb-4">
-                        To empower creators worldwide with the most comprehensive and intuitive tools 
-                        for building, managing, and exploring fictional universes. We believe that every 
-                        story deserves a rich, detailed world to call home.
-                      </p>
-                      <p className="mb-4">
-                        Whether you're writing a novel, creating a game, or developing a screenplay, 
-                        MosCownpur provides the foundation you need to bring your creative vision to life. 
-                        Our platform combines cutting-edge technology with deep understanding of the 
-                        creative process to deliver tools that truly serve creators.
-                      </p>
-                      <div className="d-flex gap-3 flex-wrap">
-                        <Badge bg="primary" className="fs-6 px-3 py-2">
-                          <Bullseye className="me-2" />
-                          Creator-First Design
-                        </Badge>
-                        <Badge bg="success" className="fs-6 px-3 py-2">
-                          <Lightning className="me-2" />
-                          Innovation Driven
-                        </Badge>
-                        <Badge bg="warning" className="fs-6 px-3 py-2">
-                          <Globe className="me-2" />
-                          Global Community
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="col-lg-4 text-center">
-                      <Globe size={120} className="text-primary mb-3" />
-                      <h4>Building Worlds Together</h4>
-                    </div>
+          <div className="mb-16">
+            <div className="glass-card rounded-2xl p-8 md:p-12 soft-glow-cosmic">
+              <div className="grid lg:grid-cols-3 gap-8 items-center">
+                <div className="lg:col-span-2">
+                  <h2 className="text-heading mb-6 gradient-text-blue">Our Mission</h2>
+                  <p className="text-subheading text-gray-300 mb-6">
+                    To empower creators worldwide with the most comprehensive and intuitive tools 
+                    for building, managing, and exploring fictional universes. We believe that every 
+                    story deserves a rich, detailed world to call home.
+                  </p>
+                  <p className="text-body text-gray-400 mb-8">
+                    Whether you're writing a novel, creating a game, or developing a screenplay, 
+                    MosCownpur provides the foundation you need to bring your creative vision to life. 
+                    Our platform combines cutting-edge technology with deep understanding of the 
+                    creative process to deliver tools that truly serve creators.
+                  </p>
+                  <div className="flex gap-4 flex-wrap">
+                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-blue smooth-transition">
+                      <Target size={16} />
+                      Creator-First Design
+                    </span>
+                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-green smooth-transition">
+                      <Zap size={16} />
+                      Innovation Driven
+                    </span>
+                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-orange smooth-transition">
+                      <Globe size={16} />
+                      Global Community
+                    </span>
                   </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-
-          {/* Stats Section */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Our Impact</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {stats.map((stat, index) => (
-              <Col key={index} md={6} lg={3}>
-                <div className="text-center">
-                  <div className="display-4 fw-bold text-primary mb-2">{stat.number}</div>
-                  <p className="text-muted">{stat.label}</p>
                 </div>
-              </Col>
-            ))}
-          </Row>
-
-          {/* Values Section */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Our Values</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {values.map((value, index) => (
-              <Col key={index} lg={6}>
-                <Card className="h-100 bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <div className="d-flex align-items-center mb-3">
-                      <div className="me-3">
-                        {value.icon}
-                      </div>
-                      <h4 className="mb-0">{value.title}</h4>
-                    </div>
-                    <p className="text-muted mb-0">{value.description}</p>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-
-          {/* Team Section */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Meet Our Team</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {teamMembers.map((member, index) => (
-              <Col key={index} lg={6}>
-                <Card className="h-100 bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <div className="d-flex align-items-start mb-3">
-                      <div className="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: '60px', height: '60px' }}>
-                        <span className="fw-bold text-white">{member.avatar}</span>
-                      </div>
-                      <div>
-                        <h5 className="mb-1">{member.name}</h5>
-                        <p className="text-primary mb-2">{member.role}</p>
-                        <p className="text-muted small mb-0">{member.bio}</p>
-                      </div>
-                    </div>
-                    <div className="d-flex gap-2 flex-wrap">
-                      {member.expertise.map((skill, idx) => (
-                        <Badge key={idx} bg="secondary" className="px-2 py-1">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-
-          {/* Milestones Section */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Our Journey</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {milestones.map((milestone, index) => (
-              <Col key={index} lg={6}>
-                <Card className="h-100 bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <div className="d-flex align-items-center mb-3">
-                      <Badge bg="primary" className="fs-6 me-3 px-3 py-2">{milestone.year}</Badge>
-                      <h5 className="mb-0">{milestone.title}</h5>
-                    </div>
-                    <p className="text-muted mb-0">{milestone.description}</p>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-
-          {/* CTA Section */}
-          <Row className="text-center">
-            <Col>
-              <div className="bg-gradient-primary p-5 rounded-4">
-                <h3 className="mb-4">Join Our Creative Community</h3>
-                <p className="lead mb-4">
-                  Be part of a global community of creators who are building amazing worlds 
-                  and telling incredible stories with MosCownpur.
-                </p>
-                <div className="d-flex justify-content-center gap-3 flex-wrap">
-                  <a href="/signup" className="btn btn-primary btn-lg px-4">
-                    Start Creating Free
-                  </a>
-                  <a href="/blog" className="btn btn-outline-light btn-lg px-4">
-                    Read Our Blog
-                  </a>
+                <div className="text-center">
+                  <Globe size={120} className="gradient-text-cosmic mx-auto mb-4" />
+                  <h4 className="text-subheading">Building Worlds Together</h4>
                 </div>
               </div>
-            </Col>
-          </Row>
-        </Container>
+            </div>
+          </div>
+
+          {/* Stats Section */}
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-purple">Our Impact</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-display gradient-text-cosmic mb-2">{stat.number}</div>
+                  <p className="text-caption text-gray-400">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Values Section */}
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-green">Our Values</h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {values.map((value, index) => (
+                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                  <div className="flex items-center mb-4">
+                    <div className="mr-4">
+                      {value.icon}
+                    </div>
+                    <h4 className="text-subheading">{value.title}</h4>
+                  </div>
+                  <p className="text-body text-gray-400">{value.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Team Section */}
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-orange">Meet Our Team</h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {teamMembers.map((member, index) => (
+                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                  <div className="flex items-start mb-4">
+                    <div className="gradient-text-cosmic bg-black rounded-full w-16 h-16 flex items-center justify-center mr-4 soft-glow-cosmic">
+                      <span className="font-bold text-white text-lg">{member.avatar}</span>
+                    </div>
+                    <div>
+                      <h5 className="text-subheading mb-1">{member.name}</h5>
+                      <p className="gradient-text-blue mb-2">{member.role}</p>
+                      <p className="text-caption text-gray-400">{member.bio}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 flex-wrap">
+                    {member.expertise.map((skill, idx) => (
+                      <span key={idx} className="glass-card text-gray-300 px-3 py-1 rounded-full text-xs smooth-transition">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Milestones Section */}
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-pink">Our Journey</h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {milestones.map((milestone, index) => (
+                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                  <div className="flex items-center mb-4">
+                    <span className="gradient-text-cosmic bg-black px-4 py-2 rounded-full text-sm font-medium mr-4 soft-glow-cosmic">{milestone.year}</span>
+                    <h5 className="text-subheading">{milestone.title}</h5>
+                  </div>
+                  <p className="text-body text-gray-400">{milestone.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="text-center">
+            <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic">
+              <h3 className="text-heading mb-6">Join Our Creative Community</h3>
+              <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
+                Be part of a global community of creators who are building amazing worlds 
+                and telling incredible stories with MosCownpur.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap">
+                <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                  Start Creating Free
+                </a>
+                <a href="/blog" className="glass-card border border-white text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                  Read Our Blog
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

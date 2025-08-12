@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -51,53 +52,54 @@ const StructuredDataUpdater: React.FC = () => {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <AdminAuthProvider>
-          <Router>
-            <SEOUpdater />
-            <StructuredDataUpdater />
-            <div className="min-h-screen bg-black">
-              <Suspense fallback={<LoadingSpinner />}>
-                <Routes>
-                  <Route path="/" element={<Landing />} />
-                  <Route path="/features" element={<Features />} />
-                  <Route path="/world-building-guide" element={<WorldBuildingGuide />} />
-                  <Route path="/pricing" element={<Pricing />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:slug" element={<BlogPostPage />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/supabase-test" element={<SupabaseTest />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/admin/login" element={<AdminLogin />} />
-                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                  <Route path="/dashboard" element={<Layout />}>
-                    <Route index element={<Dashboard />} />
-                    <Route path="worlds" element={<WorldManagement />} />
-                    <Route path="worlds/:id" element={<WorldDetails />} />
-                    <Route path="regions" element={<RegionManagement />} />
-                    <Route path="characters" element={<CharacterManagement />} />
-                    <Route path="timeline" element={<TimelineEvents />} />
-                    <Route path="chapters" element={<ChapterManagement />} />
-                    <Route path="scenes" element={<SceneManagement />} />
-                    <Route path="scenes/:id" element={<SceneDetail />} />
-                    <Route path="stories" element={<StoryScenes />} />
-                    <Route path="ai-test" element={<AITest />} />
-                    <Route path="ai-integration/:worldId" element={<AIIntegration />} />
-                  </Route>
-                </Routes>
-              </Suspense>
-            </div>
-            <Toaster 
-              position="top-right"
-              toastOptions={{
-                duration: 4000,
-                style: {
-                  background: 'rgba(0, 0, 0, 0.8)',
-                  backdropFilter: 'blur(20px)',
-                  color: '#fff',
+    <HelmetProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <AdminAuthProvider>
+            <Router>
+              <SEOUpdater />
+              <StructuredDataUpdater />
+              <div className="min-h-screen bg-black">
+                <Suspense fallback={<LoadingSpinner />}>
+                  <Routes>
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/features" element={<Features />} />
+                    <Route path="/world-building-guide" element={<WorldBuildingGuide />} />
+                    <Route path="/pricing" element={<Pricing />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogPostPage />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/supabase-test" element={<SupabaseTest />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route path="/admin/login" element={<AdminLogin />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/dashboard" element={<Layout />}>
+                      <Route index element={<Dashboard />} />
+                      <Route path="worlds" element={<WorldManagement />} />
+                      <Route path="worlds/:id" element={<WorldDetails />} />
+                      <Route path="regions" element={<RegionManagement />} />
+                      <Route path="characters" element={<CharacterManagement />} />
+                      <Route path="timeline" element={<TimelineEvents />} />
+                      <Route path="chapters" element={<ChapterManagement />} />
+                      <Route path="scenes" element={<SceneManagement />} />
+                      <Route path="scenes/:id" element={<SceneDetail />} />
+                      <Route path="stories" element={<StoryScenes />} />
+                      <Route path="ai-test" element={<AITest />} />
+                      <Route path="ai-integration/:worldId" element={<AIIntegration />} />
+                    </Route>
+                  </Routes>
+                </Suspense>
+              </div>
+              <Toaster 
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: 'rgba(0, 0, 0, 0.8)',
+                    backdropFilter: 'blur(20px)',
+                    color: '#fff',
                   border: '1px solid rgba(255, 255, 255, 0.08)',
                   borderRadius: '16px',
                   fontSize: '14px',
@@ -111,6 +113,7 @@ function App() {
         </AdminAuthProvider>
       </AuthProvider>
     </ThemeProvider>
+    </HelmetProvider>
   );
 }
 
