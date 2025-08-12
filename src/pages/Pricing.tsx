@@ -1,18 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Container, Row, Col, Card, Badge, Button, ListGroup } from 'react-bootstrap';
-import { 
-  Check, 
-  Star, 
-  Zap, 
-  Crown, 
-  Shield,
-  Cloud,
-  Users,
-  Globe,
-  Brain,
-  Infinity
-} from 'react-bootstrap-icons';
+import { Check, Star, Zap, Crown, Shield, Cloud, Users, Globe, Brain, Infinity } from 'lucide-react';
 
 const Pricing: React.FC = () => {
   const plans = [
@@ -177,167 +165,151 @@ const Pricing: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/pricing" />
       </Helmet>
 
-      <div className="min-vh-100 bg-black text-white py-5">
-        <Container>
+      <div className="min-h-screen bg-black text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
-          <Row className="text-center mb-5">
-            <Col>
-              <h1 className="display-4 fw-bold mb-4">
-                Simple, <span className="text-primary">Transparent Pricing</span>
-              </h1>
-              <p className="lead mb-4">
-                Choose the perfect plan for your world building journey. Start free and upgrade 
-                as your creative projects grow. No hidden fees, no surprises.
-              </p>
-              <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Badge bg="success" className="fs-6 px-3 py-2">Free Forever Plan</Badge>
-                <Badge bg="primary" className="fs-6 px-3 py-2">14-Day Free Trial</Badge>
-                <Badge bg="warning" className="fs-6 px-3 py-2">Cancel Anytime</Badge>
-                <Badge bg="info" className="fs-6 px-3 py-2">No Setup Fees</Badge>
-              </div>
-            </Col>
-          </Row>
+          <div className="text-center mb-16">
+            <h1 className="text-display mb-6">
+              Simple, <span className="gradient-text-cosmic">Transparent Pricing</span>
+            </h1>
+            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+              Choose the perfect plan for your world building journey. Start free and upgrade 
+              as your creative projects grow. No hidden fees, no surprises.
+            </p>
+            <div className="flex justify-center gap-4 flex-wrap">
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Free Forever Plan</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">14-Day Free Trial</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">Cancel Anytime</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">No Setup Fees</span>
+            </div>
+          </div>
 
           {/* Pricing Cards */}
-          <Row className="g-4 mb-5">
+          <div className="grid lg:grid-cols-3 gap-8 mb-16">
             {plans.map((plan, index) => (
-              <Col key={index} lg={4}>
-                <Card className={`h-100 bg-dark border-0 shadow-lg ${plan.popular ? 'border-primary border-3' : ''}`}>
-                  {plan.popular && (
-                    <div className="position-absolute top-0 start-50 translate-middle-x">
-                      <Badge bg="primary" className="px-3 py-2 rounded-bottom">
-                        <Star className="me-1" />
-                        Most Popular
-                      </Badge>
+              <div key={index} className={`relative ${plan.popular ? 'lg:scale-105' : ''}`}>
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-cosmic">
+                      <Star size={16} />
+                      Most Popular
+                    </span>
+                  </div>
+                )}
+                <div className={`glass-card rounded-2xl p-8 h-full smooth-transition hover:soft-glow-cosmic ${plan.popular ? 'border-2 border-blue-500' : ''}`}>
+                  <div className="text-center mb-8">
+                    <h3 className="text-heading mb-4">{plan.name}</h3>
+                    <div className="mb-4">
+                      <span className="text-display gradient-text-cosmic">{plan.price}</span>
+                      <span className="text-gray-400">/{plan.period}</span>
+                    </div>
+                    <p className="text-body text-gray-400">{plan.description}</p>
+                  </div>
+                  
+                  <div className="space-y-3 mb-8">
+                    {plan.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center">
+                        <Check className="text-green-500 mr-3 flex-shrink-0" size={20} />
+                        <span className="text-body">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {plan.limitations.length > 0 && (
+                    <div className="mb-8">
+                      <h6 className="text-gray-400 mb-3 font-medium">Limitations:</h6>
+                      <ul className="text-gray-500 text-sm space-y-1">
+                        {plan.limitations.map((limitation, idx) => (
+                          <li key={idx}>{limitation}</li>
+                        ))}
+                      </ul>
                     </div>
                   )}
-                  <Card.Body className="p-4">
-                    <div className="text-center mb-4">
-                      <h3 className="mb-2">{plan.name}</h3>
-                      <div className="mb-3">
-                        <span className="display-4 fw-bold">{plan.price}</span>
-                        <span className="text-muted">/{plan.period}</span>
-                      </div>
-                      <p className="text-muted">{plan.description}</p>
-                    </div>
-                    
-                    <ListGroup variant="flush" className="mb-4">
-                      {plan.features.map((feature, idx) => (
-                        <ListGroup.Item key={idx} className="bg-transparent text-white border-0 px-0">
-                          <Check className="text-success me-2" />
-                          {feature}
-                        </ListGroup.Item>
-                      ))}
-                    </ListGroup>
 
-                    {plan.limitations.length > 0 && (
-                      <div className="mb-4">
-                        <h6 className="text-muted mb-2">Limitations:</h6>
-                        <ul className="text-muted small">
-                          {plan.limitations.map((limitation, idx) => (
-                            <li key={idx}>{limitation}</li>
-                          ))}
-                        </ul>
-                      </div>
+                  <div className="mt-auto">
+                    {plan.name === "Free" ? (
+                      <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition block text-center">
+                        Get Started Free
+                      </a>
+                    ) : (
+                      <a href="/signup" className={`px-8 py-3 rounded-full font-semibold smooth-transition block text-center ${
+                        plan.popular 
+                          ? 'glass-card-cosmic text-white hover:soft-glow-cosmic' 
+                          : 'glass-card text-white hover:soft-glow-cosmic'
+                      }`}>
+                        Start {plan.name} Trial
+                      </a>
                     )}
-
-                    <div className="d-grid">
-                      {plan.name === "Free" ? (
-                        <Button variant="outline-primary" size="lg" href="/signup">
-                          Get Started Free
-                        </Button>
-                      ) : (
-                        <Button variant={plan.popular ? "primary" : "outline-primary"} size="lg" href="/signup">
-                          Start {plan.name} Trial
-                        </Button>
-                      )}
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
+                  </div>
+                </div>
+              </div>
             ))}
-          </Row>
+          </div>
 
           {/* Feature Comparison */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Detailed Feature Comparison</h2>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Card className="bg-dark border-0 shadow-lg">
-                <Card.Body className="p-0">
-                  <div className="table-responsive">
-                    <table className="table table-dark table-hover mb-0">
-                      <thead>
-                        <tr>
-                          <th className="border-0">Feature</th>
-                          <th className="border-0 text-center">Free</th>
-                          <th className="border-0 text-center">Creator</th>
-                          <th className="border-0 text-center">Professional</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {comparisonFeatures.map((feature, index) => (
-                          <tr key={index}>
-                            <td className="border-0">{feature.feature}</td>
-                            <td className="border-0 text-center">{feature.free}</td>
-                            <td className="border-0 text-center">{feature.creator}</td>
-                            <td className="border-0 text-center">{feature.professional}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-purple">Detailed Feature Comparison</h2>
+            <div className="glass-card rounded-2xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-gray-700">
+                      <th className="text-left p-6 text-subheading">Feature</th>
+                      <th className="text-center p-6 text-subheading">Free</th>
+                      <th className="text-center p-6 text-subheading">Creator</th>
+                      <th className="text-center p-6 text-subheading">Professional</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {comparisonFeatures.map((feature, index) => (
+                      <tr key={index} className="border-b border-gray-700 hover:bg-gray-800/50 smooth-transition">
+                        <td className="p-6 text-body">{feature.feature}</td>
+                        <td className="p-6 text-center text-body">{feature.free}</td>
+                        <td className="p-6 text-center text-body">{feature.creator}</td>
+                        <td className="p-6 text-center text-body">{feature.professional}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
           {/* FAQ Section */}
-          <Row className="mb-5">
-            <Col>
-              <h2 className="text-center mb-5">Frequently Asked Questions</h2>
-            </Col>
-          </Row>
-          <Row className="g-4 mb-5">
-            {faqs.map((faq, index) => (
-              <Col key={index} lg={6}>
-                <Card className="h-100 bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <h5 className="mb-3">{faq.question}</h5>
-                    <p className="text-muted mb-0">{faq.answer}</p>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <div className="mb-16">
+            <h2 className="text-heading text-center mb-12 gradient-text-green">Frequently Asked Questions</h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {faqs.map((faq, index) => (
+                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                  <h5 className="text-subheading mb-4">{faq.question}</h5>
+                  <p className="text-body text-gray-400">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* CTA Section */}
-          <Row className="text-center">
-            <Col>
-              <div className="bg-gradient-primary p-5 rounded-4">
-                <h3 className="mb-4">Ready to Start Building Your Universe?</h3>
-                <p className="lead mb-4">
-                  Join thousands of creators who trust MosCownpur for their world building needs. 
-                  Start free today and upgrade when you're ready.
-                </p>
-                <div className="d-flex justify-content-center gap-3 flex-wrap">
-                  <a href="/signup" className="btn btn-primary btn-lg px-4">
-                    Start Free Trial
-                  </a>
-                  <a href="/features" className="btn btn-outline-light btn-lg px-4">
-                    Explore Features
-                  </a>
-                </div>
-                <p className="text-muted mt-3 mb-0">
-                  No credit card required • 14-day free trial • Cancel anytime
-                </p>
+          <div className="text-center">
+            <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic">
+              <h3 className="text-heading mb-6">Ready to Start Building Your Universe?</h3>
+              <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
+                Join thousands of creators who trust MosCownpur for their world building needs. 
+                Start free today and upgrade when you're ready.
+              </p>
+              <div className="flex justify-center gap-4 flex-wrap mb-6">
+                <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                  Start Free Trial
+                </a>
+                <a href="/features" className="glass-card border border-white text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                  Explore Features
+                </a>
               </div>
-            </Col>
-          </Row>
-        </Container>
+              <p className="text-caption text-gray-400">
+                No credit card required • 14-day free trial • Cancel anytime
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
