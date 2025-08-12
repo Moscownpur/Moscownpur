@@ -1,18 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Container, Row, Col, Card, Badge, Button, Form, InputGroup } from 'react-bootstrap';
-import { 
-  Search, 
-  Calendar, 
-  Person, 
-  Tag, 
-  ArrowRight,
-  Book,
-  Lightbulb,
-  Star,
-  Clock,
-  Eye
-} from 'react-bootstrap-icons';
+import { Search, Calendar, User, Tag, ArrowRight, Book, Lightbulb, Star, Clock, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import blogData from '../data/blogPosts.json';
 
@@ -50,230 +38,207 @@ const Blog: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/blog" />
       </Helmet>
 
-      <div className="min-vh-100 bg-black text-white py-5">
-        <Container>
+      <div className="min-h-screen bg-black text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
-          <Row className="text-center mb-5">
-            <Col>
-              <h1 className="display-4 fw-bold mb-4">
-                Creative Writing <span className="text-primary">Blog</span>
-              </h1>
-              <p className="lead mb-4">
-                Expert tips, tutorials, and resources for world building, character development, 
-                and creative writing. Learn from professional authors and enhance your storytelling skills.
-              </p>
-              
-                             {/* Search Bar */}
-               <div className="row justify-content-center mb-4">
-                 <div className="col-md-6">
-                   <InputGroup>
-                     <InputGroup.Text className="bg-dark border-0">
-                       <Search />
-                     </InputGroup.Text>
-                     <Form.Control 
-                       type="text" 
-                       placeholder="Search articles..." 
-                       className="bg-dark border-0 text-white"
-                       value={searchTerm}
-                       onChange={(e) => setSearchTerm(e.target.value)}
-                     />
-                     <Button variant="primary">Search</Button>
-                   </InputGroup>
-                 </div>
-               </div>
-
-              <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Badge bg="primary" className="fs-6 px-3 py-2">World Building</Badge>
-                <Badge bg="success" className="fs-6 px-3 py-2">Character Development</Badge>
-                <Badge bg="warning" className="fs-6 px-3 py-2">Writing Tips</Badge>
-                <Badge bg="info" className="fs-6 px-3 py-2">AI Tools</Badge>
+          <div className="text-center mb-16">
+            <h1 className="text-display mb-6">
+              Creative Writing <span className="gradient-text-cosmic">Blog</span>
+            </h1>
+            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+              Expert tips, tutorials, and resources for world building, character development, 
+              and creative writing. Learn from professional authors and enhance your storytelling skills.
+            </p>
+            
+            {/* Search Bar */}
+            <div className="flex justify-center mb-8">
+              <div className="w-full max-w-md">
+                <div className="glass-card rounded-full flex items-center px-6 py-3">
+                  <Search className="text-gray-400 mr-3" size={20} />
+                  <input 
+                    type="text" 
+                    placeholder="Search articles..." 
+                    className="bg-transparent text-white flex-1 outline-none placeholder-gray-400"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  <button className="glass-card-cosmic px-4 py-2 rounded-full text-sm font-medium hover:soft-glow-cosmic smooth-transition">
+                    Search
+                  </button>
+                </div>
               </div>
-            </Col>
-          </Row>
+            </div>
+
+            <div className="flex justify-center gap-4 flex-wrap">
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">World Building</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Character Development</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">Writing Tips</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">AI Tools</span>
+            </div>
+          </div>
 
           {/* Featured Post */}
           {featuredPost && (
-            <Row className="mb-5">
-              <Col>
-                <Card className="bg-dark border-0 shadow-lg">
-                  <Card.Body className="p-4">
-                    <div className="row">
-                      <div className="col-lg-8">
-                        <Badge bg="warning" className="mb-3">Featured Article</Badge>
-                        <h2 className="mb-3">{featuredPost.title}</h2>
-                        <p className="lead mb-4">{featuredPost.excerpt}</p>
-                        <div className="d-flex align-items-center gap-4 mb-4">
-                          <div className="d-flex align-items-center">
-                            <Person className="me-2" />
-                            <span>{featuredPost.author}</span>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <Calendar className="me-2" />
-                            <span>{new Date(featuredPost.date).toLocaleDateString()}</span>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <Clock className="me-2" />
-                            <span>{featuredPost.readTime}</span>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <Eye className="me-2" />
-                            <span>{featuredPost.views.toLocaleString()} views</span>
-                          </div>
-                        </div>
-                        <div className="d-flex gap-2 mb-4">
-                          {featuredPost.tags.slice(0, 3).map((tag, index) => (
-                            <Badge key={index} bg="secondary" className="px-2 py-1">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                                                 <Button 
-                           variant="primary" 
-                           size="lg"
-                           onClick={() => handlePostClick(featuredPost)}
-                         >
-                           Read Full Article <ArrowRight className="ms-2" />
-                         </Button>
+            <div className="mb-16">
+              <div className="glass-card rounded-2xl p-8 smooth-transition hover:soft-glow-cosmic">
+                <div className="grid lg:grid-cols-3 gap-8 items-center">
+                  <div className="lg:col-span-2">
+                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium soft-glow-orange mb-4 inline-block">Featured Article</span>
+                    <h2 className="text-heading mb-4">{featuredPost.title}</h2>
+                    <p className="text-subheading text-gray-300 mb-6">{featuredPost.excerpt}</p>
+                    <div className="flex items-center gap-6 mb-6 flex-wrap">
+                      <div className="flex items-center">
+                        <User className="text-gray-400 mr-2" size={16} />
+                        <span className="text-body">{featuredPost.author}</span>
                       </div>
-                      <div className="col-lg-4 d-flex align-items-center justify-content-center">
-                        <div className="text-center">
-                          <Book size={80} className="text-primary mb-3" />
-                          <h5>Featured Article</h5>
-                          <p className="text-muted">Most popular this week</p>
-                        </div>
+                      <div className="flex items-center">
+                        <Calendar className="text-gray-400 mr-2" size={16} />
+                        <span className="text-body">{new Date(featuredPost.date).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="text-gray-400 mr-2" size={16} />
+                        <span className="text-body">{featuredPost.readTime}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Eye className="text-gray-400 mr-2" size={16} />
+                        <span className="text-body">{featuredPost.views.toLocaleString()} views</span>
                       </div>
                     </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
+                    <div className="flex gap-2 mb-6 flex-wrap">
+                      {featuredPost.tags.slice(0, 3).map((tag, index) => (
+                        <span key={index} className="glass-card text-gray-300 px-3 py-1 rounded-full text-xs smooth-transition">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    <button 
+                      className="glass-card-cosmic text-white px-6 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition flex items-center gap-2"
+                      onClick={() => handlePostClick(featuredPost)}
+                    >
+                      Read Full Article <ArrowRight size={16} />
+                    </button>
+                  </div>
+                  <div className="text-center">
+                    <Book size={80} className="gradient-text-cosmic mx-auto mb-4" />
+                    <h5 className="text-subheading">Featured Article</h5>
+                    <p className="text-caption text-gray-400">Most popular this week</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Categories and Blog Posts */}
-          <Row>
+          <div className="grid lg:grid-cols-4 gap-8">
             {/* Sidebar */}
-            <Col lg={3} className="mb-5">
-              <div className="sticky-top" style={{ top: '2rem' }}>
+            <div className="lg:col-span-1">
+              <div className="sticky top-8">
                 {/* Categories */}
-                <Card className="bg-dark border-0 shadow-lg mb-4">
-                  <Card.Body>
-                    <h5 className="mb-3">Categories</h5>
+                <div className="glass-card rounded-xl p-6 mb-6">
+                  <h5 className="text-subheading mb-4">Categories</h5>
+                  <div className="space-y-3">
                     {categories.map((category, index) => (
-                      <div key={index} className="d-flex justify-content-between align-items-center mb-2">
-                        <span>{category.name}</span>
-                        <Badge bg={category.color}>{category.count}</Badge>
+                      <div key={index} className="flex justify-between items-center">
+                        <span className="text-body">{category.name}</span>
+                        <span className="glass-card px-2 py-1 rounded-full text-xs font-medium">{category.count}</span>
                       </div>
                     ))}
-                  </Card.Body>
-                </Card>
+                  </div>
+                </div>
 
                 {/* Popular Tags */}
-                <Card className="bg-dark border-0 shadow-lg">
-                  <Card.Body>
-                    <h5 className="mb-3">Popular Tags</h5>
-                    <div className="d-flex flex-wrap gap-2">
-                      {popularTags.map((tag, index) => (
-                        <Badge key={index} bg="secondary" className="px-2 py-1">
+                <div className="glass-card rounded-xl p-6">
+                  <h5 className="text-subheading mb-4">Popular Tags</h5>
+                  <div className="flex flex-wrap gap-2">
+                    {popularTags.map((tag, index) => (
+                      <span key={index} className="glass-card text-gray-300 px-3 py-1 rounded-full text-xs smooth-transition">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Blog Posts */}
+            <div className="lg:col-span-3">
+              <div className="grid md:grid-cols-2 gap-8">
+                {filteredPosts.filter(post => !post.featured).map((post, index) => (
+                  <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic cursor-pointer h-full" onClick={() => handlePostClick(post)}>
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="glass-card px-3 py-1 rounded-full text-xs font-medium soft-glow-blue">{post.category}</span>
+                      <div className="flex items-center text-gray-400">
+                        <Eye size={14} className="mr-1" />
+                        <span className="text-xs">{post.views.toLocaleString()}</span>
+                      </div>
+                    </div>
+                    <h5 className="text-subheading mb-3">{post.title}</h5>
+                    <p className="text-body text-gray-400 mb-4">{post.excerpt}</p>
+                    <div className="flex items-center gap-4 mb-4 flex-wrap">
+                      <div className="flex items-center">
+                        <User size={14} className="text-gray-400 mr-1" />
+                        <span className="text-xs text-gray-400">{post.author}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Calendar size={14} className="text-gray-400 mr-1" />
+                        <span className="text-xs text-gray-400">{new Date(post.date).toLocaleDateString()}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Clock size={14} className="text-gray-400 mr-1" />
+                        <span className="text-xs text-gray-400">{post.readTime}</span>
+                      </div>
+                    </div>
+                    <div className="flex gap-2 mb-4 flex-wrap">
+                      {post.tags.slice(0, 2).map((tag, idx) => (
+                        <span key={idx} className="glass-card text-gray-300 px-2 py-1 rounded-full text-xs smooth-transition">
                           {tag}
-                        </Badge>
+                        </span>
                       ))}
                     </div>
-                  </Card.Body>
-                </Card>
+                    <button className="glass-card text-white px-4 py-2 rounded-full text-sm font-medium hover:soft-glow-cosmic smooth-transition flex items-center gap-2">
+                      Read More <ArrowRight size={14} />
+                    </button>
+                  </div>
+                ))}
               </div>
-            </Col>
-
-                         {/* Blog Posts */}
-             <Col lg={9}>
-               <Row className="g-4">
-                 {filteredPosts.filter(post => !post.featured).map((post, index) => (
-                   <Col key={index} md={6}>
-                     <Card 
-                       className="h-100 bg-dark border-0 shadow-lg hover-lift cursor-pointer"
-                       onClick={() => handlePostClick(post)}
-                       style={{ cursor: 'pointer' }}
-                     >
-                       <Card.Body className="p-4">
-                         <div className="d-flex justify-content-between align-items-start mb-3">
-                           <Badge bg="primary">{post.category}</Badge>
-                           <small className="text-muted">
-                             <Eye className="me-1" />
-                             {post.views.toLocaleString()}
-                           </small>
-                         </div>
-                         <h5 className="mb-3">{post.title}</h5>
-                         <p className="text-muted mb-3">{post.excerpt}</p>
-                         <div className="d-flex align-items-center gap-3 mb-3">
-                           <div className="d-flex align-items-center">
-                             <Person className="me-1" size={14} />
-                             <small>{post.author}</small>
-                           </div>
-                           <div className="d-flex align-items-center">
-                             <Calendar className="me-1" size={14} />
-                             <small>{new Date(post.date).toLocaleDateString()}</small>
-                           </div>
-                           <div className="d-flex align-items-center">
-                             <Clock className="me-1" size={14} />
-                             <small>{post.readTime}</small>
-                           </div>
-                         </div>
-                         <div className="d-flex gap-2 mb-3">
-                           {post.tags.slice(0, 2).map((tag, idx) => (
-                             <Badge key={idx} bg="secondary" className="px-2 py-1 small">
-                               {tag}
-                             </Badge>
-                           ))}
-                         </div>
-                         <Button variant="outline-primary" size="sm">
-                           Read More <ArrowRight className="ms-1" />
-                         </Button>
-                       </Card.Body>
-                     </Card>
-                   </Col>
-                 ))}
-               </Row>
 
               {/* Load More Button */}
-              <Row className="mt-5">
-                <Col className="text-center">
-                  <Button variant="outline-primary" size="lg">
-                    Load More Articles
-                  </Button>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+              <div className="text-center mt-12">
+                <button className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                  Load More Articles
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Newsletter Signup */}
-          <Row className="mt-5">
-            <Col>
-              <Card className="bg-gradient-primary border-0 shadow-lg">
-                <Card.Body className="p-5 text-center">
-                  <h3 className="mb-3">Stay Updated with Writing Tips</h3>
-                  <p className="lead mb-4">
-                    Get the latest world building tips, character development advice, and creative writing 
-                    resources delivered to your inbox every week.
-                  </p>
-                  <div className="row justify-content-center">
-                    <div className="col-md-6">
-                      <InputGroup>
-                        <Form.Control 
-                          type="email" 
-                          placeholder="Enter your email address" 
-                          className="bg-dark border-0 text-white"
-                        />
-                        <Button variant="light">Subscribe</Button>
-                      </InputGroup>
-                      <small className="text-muted mt-2 d-block">
-                        No spam, unsubscribe anytime. We respect your privacy.
-                      </small>
-                    </div>
+          <div className="mt-16">
+            <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic text-center">
+              <h3 className="text-heading mb-6">Stay Updated with Writing Tips</h3>
+              <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
+                Get the latest world building tips, character development advice, and creative writing 
+                resources delivered to your inbox every week.
+              </p>
+              <div className="flex justify-center mb-4">
+                <div className="w-full max-w-md">
+                  <div className="glass-card rounded-full flex items-center px-6 py-3">
+                    <input 
+                      type="email" 
+                      placeholder="Enter your email address" 
+                      className="bg-transparent text-white flex-1 outline-none placeholder-gray-400"
+                    />
+                    <button className="glass-card-cosmic px-4 py-2 rounded-full text-sm font-medium hover:soft-glow-cosmic smooth-transition">
+                      Subscribe
+                    </button>
                   </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+                </div>
+              </div>
+              <p className="text-caption text-gray-400">
+                No spam, unsubscribe anytime. We respect your privacy.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
