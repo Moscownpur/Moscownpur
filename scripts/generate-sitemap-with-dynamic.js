@@ -14,7 +14,49 @@ const publicRoutes = [
     priority: 1.0,
     lastmod: new Date().toISOString(),
   },
-  // Note: Removed all private routes (/login, /signup, /admin/*, /dashboard/*)
+  {
+    url: '/features',
+    changefreq: 'monthly',
+    priority: 0.9,
+    lastmod: new Date().toISOString(),
+  },
+  {
+    url: '/world-building-guide',
+    changefreq: 'monthly',
+    priority: 0.8,
+    lastmod: new Date().toISOString(),
+  },
+  {
+    url: '/pricing',
+    changefreq: 'monthly',
+    priority: 0.8,
+    lastmod: new Date().toISOString(),
+  },
+  {
+    url: '/blog',
+    changefreq: 'weekly',
+    priority: 0.7,
+    lastmod: new Date().toISOString(),
+  },
+  {
+    url: '/about',
+    changefreq: 'monthly',
+    priority: 0.6,
+    lastmod: new Date().toISOString(),
+  },
+  {
+    url: '/signup',
+    changefreq: 'monthly',
+    priority: 0.9,
+    lastmod: new Date().toISOString(),
+  },
+  {
+    url: '/login',
+    changefreq: 'monthly',
+    priority: 0.5,
+    lastmod: new Date().toISOString(),
+  },
+  // Note: Removed all private routes (/admin/*, /dashboard/*)
   // These should not be indexed by search engines
 ];
 
@@ -22,12 +64,29 @@ async function fetchDynamicRoutes() {
   const dynamicRoutes = [];
   
   try {
+    // Add blog posts from JSON file
+    console.log('🔍 Fetching blog posts...');
+    try {
+      const blogData = JSON.parse(await import('fs').then(fs => fs.readFileSync('./src/data/blogPosts.json', 'utf8')));
+      blogData.posts.forEach(post => {
+        dynamicRoutes.push({
+          url: `/blog/${post.slug}`,
+          changefreq: 'monthly',
+          priority: 0.6,
+          lastmod: new Date(post.date).toISOString(),
+        });
+      });
+      console.log(`✅ Added ${blogData.posts.length} blog post routes`);
+    } catch (blogError) {
+      console.log('⚠️  Blog posts file not found or invalid. Skipping blog routes.');
+    }
+    
     // Initialize Supabase client
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
     const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
-      console.log('⚠️  Supabase credentials not found. Skipping dynamic routes.');
+      console.log('⚠️  Supabase credentials not found. Skipping database routes.');
       return dynamicRoutes;
     }
     
