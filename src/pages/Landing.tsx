@@ -164,6 +164,32 @@ const Landing: React.FC = () => {
           </div>
         </motion.header>
 
+        {/* Maintenance Banner */}
+        <motion.div 
+          variants={itemVariants}
+          className="relative overflow-hidden"
+        >
+          <div className="bg-gradient-to-r from-orange-500 via-red-500 to-purple-600 p-4 text-center text-white font-semibold relative">
+            {/* Animated gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
+            
+            {/* Moving gradient effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-400/30 via-yellow-400/30 to-red-400/30 animate-pulse" 
+                 style={{
+                   backgroundSize: '200% 100%',
+                   animation: 'gradientMove 3s ease-in-out infinite'
+                 }}>
+            </div>
+            
+            {/* Content */}
+            <div className="relative z-10 flex items-center justify-center gap-3">
+              <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+              <span className="text-lg">🚧 This site is under maintenance - We'll be back soon! 🚧</span>
+              <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Hero Section */}
         <motion.section 
           variants={itemVariants}
