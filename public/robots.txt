@@ -14,11 +14,16 @@ Disallow: /api/
 Disallow: /_next/
 Disallow: /static/
 
-# Allow only public content
+# Allow public content pages
 Allow: /$
 Allow: /about
 Allow: /features
 Allow: /pricing
-Allow: /contact
+Allow: /blog
+Allow: /world-building-guide
+
+# Allow individual blog posts
 Allow: /blog/
-Allow: /help/ 
+
+# Crawl delay for better server performance
+Crawl-delay: 1 
