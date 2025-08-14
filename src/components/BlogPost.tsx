@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, User, ArrowLeft, Clock, Eye, Share, Bookmark, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import PublicHeader from './PublicHeader';
 
 interface BlogPostProps {
   post: {
@@ -83,8 +84,9 @@ const BlogPost: React.FC<BlogPostProps> = ({ post }) => {
         <link rel="canonical" href={`https://www.moscownpur.in/blog/${post.slug}`} />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-black text-white">
+        <PublicHeader />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Back Button */}
           <div className="mb-8">
             <button 

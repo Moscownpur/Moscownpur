@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Search, Calendar, User, Tag, ArrowRight, Book, Lightbulb, Star, Clock, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import PublicHeader from '../components/PublicHeader';
 import blogData from '../data/blogPosts.json';
 
 const Blog: React.FC = () => {
@@ -38,8 +39,9 @@ const Blog: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/blog" />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-black text-white">
+        <PublicHeader />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Hero Section */}
           <div className="text-center mb-16">
             <h1 className="text-display mb-6">
