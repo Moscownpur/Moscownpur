@@ -4,7 +4,7 @@ This project includes automated sitemap generation to help search engines discov
 
 ## Files
 
-- `scripts/generate-sitemap.js` - Basic sitemap generator (static routes only)
+- `scripts/generate-sitemap-with-dynamic.js` - Advanced sitemap generator (static routes + dynamic blog posts)
 - `scripts/generate-sitemap-with-dynamic.js` - Advanced sitemap generator (includes dynamic routes from database)
 - `public/sitemap.xml` - Generated sitemap file
 - `public/robots.txt` - Robots file referencing the sitemap

@@ -8,7 +8,7 @@
     "build": "npm run generate-sitemap && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate-sitemap": "node scripts/generate-sitemap.js",
+    "generate-sitemap": "node scripts/generate-sitemap-with-dynamic.js",
     "generate-sitemap-dynamic": "node scripts/generate-sitemap-with-dynamic.js"
   },
   "dependencies": {
