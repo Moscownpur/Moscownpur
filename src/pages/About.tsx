@@ -82,10 +82,7 @@ const About: React.FC = () => {
   ];
 
   const stats = [
-    { number: "50,000+", label: "Active Creators" },
-    { number: "100,000+", label: "Fictional Universes Created" },
-    { number: "1M+", label: "Characters Developed" },
-    { number: "5M+", label: "Story Elements Tracked" }
+    { number: "Coming Soon", label: "We're just getting started — stats will appear here as we grow!" }
   ];
 
   return (
@@ -164,11 +161,11 @@ const About: React.FC = () => {
           {/* Stats Section */}
           <div className="mb-16">
             <h2 className="text-heading text-center mb-12 gradient-text-purple">Our Impact</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-display gradient-text-cosmic mb-2">{stat.number}</div>
-                  <p className="text-caption text-gray-400">{stat.label}</p>
+                <div key={index} className="glass-card rounded-xl p-8 max-w-2xl mx-auto">
+                  <div className="text-display gradient-text-cosmic mb-4">{stat.number}</div>
+                  <p className="text-subheading text-gray-300">{stat.label}</p>
                 </div>
               ))}
             </div>
