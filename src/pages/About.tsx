@@ -46,24 +46,14 @@ const About: React.FC = () => {
 
   const milestones = [
     {
-      year: "2024",
-      title: "Platform Launch",
-      description: "MosCownpur officially launched with core world building features"
+      year: "2025",
+      title: "Publish Website",
+      description: "MosCownpur website officially launched with core world building features"
     },
     {
-      year: "2024",
-      title: "10,000+ Users",
-      description: "Reached our first major milestone of active creators"
-    },
-    {
-      year: "2024",
+      year: "2025",
       title: "AI Integration",
       description: "Introduced AI-powered story assistance features"
-    },
-    {
-      year: "2024",
-      title: "Mobile App",
-      description: "Launched mobile companion app for on-the-go world building"
     }
   ];
 
