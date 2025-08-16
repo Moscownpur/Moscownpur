@@ -20,6 +20,12 @@ export interface SignupCredentials {
   full_name?: string;
 }
 
+export interface SignupResult {
+  success: boolean;
+  message: string;
+  requiresConfirmation?: boolean;
+}
+
 class AuthService {
   private currentUser: AuthUser | null = null;
 
@@ -68,7 +74,7 @@ class AuthService {
     }
   }
 
-  async signup(credentials: SignupCredentials): Promise<AuthUser> {
+  async signup(credentials: SignupCredentials): Promise<SignupResult> {
     if (!supabase) {
       throw new Error('Database connection not available');
     }
@@ -89,7 +95,16 @@ class AuthService {
         throw new Error('Signup failed');
       }
 
-      // User role will be automatically created by the trigger
+      // Check if email confirmation is required
+      if (data.user && !data.session) {
+        return {
+          success: true,
+          message: 'Please check your email to confirm your account before signing in.',
+          requiresConfirmation: true
+        };
+      }
+
+      // If session exists, user was automatically confirmed
       const authUser: AuthUser = {
         id: data.user.id,
         email: data.user.email!,
@@ -101,7 +116,11 @@ class AuthService {
       this.currentUser = authUser;
       localStorage.setItem('auth_user', JSON.stringify(authUser));
       
-      return authUser;
+      return {
+        success: true,
+        message: 'Account created successfully!',
+        requiresConfirmation: false
+      };
     } catch (error) {
       console.error('Signup error:', error);
       throw error;

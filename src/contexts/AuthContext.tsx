@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService, AuthUser, LoginCredentials, SignupCredentials } from '../lib/auth';
+import { authService, AuthUser, LoginCredentials, SignupCredentials, SignupResult } from '../lib/auth';
 import toast from 'react-hot-toast';
 
 interface AuthContextType {
   user: AuthUser | null;
   login: (credentials: LoginCredentials) => Promise<void>;
-  signup: (credentials: SignupCredentials) => Promise<void>;
+  signup: (credentials: SignupCredentials) => Promise<SignupResult>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -72,14 +72,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signup = async (credentials: SignupCredentials) => {
+  const signup = async (credentials: SignupCredentials): Promise<SignupResult> => {
     try {
       setLoading(true);
-      const user = await authService.signup(credentials);
-      setUser(user);
-      toast.success(`Welcome to Moscownpur, ${user.full_name || user.email}! 🌟`);
-      // Redirect to dashboard after successful signup
-      window.location.href = '/dashboard';
+      const result = await authService.signup(credentials);
+      
+      if (result.requiresConfirmation) {
+        // Show confirmation message and redirect to login
+        toast.success(result.message);
+        // Redirect to login page after successful signup
+        window.location.href = '/login';
+      } else {
+        // User was automatically logged in
+        setUser({
+          id: 'temp', // This will be updated by the auth state change
+          email: credentials.email,
+          full_name: credentials.full_name,
+          created_at: new Date().toISOString(),
+          is_admin: false
+        });
+        toast.success(`Welcome to Moscownpur, ${credentials.full_name || credentials.email}! 🌟`);
+        // Redirect to dashboard after successful signup
+        window.location.href = '/dashboard';
+      }
+      
+      return result;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Signup failed';
       toast.error(message);

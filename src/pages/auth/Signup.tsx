@@ -6,7 +6,6 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
-    username: '',
     email: '',
     password: '',
     full_name: ''
@@ -18,7 +17,12 @@ const Signup: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signup(formData);
+      const result = await signup(formData);
+      
+      if (result.requiresConfirmation) {
+        // The AuthContext will handle the redirect and toast message
+        // We can add additional UI feedback here if needed
+      }
     } catch (error) {
       // Error is handled by AuthContext
     }
@@ -76,7 +80,7 @@ const Signup: React.FC = () => {
         >
           <div>
             <label className="block text-white/90 text-caption font-medium mb-3">
-              Full Name
+              Full Name (Optional)
             </label>
             <div className="relative">
               <UserPlus className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
@@ -149,7 +153,7 @@ const Signup: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="mt-6 text-center"
+          className="mt-6 text-center space-y-4"
         >
           <p className="text-white/60 text-caption">
             Already have an account?{' '}
@@ -160,6 +164,12 @@ const Signup: React.FC = () => {
               Sign in
             </Link>
           </p>
+          
+          <div className="p-3 glass-card rounded-xl">
+            <p className="text-xs text-white/40">
+              After signing up, you'll receive a confirmation email. Please check your inbox and confirm your account before signing in.
+            </p>
+          </div>
         </motion.div>
       </motion.div>
     </div>
