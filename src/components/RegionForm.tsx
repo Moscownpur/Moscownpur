@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Plus, X } from 'lucide-react';
 import { Region } from '../types';
+import { useWorlds } from '../hooks/useWorlds';
 
 interface RegionFormProps {
   region?: Region | null;
@@ -12,6 +13,7 @@ interface RegionFormProps {
 const regionTypes = ['Continent', 'Country', 'City', 'Village', 'Realm', 'Planet', 'Dimension'];
 
 const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) => {
+  const { worlds, loading: worldsLoading } = useWorlds();
   const [formData, setFormData] = useState({
     name: region?.name || '',
     world_id: region?.world_id || '',
@@ -150,6 +152,25 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
               ))}
             </select>
           </div>
+        </div>
+
+        <div>
+          <label className="block text-body font-medium mb-2">World *</label>
+          <select
+            value={formData.world_id}
+            onChange={(e) => setFormData(prev => ({ ...prev, world_id: e.target.value }))}
+            className="w-full px-4 py-3 glass-card rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={worldsLoading}
+            required
+          >
+            <option value="">Select a world</option>
+            {worlds.map(world => (
+              <option key={world.id} value={world.id}>{world.name}</option>
+            ))}
+          </select>
+          {worlds.length === 0 && !worldsLoading && (
+            <p className="text-sm text-yellow-400 mt-1">No worlds available. Create a world first.</p>
+          )}
         </div>
 
         <div>
