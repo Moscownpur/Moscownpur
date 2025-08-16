@@ -5,8 +5,9 @@ import toast from 'react-hot-toast';
 interface AdminAuthContextType {
   admin: AdminUser | null;
   login: (credentials: AdminLoginCredentials) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   loading: boolean;
 }
 
@@ -26,9 +27,19 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   useEffect(() => {
     // Check for existing admin session on mount
-    const currentAdmin = adminAuthService.getCurrentAdmin();
-    setAdmin(currentAdmin);
-    setLoading(false);
+    const checkAdminAuth = async () => {
+      try {
+        const currentAdmin = await adminAuthService.getCurrentAdmin();
+        setAdmin(currentAdmin);
+      } catch (error) {
+        console.error('Admin auth check error:', error);
+        setAdmin(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAdminAuth();
   }, []);
 
   const login = async (credentials: AdminLoginCredentials) => {
@@ -36,7 +47,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       setLoading(true);
       const admin = await adminAuthService.login(credentials);
       setAdmin(admin);
-      toast.success(`Welcome back, ${admin.full_name}! 🔐`);
+      toast.success(`Welcome back, ${admin.full_name || admin.email}! 🔐`);
       // Redirect to admin dashboard after successful login
       window.location.href = '/admin/dashboard';
     } catch (error) {
@@ -48,12 +59,20 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
-  const logout = () => {
-    adminAuthService.logout();
-    setAdmin(null);
-    toast.success('Admin logged out successfully');
-    // Redirect to admin login page after logout
-    window.location.href = '/admin/login';
+  const logout = async () => {
+    try {
+      setLoading(true);
+      await adminAuthService.logout();
+      setAdmin(null);
+      toast.success('Admin logged out successfully');
+      // Redirect to admin login page after logout
+      window.location.href = '/admin/login';
+    } catch (error) {
+      console.error('Admin logout error:', error);
+      toast.error('Admin logout failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,6 +81,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       login,
       logout,
       isAuthenticated: !!admin,
+      isAdmin: admin?.is_admin || false,
       loading
     }}>
       {children}

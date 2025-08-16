@@ -181,6 +181,99 @@ export type Database = {
         Insert: Omit<Database['public']['Tables']['scene_lines']['Row'], 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Database['public']['Tables']['scene_lines']['Insert']>;
       };
+      user_roles: {
+        Row: {
+          id: string;
+          is_admin: boolean;
+          created_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['user_roles']['Row'], 'id' | 'created_at'>;
+        Update: Partial<Database['public']['Tables']['user_roles']['Insert']>;
+      };
+      ai_chat_logs: {
+        Row: {
+          id: string;
+          character_id: string;
+          world_id: string;
+          user_message: string;
+          ai_response: string;
+          context_memories_used: string[];
+          scene_context: string;
+          emotion_detected: string;
+          memory_impact: string;
+          created_by: string;
+          created_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['ai_chat_logs']['Row'], 'id' | 'created_at'>;
+        Update: Partial<Database['public']['Tables']['ai_chat_logs']['Insert']>;
+      };
+      entity_summaries: {
+        Row: {
+          id: string;
+          entity_type: string;
+          entity_id: string;
+          summary_text: string;
+          memory_type: string;
+          version: number;
+          is_current: boolean;
+          tags: string[];
+          last_used_in_scene: string | null;
+          editable: boolean;
+          used_recently: boolean;
+          relevance_score: number;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['entity_summaries']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['entity_summaries']['Insert']>;
+      };
+      memory_visualizations: {
+        Row: {
+          id: string;
+          entity_type: string;
+          entity_id: string;
+          memory_id: string;
+          visualization_type: string;
+          position_x: number;
+          position_y: number;
+          z_index: number;
+          created_by: string;
+          created_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['memory_visualizations']['Row'], 'id' | 'created_at'>;
+        Update: Partial<Database['public']['Tables']['memory_visualizations']['Insert']>;
+      };
+      memory_tags: {
+        Row: {
+          id: string;
+          name: string;
+          category: string;
+          color: string;
+          description: string;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['memory_tags']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['memory_tags']['Insert']>;
+      };
+      context_templates: {
+        Row: {
+          id: string;
+          name: string;
+          template_type: string;
+          prompt_template: string;
+          variables: string[];
+          description: string;
+          is_active: boolean;
+          created_by: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['context_templates']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['context_templates']['Insert']>;
+      };
     };
   };
 };
