@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Users, Plus, X } from 'lucide-react';
 import { Character } from '../types';
+import { useWorlds } from '../hooks/useWorlds';
 
 interface CharacterFormProps {
   character?: Character | null;
@@ -10,6 +11,7 @@ interface CharacterFormProps {
 }
 
 const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCancel }) => {
+  const { worlds, loading: worldsLoading } = useWorlds();
   const [formData, setFormData] = useState({
     name: character?.name || '',
     world_id: character?.world_id || '',
@@ -24,7 +26,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
     caste_or_class: character?.caste_or_class || '',
     religion: character?.religion || '',
     profession: character?.profession || '',
-    status: character?.status || 'Alive',
+    status: (character?.status as 'Alive' | 'Dead' | 'Unknown' | 'Ascended') || 'Alive',
     arc_summary: character?.arc_summary || '',
     languages: character?.languages || [],
     skills_and_abilities: character?.skills_and_abilities || [],
@@ -59,6 +61,14 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
   const [newWeakness, setNewWeakness] = useState('');
   const [newFlaw, setNewFlaw] = useState('');
   const [newFear, setNewFear] = useState('');
+  
+  // Relationship management
+  const [newRelationship, setNewRelationship] = useState({
+    character_id: '',
+    relationship_type: '',
+    status: 'Active',
+    notes: ''
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -288,6 +298,36 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
     }));
   };
 
+  const addRelationship = () => {
+    if (newRelationship.character_id.trim() && newRelationship.relationship_type.trim()) {
+      const relationship = {
+        character_id: newRelationship.character_id.trim(),
+        relationship_type: newRelationship.relationship_type.trim(),
+        status: newRelationship.status,
+        notes: newRelationship.notes.trim()
+      };
+      
+      setFormData(prev => ({
+        ...prev,
+        relationships: [...prev.relationships, relationship]
+      }));
+      
+      setNewRelationship({
+        character_id: '',
+        relationship_type: '',
+        status: 'Active',
+        notes: ''
+      });
+    }
+  };
+
+  const removeRelationship = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      relationships: prev.relationships.filter((_, i) => i !== index)
+    }));
+  };
+
   return (
     <motion.form 
       initial={{ opacity: 0, y: 20 }}
@@ -326,6 +366,25 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
               placeholder="Character gender"
             />
           </div>
+        </div>
+
+        <div>
+          <label className="block text-body font-medium mb-2">World *</label>
+          <select
+            value={formData.world_id}
+            onChange={(e) => setFormData(prev => ({ ...prev, world_id: e.target.value }))}
+            className="w-full px-4 py-3 glass-card rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={worldsLoading}
+            required
+          >
+            <option value="">Select a world</option>
+            {worlds.map(world => (
+              <option key={world.id} value={world.id}>{world.name}</option>
+            ))}
+          </select>
+          {worlds.length === 0 && !worldsLoading && (
+            <p className="text-sm text-yellow-400 mt-1">No worlds available. Create a world first.</p>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -940,6 +999,71 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
                   <X size={12} />
                 </button>
               </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Relationships */}
+      <div className="space-y-4">
+        <h3 className="text-subheading gradient-text-purple">Relationships</h3>
+        <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+            <input
+              type="text"
+              value={newRelationship.character_id}
+              onChange={(e) => setNewRelationship(prev => ({ ...prev, character_id: e.target.value }))}
+              className="px-4 py-2 glass-card rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Character ID"
+            />
+            <input
+              type="text"
+              value={newRelationship.relationship_type}
+              onChange={(e) => setNewRelationship(prev => ({ ...prev, relationship_type: e.target.value }))}
+              className="px-4 py-2 glass-card rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Relationship type"
+            />
+            <button
+              type="button"
+              onClick={addRelationship}
+              className="px-4 py-2 glass-card-cosmic rounded-lg text-white hover:soft-glow-cosmic smooth-transition"
+            >
+              <Plus size={16} />
+            </button>
+          </div>
+          <input
+            type="text"
+            value={newRelationship.notes}
+            onChange={(e) => setNewRelationship(prev => ({ ...prev, notes: e.target.value }))}
+            className="w-full px-4 py-2 glass-card rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Relationship notes (optional)"
+          />
+          <div className="space-y-2">
+            {formData.relationships.map((relationship, index) => (
+              <div
+                key={index}
+                className="flex items-center justify-between p-3 glass-card rounded-lg"
+              >
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-white">{relationship.character_id}</span>
+                    <span className="text-blue-400">•</span>
+                    <span className="text-purple-300">{relationship.relationship_type}</span>
+                    <span className="text-green-400">•</span>
+                    <span className="text-yellow-300">{relationship.status}</span>
+                  </div>
+                  {relationship.notes && (
+                    <p className="text-sm text-gray-400 mt-1">{relationship.notes}</p>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeRelationship(index)}
+                  className="text-red-400 hover:text-red-300 ml-2"
+                >
+                  <X size={16} />
+                </button>
+              </div>
             ))}
           </div>
         </div>

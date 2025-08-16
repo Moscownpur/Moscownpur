@@ -315,6 +315,16 @@ const CharacterManagement: React.FC = () => {
                           </div>
                         )}
 
+                        {/* World */}
+                        {character.world_id && (
+                          <div className="text-sm">
+                            <span className="text-gray-500">World:</span>
+                            <p className="text-white font-medium">
+                              {worlds.find(w => w.id === character.world_id)?.name || 'Unknown World'}
+                            </p>
+                          </div>
+                        )}
+
                         {/* Aliases */}
                         {character.aliases && character.aliases.length > 0 && (
                           <div>
@@ -375,6 +385,28 @@ const CharacterManagement: React.FC = () => {
                               {character.personality.traits.length > 2 && (
                                 <span className="px-2 py-1 glass-card rounded-full text-xs text-gray-400">
                                   +{character.personality.traits.length - 2} more
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Relationships */}
+                        {character.relationships && character.relationships.length > 0 && (
+                          <div>
+                            <span className="text-gray-500 text-sm">Relationships:</span>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {character.relationships.slice(0, 2).map((relationship, index) => (
+                                <span
+                                  key={index}
+                                  className="px-2 py-1 glass-card rounded-full text-xs text-blue-300"
+                                >
+                                  {relationship.relationship_type}
+                                </span>
+                              ))}
+                              {character.relationships.length > 2 && (
+                                <span className="px-2 py-1 glass-card rounded-full text-xs text-gray-400">
+                                  +{character.relationships.length - 2} more
                                 </span>
                               )}
                             </div>

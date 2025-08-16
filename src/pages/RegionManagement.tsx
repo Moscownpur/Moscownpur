@@ -262,6 +262,16 @@ const RegionManagement: React.FC = () => {
                           )}
                         </div>
                         
+                        {/* World */}
+                        {region.world_id && (
+                          <div className="text-sm">
+                            <span className="text-gray-500">World:</span>
+                            <p className="text-white font-medium">
+                              {worlds.find(w => w.id === region.world_id)?.name || 'Unknown World'}
+                            </p>
+                          </div>
+                        )}
+                        
                         {region.language && region.language.length > 0 && (
                           <div>
                             <span className="text-gray-500 text-sm">Languages:</span>
