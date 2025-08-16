@@ -6,8 +6,9 @@ interface AuthContextType {
   user: AuthUser | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   signup: (credentials: SignupCredentials) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   loading: boolean;
 }
 
@@ -27,9 +28,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     // Check for existing session on mount
-    const currentUser = authService.getCurrentUser();
-    setUser(currentUser);
-    setLoading(false);
+    const checkAuth = async () => {
+      try {
+        const currentUser = await authService.getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Auth check error:', error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+
+    // Set up auth state change listener
+    const unsubscribe = authService.onAuthStateChange((user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe.data.subscription.unsubscribe();
+      }
+    };
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
@@ -37,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const user = await authService.login(credentials);
       setUser(user);
-      toast.success(`Welcome back, ${user.full_name}! ✨`);
+      toast.success(`Welcome back, ${user.full_name || user.email}! ✨`);
       // Redirect to dashboard after successful login
       window.location.href = '/dashboard';
     } catch (error) {
@@ -54,7 +77,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const user = await authService.signup(credentials);
       setUser(user);
-      toast.success(`Welcome to Moscownpur, ${user.full_name}! 🌟`);
+      toast.success(`Welcome to Moscownpur, ${user.full_name || user.email}! 🌟`);
       // Redirect to dashboard after successful signup
       window.location.href = '/dashboard';
     } catch (error) {
@@ -66,12 +89,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const logout = () => {
-    authService.logout();
-    setUser(null);
-    toast.success('Logged out successfully');
-    // Redirect to landing page after logout
-    window.location.href = '/';
+  const logout = async () => {
+    try {
+      setLoading(true);
+      await authService.logout();
+      setUser(null);
+      toast.success('Logged out successfully');
+      // Redirect to landing page after logout
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Logout failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -81,6 +112,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       signup,
       logout,
       isAuthenticated: !!user,
+      isAdmin: user?.is_admin || false,
       loading
     }}>
       {children}

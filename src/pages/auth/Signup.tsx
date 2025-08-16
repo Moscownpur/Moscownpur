@@ -87,25 +87,6 @@ const Signup: React.FC = () => {
                 onChange={handleChange}
                 className="w-full pl-14 pr-4 py-4 glass-card rounded-xl text-white placeholder-white/40 focus:outline-none focus:soft-glow smooth-transition text-body"
                 placeholder="Enter your full name"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-white/90 text-caption font-medium mb-3">
-              Username
-            </label>
-            <div className="relative">
-              <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
-              <input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                className="w-full pl-14 pr-4 py-4 glass-card rounded-xl text-white placeholder-white/40 focus:outline-none focus:soft-glow smooth-transition text-body"
-                placeholder="Choose a username"
-                required
               />
             </div>
           </div>

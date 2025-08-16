@@ -1,24 +1,23 @@
 import { supabase } from './supabase';
-import bcrypt from 'bcryptjs';
+import { User } from '@supabase/supabase-js';
 
 export interface AuthUser {
   id: string;
-  username: string;
   email: string;
-  full_name: string;
+  full_name?: string;
   created_at: string;
+  is_admin?: boolean;
 }
 
 export interface LoginCredentials {
-  username: string;
+  email: string;
   password: string;
 }
 
 export interface SignupCredentials {
-  username: string;
   email: string;
   password: string;
-  full_name: string;
+  full_name?: string;
 }
 
 class AuthService {
@@ -30,33 +29,33 @@ class AuthService {
     }
 
     try {
-      // Fetch user by username
-      const { data: users, error: fetchError } = await supabase
-        .from('auth_users')
-        .select('*')
-        .eq('username', credentials.username)
-        .limit(1);
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: credentials.email,
+        password: credentials.password,
+      });
 
-      if (fetchError) throw fetchError;
-      if (!users || users.length === 0) {
-        throw new Error('Invalid username or password');
+      if (error) throw error;
+      if (!data.user) {
+        throw new Error('Login failed');
       }
 
-      const user = users[0];
+      // Get user role information
+      const { data: userRole, error: roleError } = await supabase
+        .from('user_roles')
+        .select('is_admin')
+        .eq('id', data.user.id)
+        .single();
 
-      // Verify password
-      const isValidPassword = await bcrypt.compare(credentials.password, user.password_hash);
-      if (!isValidPassword) {
-        throw new Error('Invalid username or password');
+      if (roleError && roleError.code !== 'PGRST116') {
+        console.warn('Could not fetch user role:', roleError);
       }
 
-      // Create auth user object (without password hash)
       const authUser: AuthUser = {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        full_name: user.full_name,
-        created_at: user.created_at
+        id: data.user.id,
+        email: data.user.email!,
+        full_name: data.user.user_metadata?.full_name,
+        created_at: data.user.created_at,
+        is_admin: userRole?.is_admin || false
       };
 
       this.currentUser = authUser;
@@ -75,36 +74,28 @@ class AuthService {
     }
 
     try {
-      // Hash password
-      const saltRounds = 12;
-      const password_hash = await bcrypt.hash(credentials.password, saltRounds);
-
-      // Create user
-      const { data, error } = await supabase
-        .from('auth_users')
-        .insert([{
-          username: credentials.username,
-          email: credentials.email,
-          password_hash,
-          full_name: credentials.full_name
-        }])
-        .select()
-        .single();
-
-      if (error) {
-        if (error.code === '23505') {
-          throw new Error('Username or email already exists');
+      const { data, error } = await supabase.auth.signUp({
+        email: credentials.email,
+        password: credentials.password,
+        options: {
+          data: {
+            full_name: credentials.full_name
+          }
         }
-        throw error;
+      });
+
+      if (error) throw error;
+      if (!data.user) {
+        throw new Error('Signup failed');
       }
 
-      // Create auth user object (without password hash)
+      // User role will be automatically created by the trigger
       const authUser: AuthUser = {
-        id: data.id,
-        username: data.username,
-        email: data.email,
-        full_name: data.full_name,
-        created_at: data.created_at
+        id: data.user.id,
+        email: data.user.email!,
+        full_name: credentials.full_name,
+        created_at: data.user.created_at,
+        is_admin: false // Default to non-admin
       };
 
       this.currentUser = authUser;
@@ -117,32 +108,107 @@ class AuthService {
     }
   }
 
-  logout(): void {
-    this.currentUser = null;
-    localStorage.removeItem('auth_user');
-  }
-
-  getCurrentUser(): AuthUser | null {
-    if (this.currentUser) {
-      return this.currentUser;
+  async logout(): Promise<void> {
+    if (!supabase) {
+      throw new Error('Database connection not available');
     }
 
-    // Try to restore from localStorage
-    const stored = localStorage.getItem('auth_user');
-    if (stored) {
-      try {
-        this.currentUser = JSON.parse(stored);
-        return this.currentUser;
-      } catch {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      this.currentUser = null;
+      localStorage.removeItem('auth_user');
+    }
+  }
+
+  async getCurrentUser(): Promise<AuthUser | null> {
+    if (!supabase) {
+      return null;
+    }
+
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      
+      if (error || !user) {
+        this.currentUser = null;
         localStorage.removeItem('auth_user');
+        return null;
       }
-    }
 
-    return null;
+      // Get user role information
+      const { data: userRole, error: roleError } = await supabase
+        .from('user_roles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+
+      if (roleError && roleError.code !== 'PGRST116') {
+        console.warn('Could not fetch user role:', roleError);
+      }
+
+      const authUser: AuthUser = {
+        id: user.id,
+        email: user.email!,
+        full_name: user.user_metadata?.full_name,
+        created_at: user.created_at,
+        is_admin: userRole?.is_admin || false
+      };
+
+      this.currentUser = authUser;
+      localStorage.setItem('auth_user', JSON.stringify(authUser));
+      
+      return authUser;
+    } catch (error) {
+      console.error('Get current user error:', error);
+      this.currentUser = null;
+      localStorage.removeItem('auth_user');
+      return null;
+    }
   }
 
-  isAuthenticated(): boolean {
-    return this.getCurrentUser() !== null;
+  async isAuthenticated(): Promise<boolean> {
+    const user = await this.getCurrentUser();
+    return user !== null;
+  }
+
+  async isAdmin(): Promise<boolean> {
+    const user = await this.getCurrentUser();
+    return user?.is_admin || false;
+  }
+
+  // Listen to auth state changes
+  onAuthStateChange(callback: (user: AuthUser | null) => void) {
+    if (!supabase) return () => {};
+
+    return supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_IN' && session?.user) {
+        // Get user role information
+        const { data: userRole } = await supabase
+          .from('user_roles')
+          .select('is_admin')
+          .eq('id', session.user.id)
+          .single();
+
+        const authUser: AuthUser = {
+          id: session.user.id,
+          email: session.user.email!,
+          full_name: session.user.user_metadata?.full_name,
+          created_at: session.user.created_at,
+          is_admin: userRole?.is_admin || false
+        };
+
+        this.currentUser = authUser;
+        localStorage.setItem('auth_user', JSON.stringify(authUser));
+        callback(authUser);
+      } else if (event === 'SIGNED_OUT') {
+        this.currentUser = null;
+        localStorage.removeItem('auth_user');
+        callback(null);
+      }
+    });
   }
 }
 
