@@ -132,3 +132,16 @@ VITE_GEMINI_API_KEY=your_gemini_api_key_here
 🧠 Key Takeaway
 We’re not building “just a writing app.”
 We’re building a structured creative playground where users can design and manage their entire fictional universe — visually, interactively, and with deep connections.
+
+## 👥 Contributors
+
+- [Shashank](https://www.linkedin.com/in/s-asthanaji/?originalSubdomain=in)  
+- [Bhavuk Wadhwa](https://www.linkedin.com/in/bhavukwadhwa)
+
+## 📌 Stay Connected
+Stay connected with us for updates, stories, and behind-the-scenes insights:  
+
+- 📸 [Instagram](https://www.instagram.com/moscownpur/)  
+- 💼 [LinkedIn](https://www.linkedin.com/in/moscownpur/)  
+- 🐦 [X (Twitter)](https://x.com/moscownpur)  
+- ▶️ [YouTube](https://www.youtube.com/@Moscownpur)

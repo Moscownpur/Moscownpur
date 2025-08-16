@@ -6,32 +6,18 @@ import { Heart, Lightbulb, Users, Award, Globe, Book, Star, Zap, Shield, Target 
 const About: React.FC = () => {
   const teamMembers = [
     {
-      name: "Sarah Chen",
-      role: "Founder & CEO",
-      bio: "Former game designer and author with 15+ years experience in world building and creative storytelling.",
-      expertise: ["World Building", "Game Design", "Creative Writing"],
-      avatar: "SC"
+      name: "Shashank Asthana",
+      role: "Contributor",
+      bio: "Passionate developer and creative technologist contributing to the world building platform.",
+      expertise: ["Development", "Creative Technology", "Platform Building"],
+      avatar: "SA"
     },
     {
-      name: "Michael Rodriguez",
-      role: "Head of Product",
-      bio: "Product visionary with a passion for creating tools that empower creators to bring their stories to life.",
-      expertise: ["Product Strategy", "User Experience", "Creative Tools"],
-      avatar: "MR"
-    },
-    {
-      name: "Emma Thompson",
-      role: "Lead Developer",
-      bio: "Full-stack developer specializing in creative applications and AI-powered writing tools.",
-      expertise: ["Full-Stack Development", "AI Integration", "Creative Software"],
-      avatar: "ET"
-    },
-    {
-      name: "David Kim",
-      role: "Creative Director",
-      bio: "Award-winning author and creative director who understands the challenges of world building.",
-      expertise: ["Creative Direction", "Storytelling", "Author Relations"],
-      avatar: "DK"
+      name: "Bhavuk Wadhwa",
+      role: "Contributor",
+      bio: "Dedicated contributor working on innovative features and user experience improvements.",
+      expertise: ["User Experience", "Feature Development", "Creative Tools"],
+      avatar: "BW"
     }
   ];
 
@@ -60,32 +46,19 @@ const About: React.FC = () => {
 
   const milestones = [
     {
-      year: "2024",
-      title: "Platform Launch",
-      description: "MosCownpur officially launched with core world building features"
+      year: "2025",
+      title: "Publish Website",
+      description: "MosCownpur website officially launched with core world building features"
     },
     {
-      year: "2024",
-      title: "10,000+ Users",
-      description: "Reached our first major milestone of active creators"
-    },
-    {
-      year: "2024",
+      year: "2025",
       title: "AI Integration",
       description: "Introduced AI-powered story assistance features"
-    },
-    {
-      year: "2024",
-      title: "Mobile App",
-      description: "Launched mobile companion app for on-the-go world building"
     }
   ];
 
   const stats = [
-    { number: "50,000+", label: "Active Creators" },
-    { number: "100,000+", label: "Fictional Universes Created" },
-    { number: "1M+", label: "Characters Developed" },
-    { number: "5M+", label: "Story Elements Tracked" }
+    { number: "Coming Soon", label: "We're just getting started — stats will appear here as we grow!" }
   ];
 
   return (
@@ -164,11 +137,11 @@ const About: React.FC = () => {
           {/* Stats Section */}
           <div className="mb-16">
             <h2 className="text-heading text-center mb-12 gradient-text-purple">Our Impact</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="text-center">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-display gradient-text-cosmic mb-2">{stat.number}</div>
-                  <p className="text-caption text-gray-400">{stat.label}</p>
+                <div key={index} className="glass-card rounded-xl p-8 max-w-2xl mx-auto">
+                  <div className="text-display gradient-text-cosmic mb-4">{stat.number}</div>
+                  <p className="text-subheading text-gray-300">{stat.label}</p>
                 </div>
               ))}
             </div>
