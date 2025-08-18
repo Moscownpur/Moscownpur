@@ -95,31 +95,12 @@ class AuthService {
         throw new Error('Signup failed');
       }
 
-      // Check if email confirmation is required
-      if (data.user && !data.session) {
-        return {
-          success: true,
-          message: 'Please check your email to confirm your account before signing in.',
-          requiresConfirmation: true
-        };
-      }
-
-      // If session exists, user was automatically confirmed
-      const authUser: AuthUser = {
-        id: data.user.id,
-        email: data.user.email!,
-        full_name: credentials.full_name,
-        created_at: data.user.created_at,
-        is_admin: false // Default to non-admin
-      };
-
-      this.currentUser = authUser;
-      localStorage.setItem('auth_user', JSON.stringify(authUser));
-      
+      // Always return requiresConfirmation: true to force login after signup
+      // Don't store any user data during signup
       return {
         success: true,
-        message: 'Account created successfully!',
-        requiresConfirmation: false
+        message: 'Please check your email to confirm your account before signing in.',
+        requiresConfirmation: true
       };
     } catch (error) {
       console.error('Signup error:', error);

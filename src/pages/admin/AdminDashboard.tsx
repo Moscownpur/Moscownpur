@@ -18,9 +18,8 @@ const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'users' | 'worlds' | 'timeline'>('users');
 
   const filteredUsers = users.filter(user => {
-    const matchesSearch = user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         user.full_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (user.full_name && user.full_name.toLowerCase().includes(searchTerm.toLowerCase()));
     
     if (filterType === 'active') return matchesSearch && !user.is_admin;
     if (filterType === 'admin') return matchesSearch && user.is_admin;
@@ -30,7 +29,8 @@ const AdminDashboard: React.FC = () => {
   const filteredWorlds = worlds.filter(world =>
     world.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     world.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    world.user_name.toLowerCase().includes(searchTerm.toLowerCase())
+    (world.user_full_name && world.user_full_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    world.user_email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalStats = {
@@ -56,7 +56,7 @@ const AdminDashboard: React.FC = () => {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100
       }
     }
@@ -83,7 +83,7 @@ const AdminDashboard: React.FC = () => {
             <div className="flex items-center space-x-3 px-4 py-2 glass-card rounded-xl">
               <div className="w-2 h-2 bg-green-400 rounded-full"></div>
               <span className="text-caption text-white/80">
-                {admin?.full_name} ({admin?.role})
+                {admin?.full_name || admin?.email} (Admin)
               </span>
             </div>
             <button
@@ -260,7 +260,7 @@ const AdminDashboard: React.FC = () => {
                                 </div>
                                 <div>
                                   <h3 className="text-subheading gradient-text-orange">{world.name}</h3>
-                                  <p className="text-caption text-white/60">by @{world.user_name}</p>
+                                  <p className="text-caption text-white/60">by {world.user_full_name || world.user_email}</p>
                                 </div>
                               </div>
                               <ChevronRight className="w-5 h-5 text-white/40" />
@@ -319,8 +319,10 @@ const AdminDashboard: React.FC = () => {
                                   <Users className="w-5 h-5 text-white/80" />
                                 </div>
                                 <div>
-                                  <p className="text-body text-white font-medium">{user.full_name}</p>
-                                  <p className="text-caption text-white/60">@{user.username}</p>
+                                  <p className="text-body text-white font-medium">
+                                    {user.full_name || 'No Name'}
+                                  </p>
+                                  <p className="text-caption text-white/60">{user.email}</p>
                                 </div>
                               </div>
                             </td>
@@ -411,7 +413,7 @@ const AdminDashboard: React.FC = () => {
                       
                       <div className="space-y-3">
                         <div className="flex items-center justify-between text-caption text-white/60">
-                          <span>Created by: @{world.user_name}</span>
+                          <span>Created by: {world.user_full_name || world.user_email}</span>
                           <span>{new Date(world.created_at).toLocaleDateString()}</span>
                         </div>
                         
