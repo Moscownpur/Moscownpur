@@ -77,24 +77,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(true);
       const result = await authService.signup(credentials);
       
-      if (result.requiresConfirmation) {
-        // Show confirmation message and redirect to login
-        toast.success(result.message);
-        // Redirect to login page after successful signup
-        window.location.href = '/login';
-      } else {
-        // User was automatically logged in
-        setUser({
-          id: 'temp', // This will be updated by the auth state change
-          email: credentials.email,
-          full_name: credentials.full_name,
-          created_at: new Date().toISOString(),
-          is_admin: false
-        });
-        toast.success(`Welcome to Moscownpur, ${credentials.full_name || credentials.email}! 🌟`);
-        // Redirect to dashboard after successful signup
-        window.location.href = '/dashboard';
-      }
+      // Show confirmation message for new signups
+      toast.success(result.message);
+      
+      // Always redirect to login page after signup
+      window.location.href = '/login';
       
       return result;
     } catch (error) {
