@@ -51,7 +51,7 @@ Changed the site URL and added production domains to redirect URLs:
 # in emails.
 site_url = "https://www.moscownpur.in"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["https://127.0.0.1:3000", "https://www.moscownpur.in", "https://moscownpur.in"]
+additional_redirect_urls = ["https://www.moscownpur.in", "https://moscownpur.in"]
 ```
 
 ## Important: Remote Supabase Configuration
