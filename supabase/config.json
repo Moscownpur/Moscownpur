@@ -1,0 +1,6 @@
+{
+  "project_id": "rqhyepbqlokrccsrpnlc",
+  "organization_id": "org_placeholder",
+  "db_url": "postgresql://postgres:postgres@localhost:54322/postgres",
+  "studio_url": "https://rqhyepbqlokrccsrpnlc.supabase.co"
+}

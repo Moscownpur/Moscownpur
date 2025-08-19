@@ -291,42 +291,32 @@ AI prompt templates.
 
 ### Authentication
 
-#### `auth_users`
-Regular user accounts.
+#### `user_roles`
+User role management linked to Supabase auth.users.
 
 | Column | Type | Description | Constraints |
 |--------|------|-------------|-------------|
-| `id` | UUID | Primary key | `gen_random_uuid()` |
-| `username` | TEXT | Username | NOT NULL, UNIQUE |
-| `email` | TEXT | Email address | NOT NULL, UNIQUE |
-| `password_hash` | TEXT | Hashed password | NOT NULL |
-| `full_name` | TEXT | Full name | NOT NULL |
+| `id` | UUID | Primary key, references auth.users(id) | REFERENCES `auth.users(id)` ON DELETE CASCADE |
+| `is_admin` | BOOLEAN | Admin flag | NOT NULL, DEFAULT: false |
 | `created_at` | TIMESTAMPTZ | Creation timestamp | DEFAULT: `now()` |
-| `updated_at` | TIMESTAMPTZ | Last update timestamp | DEFAULT: `now()` |
-| `is_admin` | BOOLEAN | Admin flag | DEFAULT: false |
 
-#### `admin_users`
-Admin user accounts.
+**Relationships:**
+- References: `auth.users` (Supabase built-in authentication table)
 
-| Column | Type | Description | Constraints |
-|--------|------|-------------|-------------|
-| `id` | UUID | Primary key | `gen_random_uuid()` |
-| `username` | TEXT | Username | NOT NULL, UNIQUE |
-| `email` | TEXT | Email address | NOT NULL, UNIQUE |
-| `password_hash` | TEXT | Hashed password | NOT NULL |
-| `full_name` | TEXT | Full name | NOT NULL |
-| `role` | TEXT | Admin role | DEFAULT: 'admin', ENUM: 'admin', 'super_admin' |
-| `is_active` | BOOLEAN | Active flag | DEFAULT: true |
-| `created_at` | TIMESTAMPTZ | Creation timestamp | DEFAULT: `now()` |
-| `updated_at` | TIMESTAMPTZ | Last update timestamp | DEFAULT: `now()` |
+**RLS Policies:**
+- Users can only view their own role
+- Users can update their own role (but not is_admin field)
+- Only admins can insert/delete user roles
+- Automatic user_roles entry creation via trigger on auth.users insert
 
 ## Row-Level Security (RLS)
 
 Most tables have RLS enabled for data protection:
 
-- **Enabled tables**: All tables except `auth_users`
+- **Enabled tables**: All tables except `user_roles` (which has its own specific policies)
 - **Policy pattern**: Users can only access data they created (`created_by` field)
 - **Admin access**: Admin users have broader access through separate policies
+- **Authentication**: Uses Supabase's built-in `auth.users` table with `user_roles` for role management
 
 ## Data Relationships
 
@@ -371,5 +361,5 @@ context_templates (standalone)
 - **Worlds**: 2 active worlds
 - **Memory Tags**: 18 tags across 6 categories
 - **Context Templates**: 3 active templates
-- **Users**: 4 regular users, 1 admin user
+- **Users**: Migrated to Supabase auth.users with user_roles
 - **Other tables**: Ready for content creation

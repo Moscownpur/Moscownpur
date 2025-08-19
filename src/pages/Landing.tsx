@@ -354,7 +354,7 @@ const Landing: React.FC = () => {
                   <div className="glass-card rounded-2xl p-8 space-y-6">
                     <div className="flex items-center gap-4">
                       <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
-                        <LogoIcon className="w-6 h-6" />
+                        <BookOpen className="w-6 h-6" />
                       </div>
                       <div>
                         <h4 className="text-white font-semibold">Unified Workspace</h4>

@@ -9,7 +9,13 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap-with-dynamic.js",
-    "generate-sitemap-dynamic": "node scripts/generate-sitemap-with-dynamic.js"
+    "generate-sitemap-dynamic": "node scripts/generate-sitemap-with-dynamic.js",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:status": "npx supabase status",
+    "supabase:db:reset": "npx supabase db reset",
+    "supabase:migration:new": "npx supabase migration new",
+    "supabase:migration:up": "npx supabase migration up"
   },
   "dependencies": {
     "@google/genai": "^1.12.0",
@@ -47,6 +53,7 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.35",
     "rollup-plugin-visualizer": "^6.0.3",
+    "supabase": "^2.34.3",
     "tailwindcss": "^3.4.1",
     "terser": "^5.43.1",
     "typescript": "^5.5.3",

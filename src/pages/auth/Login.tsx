@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Lock, Globe, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Globe, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login, loading } = useAuth();
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login({ username, password });
+      await login({ email, password });
     } catch (error) {
       // Error is handled by AuthContext
     }
@@ -65,16 +65,16 @@ const Login: React.FC = () => {
         >
           <div>
             <label className="block text-white/90 text-caption font-medium mb-3">
-              Username
+              Email
             </label>
             <div className="relative">
-              <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
+              <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
               <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-14 pr-4 py-4 glass-card rounded-xl text-white placeholder-white/40 focus:outline-none focus:soft-glow smooth-transition text-body"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 required
               />
             </div>

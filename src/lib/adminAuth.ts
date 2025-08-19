@@ -1,18 +1,15 @@
 import { supabase } from './supabase';
-import bcrypt from 'bcryptjs';
 
 export interface AdminUser {
   id: string;
-  username: string;
   email: string;
-  full_name: string;
-  role: 'admin' | 'super_admin';
-  is_active: boolean;
+  full_name?: string;
+  is_admin: boolean;
   created_at: string;
 }
 
 export interface AdminLoginCredentials {
-  username: string;
+  email: string;
   password: string;
 }
 
@@ -25,36 +22,40 @@ class AdminAuthService {
     }
 
     try {
-      // Fetch admin by username
-      const { data: admins, error: fetchError } = await supabase
-        .from('admin_users')
-        .select('*')
-        .eq('username', credentials.username)
-        .eq('is_active', true)
-        .limit(1);
+      // First, authenticate with Supabase
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: credentials.email,
+        password: credentials.password,
+      });
 
-      if (fetchError) throw fetchError;
-      if (!admins || admins.length === 0) {
-        throw new Error('Invalid admin credentials');
+      if (error) throw error;
+      if (!data.user) {
+        throw new Error('Login failed');
       }
 
-      const admin = admins[0];
+      // Check if user is an admin
+      const { data: userRole, error: roleError } = await supabase
+        .from('user_roles')
+        .select('is_admin')
+        .eq('id', data.user.id)
+        .single();
 
-      // Verify password
-      const isValidPassword = await bcrypt.compare(credentials.password, admin.password_hash);
-      if (!isValidPassword) {
-        throw new Error('Invalid admin credentials');
+      if (roleError) {
+        throw new Error('Could not verify admin status');
       }
 
-      // Create admin user object (without password hash)
+      if (!userRole?.is_admin) {
+        // Sign out the user since they're not an admin
+        await supabase.auth.signOut();
+        throw new Error('Access denied. Admin privileges required.');
+      }
+
       const adminUser: AdminUser = {
-        id: admin.id,
-        username: admin.username,
-        email: admin.email,
-        full_name: admin.full_name,
-        role: admin.role,
-        is_active: admin.is_active,
-        created_at: admin.created_at
+        id: data.user.id,
+        email: data.user.email!,
+        full_name: data.user.user_metadata?.full_name,
+        is_admin: userRole.is_admin,
+        created_at: data.user.created_at
       };
 
       this.currentAdmin = adminUser;
@@ -67,32 +68,77 @@ class AdminAuthService {
     }
   }
 
-  logout(): void {
-    this.currentAdmin = null;
-    localStorage.removeItem('admin_user');
-  }
-
-  getCurrentAdmin(): AdminUser | null {
-    if (this.currentAdmin) {
-      return this.currentAdmin;
+  async logout(): Promise<void> {
+    if (!supabase) {
+      throw new Error('Database connection not available');
     }
 
-    // Try to restore from localStorage
-    const stored = localStorage.getItem('admin_user');
-    if (stored) {
-      try {
-        this.currentAdmin = JSON.parse(stored);
-        return this.currentAdmin;
-      } catch {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      console.error('Admin logout error:', error);
+    } finally {
+      this.currentAdmin = null;
+      localStorage.removeItem('admin_user');
+    }
+  }
+
+  async getCurrentAdmin(): Promise<AdminUser | null> {
+    if (!supabase) {
+      return null;
+    }
+
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      
+      if (error || !user) {
+        this.currentAdmin = null;
         localStorage.removeItem('admin_user');
+        return null;
       }
-    }
 
-    return null;
+      // Check if user is an admin
+      const { data: userRole, error: roleError } = await supabase
+        .from('user_roles')
+        .select('is_admin')
+        .eq('id', user.id)
+        .single();
+
+      if (roleError || !userRole?.is_admin) {
+        this.currentAdmin = null;
+        localStorage.removeItem('admin_user');
+        return null;
+      }
+
+      const adminUser: AdminUser = {
+        id: user.id,
+        email: user.email!,
+        full_name: user.user_metadata?.full_name,
+        is_admin: userRole.is_admin,
+        created_at: user.created_at
+      };
+
+      this.currentAdmin = adminUser;
+      localStorage.setItem('admin_user', JSON.stringify(adminUser));
+      
+      return adminUser;
+    } catch (error) {
+      console.error('Get current admin error:', error);
+      this.currentAdmin = null;
+      localStorage.removeItem('admin_user');
+      return null;
+    }
   }
 
-  isAuthenticated(): boolean {
-    return this.getCurrentAdmin() !== null;
+  async isAuthenticated(): Promise<boolean> {
+    const admin = await this.getCurrentAdmin();
+    return admin !== null;
+  }
+
+  async isAdmin(): Promise<boolean> {
+    const admin = await this.getCurrentAdmin();
+    return admin?.is_admin || false;
   }
 }
 
