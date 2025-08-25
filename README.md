@@ -1,147 +1,173 @@
-Welcome to the Moscownpur Project 🚀
-🌟 Vision
-Moscownpur is a creative worldbuilding and storytelling SaaS platform.
-We are building a Narrative Operating System where creators can design Worlds, Characters, Regions, Timelines, and Scenes — all interlinked to maintain story consistency.
+# 🎮 Moscownpur - Gamified Storytelling Platform
 
-The goal is simple:
-To let users create their own comic-universe style worlds where stories, characters, and events are deeply connected — not just random chapters.
+> Gamified creative worldbuilding and storytelling platform
 
-🎯 Core Concept
-Worlds & Regions → Define your universe’s geography and realms.
+[![React](https://img.shields.io/badge/React-18.0-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-green.svg)](https://supabase.com/)
 
-Characters → Build rich profiles with origins, traits, and evolution.
+## 🌟 Vision
 
-Timeline → The backbone of the story; all events and scenes are placed here.
+Moscownpur is a **gamified creative worldbuilding and storytelling platform** where creators collaboratively develop shared universes blending Indian and Russian cultural elements. We're building a **Narrative Operating System** where creators can design Worlds, Characters, Regions, Timelines, and Scenes — all interlinked to maintain story consistency.
 
-Scenes → Detailed moments linked to events, with:
+Think of it as a **creative playground** where every feature is an in-world structure, every action is an act of guardianship against forgetting, and creators become heroes in the same myth as Moscowvitz & Luna.
 
-Character roles & states
+## 🚀 Key Features
 
-Dialogue & narration system (like comics/screenplays)
+### 🏛️ World Architecture
+- **Hierarchical Organization**: World → Chapters → Events → Scenes
+- **Dynamic Timeline System**: Chronological event tracking with non-linear storytelling support
+- **Cultural Fusion Framework**: Tools for blending Indian/Russian aesthetics, symbols, and traditions
+- **The Chronicle Spire**: Visual world-building tool where each addition adds glowing crystal shards
 
-Interlinked Storytelling → No disconnected chapters; everything connects through the timeline.
+### 👤 Character Ecosystem
+- **Rich Character Profiles**: Origins, traits, evolutionary logs, and memory systems
+- **Relationship Dynamics Engine**: Configurable bonds with strength tracking
+- **Scene-Specific Role States**: Track emotional states and objectives per scene
+- **The Character Wells**: Characters rise from shimmering water as you create them
 
-💡 Current Status
-✅ Admin Dashboard
+### 🎭 Scene Crafting Suite
+- **Visual + Narrative Builder**: Background descriptions + comic-style dialogue system
+- **Transition System**: Seamless scene connectors with timeline visualization
+- **Context Memory Hooks**: Link scenes to character knowledge and relationships
+- **The Scene Forges**: Scenes come alive like moving mural panels
 
-Role-based access, live DB integration, full CRUD for Worlds, Characters, Timelines.
+### 🤖 AI-Powered Creativity
+- **Smart Assistants** for dialogue drafting, scene suggestions, and character consistency
+- **The AI Oracles**: Glowing masks that whisper creative options
+- **Memory Management**: Versioned character knowledge with rollback capabilities
+- **Auto-Tagging Engine**: Emotions/lore/plot point identification
 
-✅ Timeline & Scene Context System
+### 🤝 Collaboration Framework
+- **Multi-User Editing**: With approval workflows
+- **Community Integration**: Polls, fan contributions, and co-creation channels
+- **The Grand Assembly**: Council chamber for collaborative creation
+- **Moscowvitz Mascot**: In-world assistant for new users
 
-Hierarchical World → Event → Scene flow
+### 📚 Memory & Version Control
+- **The Memory Vaults**: Version control with ghostly echoes of old versions
+- **Relevance Analytics**: Memory usage heatmaps and relationship graphs
+- **Fog Dragon Challenge**: Gamified motivation to prevent project abandonment
 
-Character role/state tracking across events
+### 🚪 Export & Publishing
+- **Comic-Book Generator**: PDF export with panel layouts
+- **Multimedia Support**: Voice synthesis and animated previews
+- **The Gate of Many Exits**: Magical ritual for publishing content
+- **Cross-Platform Publishing**: Social media optimized snippets
 
-Interactive timeline navigation
+## 🎮 Gamified Experience
 
-✅ UI/UX
+Every feature in Moscownpur is designed as an in-world experience:
 
-Minimalist dark theme (Apple-inspired)
+1. **First Entry**: Begin in a snowy forest with the Fog Dragon's whispers
+2. **World Creation**: Build your universe through The Chronicle Spire
+3. **Character Development**: Create characters in The Character Wells
+4. **Scene Building**: Forge scenes in The Scene Forges
+5. **AI Assistance**: Consult The AI Oracles for creative guidance
+6. **Collaboration**: Join The Grand Assembly for team creation
+7. **Publishing**: Send your stories through The Gate of Many Exits
 
-Glassmorphism effects & smooth transitions
+## 🛠️ Getting Started
 
-Mobile-responsive design
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+- Supabase account (for database)
 
-✅ Scene Dialogue & Narration System
+### Installation
 
-Character dialogue with @CharacterName format
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/moscownpur.git
+   cd moscownpur
+   ```
 
-Scene narration for descriptions and transitions
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Role-based color coding and drag-and-drop reordering
+3. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Add your Supabase credentials to `.env.local`
 
-✅ Updated Color Scheme
+4. **Set up Supabase**
+   ```bash
+   # Install Supabase CLI
+   npm install -g supabase
+   
+   # Start local Supabase
+   supabase start
+   
+   # Run migrations
+   supabase db reset
+   ```
 
-Yellow-orange gradient theme throughout the app
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
-Consistent with Timeline Events styling
+6. **Open your browser**
+   Navigate to `http://localhost:5173`
 
-✅ Chapter Support System (Phase 1)
+### First Steps
 
-Chapter management with drag-and-drop reordering
+1. **Create Your First World**: Start with the onboarding experience in the snowy forest
+2. **Build The Chronicle Spire**: Add your first world structure
+3. **Create Characters**: Visit The Character Wells to bring your characters to life
+4. **Craft Scenes**: Use The Scene Forges to create your first story moments
+5. **Explore AI Features**: Consult The AI Oracles for creative assistance
 
-Timeline events grouped under chapters
 
-Chapter assignment for better story structure
+## 🧠 AI Integration
 
-✅ Google Gemini AI Integration
+Moscownpur features advanced AI capabilities:
 
-AI utility functions for text and image generation
+- **Character Chat Simulator**: Interactive conversations with your characters
+- **Memory Manager**: AI-powered character memory and consistency
+- **Dialogue Suggestions**: Context-aware dialogue generation
+- **Scene Recommendations**: AI-assisted scene creation
 
-Scene suggestions, dialogue drafting, plot continuation
+## 🔧 Technology Stack
 
-Test suite for API verification
+- **Frontend**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS + Bootstrap/Reactstrap
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth
+- **AI Integration**: Custom AI memory engine
+- **Deployment**: Vercel-ready configuration
 
-✅ AI Memory Engine System (Phase 2)
+## 📖 Documentation
 
-Advanced memory management for characters, worlds, and scenes
 
-Memory versioning with rollback capabilities
 
-Smart tagging system (emotions, plot, lore, relationships)
+## 🤝 Contributing
 
-Context-aware AI responses using memory context
+We welcome contributions! Please see our contributing guidelines and join our community:
 
-Character chat simulator with personality consistency
-
-Automatic memory learning from interactions
-
-Memory relevance scoring and analytics
-
-🔜 Upcoming Focus
-Export tools (chronological storybook, visual timelines)
-
-Memory visualization and graph analytics
-
-Advanced AI features (image generation, voice synthesis)
-
-Collaborative storytelling features
-
-## 🚀 Setup Instructions
-
-### Environment Variables
-Create a `.env` file in the root directory with:
-
-```env
-# Supabase Configuration
-VITE_SUPABASE_URL=your_supabase_url_here
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-
-# Google Gemini AI Configuration
-VITE_GEMINI_API_KEY=your_gemini_api_key_here
-```
-
-### AI Integration Testing
-1. Navigate to `/dashboard/ai-test` in the application
-2. Run individual tests or use "Run All Tests" to verify API integration
-3. Check environment variables are properly set
-4. Test various AI features: text generation, scene suggestions, dialogue, plot continuation
-
-### AI Memory Engine Features
-1. Navigate to `/dashboard/ai-integration/:worldId` for the AI Integration Hub
-2. Use the Memory Manager to create and manage entity memories
-3. Chat with AI-powered characters using the Character Chat Simulator
-4. Generate plot suggestions based on world context and memories
-5. View memory analytics and relevance scores
-
-### Analytics & Performance Monitoring
-- **Vercel Analytics**: Automatic visitor and page view tracking
-- **Speed Insights**: Real-time performance metrics and Core Web Vitals
-- **Performance Monitoring**: Track LCP, FCP, CLS, and other performance indicators
-
-🧠 Key Takeaway
-We’re not building “just a writing app.”
-We’re building a structured creative playground where users can design and manage their entire fictional universe — visually, interactively, and with deep connections.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 👥 Contributors
 
-- [Shashank](https://www.linkedin.com/in/s-asthanaji/?originalSubdomain=in)  
+- [Shashank Asthana](https://www.linkedin.com/in/s-asthanaji/?originalSubdomain=in)  
 - [Bhavuk Wadhwa](https://www.linkedin.com/in/bhavukwadhwa)
 
 ## 📌 Stay Connected
+
 Stay connected with us for updates, stories, and behind-the-scenes insights:  
 
 - 📸 [Instagram](https://www.instagram.com/moscownpur/)  
 - 💼 [LinkedIn](https://www.linkedin.com/in/moscownpur/)  
 - 🐦 [X (Twitter)](https://x.com/moscownpur)  
 - ▶️ [YouTube](https://www.youtube.com/@Moscownpur)
+
+---
+
+**Remember**: We're not building "just a writing app." We're building a structured creative playground where users can design and manage their entire fictional universe — visually, interactively, and with deep connections. Join us in the magical world of Moscownpur! ✨
