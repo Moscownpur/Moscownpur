@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 .env
 .cursor/*
+*.config.json
+.env.local
+*.supabase.json
