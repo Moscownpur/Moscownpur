@@ -37,7 +37,7 @@ class AdminAuthService {
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('is_admin')
-        .eq('id', data.user.id)
+        .eq('user_id', data.user.id)
         .single();
 
       if (roleError) {
@@ -102,7 +102,7 @@ class AdminAuthService {
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('is_admin')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .single();
 
       if (roleError || !userRole?.is_admin) {
