@@ -198,7 +198,7 @@
   }
 }
 :root {
-  --cosmic-gradient: linear-gradient(135deg, #4e0263 0%, #6902c9 25%, #03a1c0 50%, #6cf900 100%);
+  --cosmic-gradient: linear-gradient(135deg, #F37335 0%, #FDC830 100%);
 }
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
