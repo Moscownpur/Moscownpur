@@ -29,8 +29,7 @@ const WorldForm: React.FC<WorldFormProps> = ({ world, onSubmit, onCancel }) => {
     },
     dominant_species: world?.dominant_species || [],
     visual_style: world?.visual_style || '',
-    theme: world?.theme || 'mystical',
-    created_by: 'user-id' // This would come from auth context
+    theme: world?.theme || 'mystical'
   });
 
   const [newSpecies, setNewSpecies] = useState('');

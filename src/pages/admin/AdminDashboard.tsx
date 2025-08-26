@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { Users, Globe, MapPin, Clock, Search, Filter, Eye, Trash2, UserCheck, UserX, ChevronRight, Film } from 'lucide-react';
+import { Users, Globe, Clock, Search, Filter, Eye, Trash2, UserCheck, UserX, ChevronRight, Film, Edit2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import TimelineView from '../../components/TimelineView';
 import { useAdminData } from '../../hooks/useAdminData';
 import { useTimeline } from '../../hooks/useTimeline';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
-import Modal from '../../components/Modal';
+// import Modal from '../../components/Modal';
 
 const AdminDashboard: React.FC = () => {
   const { users, worlds, loading, toggleUserStatus, deleteWorld } = useAdminData();
   const { admin, logout } = useAdminAuth();
   const [selectedWorldId, setSelectedWorldId] = useState<string | null>(null);
-  const [showTimelineModal, setShowTimelineModal] = useState(false);
+  // const [showTimelineModal, setShowTimelineModal] = useState(false);
   const { events: timelineEvents, loading: timelineLoading } = useTimeline(selectedWorldId || undefined);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
-  const [activeTab, setActiveTab] = useState<'users' | 'worlds' | 'timeline'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'worlds' | 'timeline' | 'blogs'>('users');
+  const [blogs, setBlogs] = useState<any[]>([]);
+  const [blogForm, setBlogForm] = useState<{ id?: string; title: string; category: string; tags: string; body: string }>({ title: '', category: '', tags: '', body: '' });
+  const [blogLoading, setBlogLoading] = useState(false);
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -36,6 +39,7 @@ const AdminDashboard: React.FC = () => {
   const totalStats = {
     users: users.length,
     worlds: worlds.length,
+    blogs: blogs.length,
     characters: users.reduce((sum, user) => sum + user.character_count, 0),
     events: users.reduce((sum, user) => sum + user.event_count, 0)
   };
@@ -61,6 +65,51 @@ const AdminDashboard: React.FC = () => {
       }
     }
   };
+
+  // Blog CRUD helpers
+  const loadBlogs = async () => {
+    setBlogLoading(true);
+    const { supabaseClient } = await import('../../lib/supabaseClient');
+    const { data } = await supabaseClient
+      .from('blogs')
+      .select('id, title, category, tags, body, created_at')
+      .order('created_at', { ascending: false });
+    setBlogs(data || []);
+    setBlogLoading(false);
+  };
+
+  const submitBlog = async () => {
+    const { supabaseClient } = await import('../../lib/supabaseClient');
+    const payload = {
+      title: blogForm.title,
+      category: blogForm.category || null,
+      tags: blogForm.tags || null,
+      body: blogForm.body,
+      author_id: admin?.id || null,
+    };
+    if (blogForm.id) {
+      await supabaseClient.from('blogs').update(payload).eq('id', blogForm.id);
+    } else {
+      await supabaseClient.from('blogs').insert(payload);
+    }
+    setBlogForm({ title: '', category: '', tags: '', body: '' });
+    await loadBlogs();
+  };
+
+  const editBlog = (b: any) => {
+    setBlogForm({ id: b.id, title: b.title || '', category: b.category || '', tags: b.tags || '', body: b.body || '' });
+  };
+
+  const deleteBlog = async (id: string) => {
+    if (!confirm('Delete this blog post?')) return;
+    const { supabaseClient } = await import('../../lib/supabaseClient');
+    await supabaseClient.from('blogs').delete().eq('id', id);
+    await loadBlogs();
+  };
+
+  React.useEffect(() => {
+    if (activeTab === 'blogs') loadBlogs();
+  }, [activeTab]);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -164,6 +213,16 @@ const AdminDashboard: React.FC = () => {
               >
                 Timeline Overview
               </button>
+              <button
+                onClick={() => setActiveTab('blogs')}
+                className={`px-6 py-3 rounded-xl smooth-transition ${
+                  activeTab === 'blogs'
+                    ? 'bg-gradient-to-r from-pink-500 to-red-500 text-white soft-glow-red'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                Blog Management
+              </button>
             </div>
           </motion.div>
 
@@ -225,7 +284,7 @@ const AdminDashboard: React.FC = () => {
                           <button
                             onClick={() => {
                               setSelectedWorldId(null);
-                              setShowTimelineModal(false);
+                              // setShowTimelineModal(false);
                             }}
                             className="px-4 py-2 text-white/60 hover:text-white hover:glass-card rounded-xl smooth-transition"
                           >
@@ -367,7 +426,7 @@ const AdminDashboard: React.FC = () => {
                     </table>
                   </div>
                 </div>
-              ) : (
+              ) : activeTab === 'worlds' ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredWorlds.map((world, index) => (
                     <motion.div
@@ -425,6 +484,83 @@ const AdminDashboard: React.FC = () => {
                       </div>
                     </motion.div>
                   ))}
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="glass-card rounded-3xl p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h2 className="text-subheading gradient-text-red">Create / Edit Blog Post</h2>
+                      <button
+                        onClick={() => setBlogForm({ title: '', category: '', tags: '', body: '' })}
+                        className="px-3 py-2 glass-card rounded-xl text-white/80 hover:text-white"
+                      >
+                        New
+                      </button>
+                    </div>
+                    <div className="grid gap-4">
+                      <input
+                        value={blogForm.title}
+                        onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })}
+                        placeholder="Title"
+                        className="w-full px-4 py-3 glass-card rounded-xl text-white placeholder-white/40"
+                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input
+                          value={blogForm.category}
+                          onChange={(e) => setBlogForm({ ...blogForm, category: e.target.value })}
+                          placeholder="Category"
+                          className="w-full px-4 py-3 glass-card rounded-xl text-white placeholder-white/40"
+                        />
+                        <input
+                          value={blogForm.tags}
+                          onChange={(e) => setBlogForm({ ...blogForm, tags: e.target.value })}
+                          placeholder="Tags (comma separated)"
+                          className="w-full px-4 py-3 glass-card rounded-xl text-white placeholder-white/40"
+                        />
+                      </div>
+                      <textarea
+                        value={blogForm.body}
+                        onChange={(e) => setBlogForm({ ...blogForm, body: e.target.value })}
+                        placeholder="Body"
+                        rows={10}
+                        className="w-full px-4 py-3 glass-card rounded-xl text-white placeholder-white/40"
+                      />
+                      <div className="flex justify-end">
+                        <button onClick={submitBlog} className="glass-card-cosmic px-6 py-3 rounded-xl font-semibold">
+                          {blogForm.id ? 'Update Post' : 'Publish Post'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="glass-card rounded-3xl overflow-hidden">
+                    <div className="p-6 border-b border-white/5 flex items-center justify-between">
+                      <h2 className="text-subheading gradient-text-red">All Blog Posts ({blogs.length})</h2>
+                      <button onClick={loadBlogs} className="px-4 py-2 glass-card rounded-xl">Refresh</button>
+                    </div>
+                    {blogLoading ? (
+                      <div className="p-6">Loading...</div>
+                    ) : (
+                      <div className="divide-y divide-white/5">
+                        {blogs.map((b) => (
+                          <div key={b.id} className="p-6 flex items-start justify-between">
+                            <div>
+                              <h3 className="text-body font-semibold">{b.title}</h3>
+                              <p className="text-caption text-white/60">{new Date(b.created_at).toLocaleString()} • {b.category || 'General'}</p>
+                            </div>
+                            <div className="flex gap-2">
+                              <button onClick={() => editBlog(b)} className="p-2 glass-card rounded-lg" title="Edit">
+                                <Edit2 size={16} />
+                              </button>
+                              <button onClick={() => deleteBlog(b.id)} className="p-2 glass-card rounded-lg" title="Delete">
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </motion.div>
