@@ -51,6 +51,7 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       // Redirect to admin dashboard after successful login
       window.location.href = '/admin/dashboard';
     } catch (error) {
+      console.error('Admin login error details:', error);
       const message = error instanceof Error ? error.message : 'Admin login failed';
       toast.error(message);
       throw error;

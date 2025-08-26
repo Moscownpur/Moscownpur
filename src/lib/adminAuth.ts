@@ -34,14 +34,18 @@ class AdminAuthService {
       }
 
       // Check if user is an admin
+      console.log('Checking admin status for user:', data.user.id);
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('is_admin')
         .eq('user_id', data.user.id)
         .single();
+      
+      console.log('Role query result:', { userRole, roleError });
 
       if (roleError) {
-        throw new Error('Could not verify admin status');
+        console.error('Role verification error:', roleError);
+        throw new Error(`Could not verify admin status: ${roleError.message}`);
       }
 
       if (!userRole?.is_admin) {
@@ -99,13 +103,24 @@ class AdminAuthService {
       }
 
       // Check if user is an admin
+      console.log('Getting current admin for user:', user.id);
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('is_admin')
         .eq('user_id', user.id)
         .single();
+      
+      console.log('Get current admin result:', { userRole, roleError });
 
-      if (roleError || !userRole?.is_admin) {
+      if (roleError) {
+        console.error('Get current admin role error:', roleError);
+        this.currentAdmin = null;
+        localStorage.removeItem('admin_user');
+        return null;
+      }
+
+      if (!userRole?.is_admin) {
+        console.log('User is not an admin');
         this.currentAdmin = null;
         localStorage.removeItem('admin_user');
         return null;
