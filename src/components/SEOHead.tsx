@@ -14,7 +14,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   title = 'MosCownpur - Fictional Universe Management App',
   description = 'Create, manage, and explore fictional universes with MosCownpur. Build worlds, characters, timelines, and stories with our comprehensive universe management platform.',
   keywords = 'fictional universe, world building, character management, story creation, timeline events, creative writing, universe management',
-  image = 'https://www.moscownpur.in/og-image.png',
+  image = 'https://www.moscownpur.in/logo.jpg',
   url,
   type = 'website'
 }) => {

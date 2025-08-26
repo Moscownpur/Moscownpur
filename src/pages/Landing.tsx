@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
-import ogImage from '/og-image.png';
+import logoImage from '/logo.jpg';
 
 // Custom Logo component for features
 const LogoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <img src={ogImage} alt="Moscownpur Logo" className={className || "w-40 h-40"} />
+  <img src={logoImage} alt="Moscownpur Logo" className={className || "w-40 h-40"} />
 );
 
 const Landing: React.FC = () => {
@@ -79,7 +79,7 @@ const Landing: React.FC = () => {
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="">
-                <img src={ogImage} alt="Moscownpur Logo" className="w-20 h-20" />
+                <img src={logoImage} alt="Moscownpur Logo" className="w-20 h-20" />
               </div>
               <h1 className="text-2xl font-bold gradient-text-cosmic">
                 Moscownpur

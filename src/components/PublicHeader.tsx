@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import ogImage from '/og-image.png';
+import logoImage from '/logo.jpg';
 
 const PublicHeader: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const PublicHeader: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-3">
           <div className="">
-            <img src={ogImage} alt="Moscownpur Logo" className="w-20 h-20" />
+            <img src={logoImage} alt="Moscownpur Logo" className="w-20 h-20" />
           </div>
           <h1 className="text-2xl font-bold gradient-text-cosmic">
             Moscownpur

@@ -16,7 +16,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({
   type = 'WebApplication',
   title = 'MosCownpur - Fictional Universe Management App',
   description = 'Create, manage, and explore fictional universes with MosCownpur. Build worlds, characters, timelines, and stories with our comprehensive universe management platform.',
-  image = 'https://www.moscownpur.in/og-image.png',
+  image = 'https://www.moscownpur.in/logo.jpg',
   url,
   author = 'MosCownpur',
   datePublished = '2024-01-01',
@@ -50,7 +50,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({
         "name": "MosCownpur",
         "logo": {
           "@type": "ImageObject",
-          "url": "https://www.moscownpur.in/og-image.png"
+          "url": "https://www.moscownpur.in/logo.jpg"
         }
       },
       "inLanguage": "en-US",

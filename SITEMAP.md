@@ -8,6 +8,7 @@ This project includes automated sitemap generation to help search engines discov
 - `scripts/generate-sitemap-with-dynamic.js` - Advanced sitemap generator (includes dynamic routes from database)
 - `public/sitemap.xml` - Generated sitemap file
 - `public/robots.txt` - Robots file referencing the sitemap
+- `public/logo.jpg` - Main logo used for social media and app icons
 
 ## Usage
 
@@ -16,7 +17,7 @@ This project includes automated sitemap generation to help search engines discov
 npm run generate-sitemap
 ```
 
-### Advanced Sitemap (With Dynamic Routes)
+### Advanced Sitemap (With Dynamic Routes from Database)
 ```bash
 npm run generate-sitemap-dynamic
 ```
@@ -44,6 +45,8 @@ For the dynamic sitemap generator, ensure these environment variables are set:
 
 ### Public Routes (Indexed by Search Engines)
 - `/` - Homepage (priority: 1.0)
+- `/blog` - Blog listing page (priority: 0.7)
+- `/blog/[slug]` - Individual blog posts (priority: 0.6, fetched from database)
 
 ### Private Routes (Excluded from Sitemap)
 The following routes are intentionally excluded from the sitemap as they should not be indexed by search engines:
@@ -53,8 +56,29 @@ The following routes are intentionally excluded from the sitemap as they should 
 - `/admin/*` - All admin pages
 - `/dashboard/*` - All dashboard pages (require authentication)
 
-### Dynamic Routes (when using advanced generator)
-Currently disabled for privacy. If you want to include public content pages, they should be added to the `publicRoutes` array.
+### Dynamic Routes (Database-driven)
+- **Blog Posts**: Automatically fetched from the `blogs` table in Supabase
+  - URL format: `/blog/[slug]` (slug generated from title)
+  - Priority: 0.6
+  - Change frequency: Monthly
+  - Last modified: Uses `updated_at` or `created_at` from database
+
+## Blog System Integration
+
+### Database Schema
+The blog system uses the `blogs` table with the following structure:
+- `id` (uuid) - Primary key
+- `title` (text) - Blog post title
+- `author_id` (uuid) - References auth.users
+- `body` (text) - Blog post content
+- `tags` (text) - Comma-separated tags
+- `category` (text) - Blog category
+- `created_at` and `updated_at` timestamps
+
+### URL Generation
+Blog post URLs are automatically generated from the title:
+- Title: "How AI Can Remember Your World Better Than You Do"
+- URL: `/blog/how-ai-can-remember-your-world-better-than-you-do`
 
 ## SEO Benefits
 
@@ -62,12 +86,23 @@ Currently disabled for privacy. If you want to include public content pages, the
 2. **Crawl Efficiency**: Provides metadata about page update frequency
 3. **Priority Indication**: Tells search engines which pages are most important
 4. **Last Modified Dates**: Helps with content freshness signals
+5. **Dynamic Blog Indexing**: Automatically includes new blog posts in sitemap
+
+## Logo and Branding
+
+The project uses `logo.jpg` as the main logo for:
+- Social media Open Graph images
+- Twitter Card images
+- App icons in manifest.json
+- Favicon
+- Header logo display
 
 ## Deployment
 
 Make sure these files are included in your deployment:
 - `public/sitemap.xml`
 - `public/robots.txt`
+- `public/logo.jpg`
 
 ## Search Engine Submission
 
@@ -80,7 +115,7 @@ After deployment, submit your sitemap to search engines:
 ## Customization
 
 ### Adding New Routes
-Edit the `staticRoutes` array in the sitemap scripts to add new routes.
+Edit the `publicRoutes` array in the sitemap scripts to add new routes.
 
 ### Modifying Priorities
 Adjust the `priority` values (0.0 to 1.0) to indicate page importance.
@@ -106,6 +141,11 @@ Modify `changefreq` values:
 - Check Supabase environment variables
 - Verify database connection
 - Check console for error messages
+
+### Blog Posts Not Appearing
+- Verify the `blogs` table exists in your Supabase database
+- Check that blog posts have valid titles
+- Ensure the database connection is working
 
 ### Build Process Failing
 - Ensure sitemap generation completes before build

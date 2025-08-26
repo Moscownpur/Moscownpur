@@ -19,10 +19,10 @@ Allow: /$
 Allow: /about
 Allow: /features
 Allow: /pricing
-Allow: /blog
 Allow: /world-building-guide
 
-# Allow individual blog posts
+# Allow blog pages and individual blog posts
+Allow: /blog
 Allow: /blog/
 
 # Crawl delay for better server performance
