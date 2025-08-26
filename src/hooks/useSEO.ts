@@ -22,7 +22,7 @@ export const useSEO = () => {
         "name": seo.title,
         "description": seo.description,
         "url": currentUrl,
-        "image": seo.image || "https://www.moscownpur.in/og-image.png",
+        "image": seo.image || "https://www.moscownpur.in/logo.jpg",
         "author": {
           "@type": "Organization",
           "name": "MosCownpur",
@@ -33,7 +33,7 @@ export const useSEO = () => {
           "name": "MosCownpur",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://www.moscownpur.in/og-image.png"
+            "url": "https://www.moscownpur.in/logo.jpg"
           }
         },
         "inLanguage": "en-US",
@@ -51,7 +51,7 @@ export const useSEO = () => {
             "price": "0",
             "priceCurrency": "USD"
           },
-          "screenshot": seo.image || "https://www.moscownpur.in/og-image.png",
+          "screenshot": seo.image || "https://www.moscownpur.in/logo.jpg",
           "featureList": [
             "World Building",
             "Character Management", 
