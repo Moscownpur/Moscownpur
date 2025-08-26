@@ -6,161 +6,103 @@ import { Check, Star, Zap, Crown, Shield, Cloud, Users, Globe, Brain, Infinity }
 const Pricing: React.FC = () => {
   const plans = [
     {
-      name: "Free",
+      name: "Early Bird",
       price: "$0",
       period: "forever",
-      description: "Perfect for getting started with world building",
-      features: [
-        "Up to 3 fictional universes",
-        "Basic character management",
-        "Simple timeline tracking",
-        "Community support",
-        "Basic templates",
-        "1GB storage"
-      ],
-      limitations: [
-        "Limited to 50 characters per universe",
-        "Basic export options",
-        "No AI assistance"
-      ],
-      popular: false,
-      recommended: false
-    },
-    {
-      name: "Creator",
-      price: "$9.99",
-      period: "per month",
-      description: "Ideal for serious writers and world builders",
+      description: "Limited time offer for early adopters",
       features: [
         "Unlimited fictional universes",
         "Advanced character management",
         "Comprehensive timeline tools",
-        "Chapter and scene organization",
-        "Region and location mapping",
-        "Priority support",
-        "Advanced templates",
-        "10GB storage",
-        "Export to multiple formats",
-        "Collaboration tools"
-      ],
-      limitations: [
-        "Limited AI assistance (5 requests/month)",
-        "Basic analytics"
-      ],
-      popular: true,
-      recommended: true
-    },
-    {
-      name: "Professional",
-      price: "$19.99",
-      period: "per month",
-      description: "For professional authors and creative teams",
-      features: [
-        "Everything in Creator",
         "Unlimited AI assistance",
         "Advanced analytics and insights",
         "Team collaboration (up to 5 members)",
-        "Custom branding",
+        "Custom branding options",
         "API access",
         "Priority feature requests",
-        "50GB storage",
         "Advanced export options",
-        "White-label solutions"
+        "White-label solutions",
+        "Premium support"
       ],
       limitations: [
-        "No limitations on core features"
+        "No limitations - full access to all features"
       ],
-      popular: false,
-      recommended: false
+      popular: true,
+      recommended: true,
+      earlyBird: true
     }
   ];
 
   const comparisonFeatures = [
     {
       feature: "Fictional Universes",
-      free: "3",
-      creator: "Unlimited",
-      professional: "Unlimited"
+      earlyBird: "Unlimited"
     },
     {
       feature: "Character Management",
-      free: "Basic",
-      creator: "Advanced",
-      professional: "Advanced"
+      earlyBird: "Advanced"
     },
     {
       feature: "Timeline Tools",
-      free: "Basic",
-      creator: "Comprehensive",
-      professional: "Comprehensive"
+      earlyBird: "Comprehensive"
     },
     {
       feature: "AI Assistance",
-      free: "None",
-      creator: "5 requests/month",
-      professional: "Unlimited"
+      earlyBird: "Unlimited"
     },
     {
       feature: "Storage",
-      free: "1GB",
-      creator: "10GB",
-      professional: "50GB"
+      earlyBird: "Unlimited"
     },
     {
       feature: "Collaboration",
-      free: "None",
-      creator: "Basic",
-      professional: "Team (5 members)"
+      earlyBird: "Team (5 members)"
     },
     {
       feature: "Export Options",
-      free: "Basic",
-      creator: "Multiple formats",
-      professional: "Advanced + API"
+      earlyBird: "Advanced + API"
     },
     {
       feature: "Support",
-      free: "Community",
-      creator: "Priority",
-      professional: "Priority + Custom"
+      earlyBird: "Priority + Custom"
     }
   ];
 
   const faqs = [
     {
-      question: "Can I upgrade or downgrade my plan anytime?",
-      answer: "Yes, you can change your plan at any time. Upgrades take effect immediately, while downgrades take effect at the end of your current billing period."
+      question: "Is this really free forever?",
+      answer: "Yes! As an early bird, you get access to all premium features completely free. This is our way of thanking early adopters who believe in our vision."
     },
     {
-      question: "Is there a free trial available?",
-      answer: "Yes! You can start with our free plan and upgrade anytime. We also offer a 14-day free trial of our Creator plan to test advanced features."
+      question: "What happens when the early bird period ends?",
+      answer: "Early bird members will be grandfathered in and keep their free access. We'll always honor our commitment to early adopters."
     },
     {
-      question: "What payment methods do you accept?",
-      answer: "We accept all major credit cards, PayPal, and Apple Pay. All payments are processed securely through Stripe."
+      question: "Are there any hidden fees or limitations?",
+      answer: "No hidden fees, no limitations. You get full access to all features, unlimited usage, and premium support - completely free."
     },
     {
-      question: "Can I cancel my subscription anytime?",
-      answer: "Absolutely. You can cancel your subscription at any time, and you'll continue to have access until the end of your current billing period."
+      question: "Can I invite team members to my free account?",
+      answer: "Yes! You can invite up to 5 team members to collaborate on your projects at no additional cost."
+    },
+    {
+      question: "What if I need more than 5 team members?",
+      answer: "Contact our support team. We're flexible and want to accommodate your needs as an early bird member."
     },
     {
       question: "Do you offer discounts for students or educators?",
-      answer: "Yes! We offer special pricing for students and educators. Contact our support team with your credentials to learn more."
-    },
-    {
-      question: "What happens to my data if I cancel?",
-      answer: "Your data is safe. You can export all your content before canceling, and we'll keep your data for 30 days in case you want to reactivate your account."
+      answer: "Since everything is free for early birds, there's no need for additional discounts! Students and educators are welcome to join as early birds."
     }
   ];
 
   return (
     <>
       <Helmet>
-        <title>Pricing - Affordable World Building & Universe Management Tools | MosCownpur</title>
-        <meta name="description" content="Choose the perfect plan for your world building needs. From free to professional, our pricing is designed to grow with your creative projects. Start free today!" />
-        <meta name="keywords" content="world building software pricing, universe management cost, creative writing tools pricing, character management software cost, story development platform pricing" />
-        <meta property="og:title" content="Pricing - Affordable World Building & Universe Management Tools | MosCownpur" />
-        <meta property="og:description" content="Choose the perfect plan for your world building needs. From free to professional, our pricing is designed to grow with your creative projects. Start free today!" />
+        <title>Pricing - Free Early Bird Access to World Building Tools | MosCownpur</title>
+        <meta name="description" content="Join as an early bird and get unlimited access to our world building platform completely free. Limited time offer for early adopters. Start building your universe today!" />
+        <meta name="keywords" content="free world building software, early bird pricing, universe management free, creative writing tools free, character management software free" />
+        <meta property="og:title" content="Pricing - Free Early Bird Access to World Building Tools | MosCownpur" />
+        <meta property="og:description" content="Join as an early bird and get unlimited access to our world building platform completely free. Limited time offer for early adopters. Start building your universe today!" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.moscownpur.in/pricing" />
         <link rel="canonical" href="https://www.moscownpur.in/pricing" />
@@ -172,29 +114,29 @@ const Pricing: React.FC = () => {
           {/* Hero Section */}
           <div className="text-center mb-16">
             <h1 className="text-display mb-6">
-              Simple, <span className="gradient-text-cosmic">Transparent Pricing</span>
+              <span className="gradient-text-cosmic">Free for Early Birds</span>
             </h1>
             <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
-              Choose the perfect plan for your world building journey. Start free and upgrade 
-              as your creative projects grow. No hidden fees, no surprises.
+              Join us as an early bird and get unlimited access to all premium features completely free. 
+              This is our way of thanking early adopters who believe in our vision.
             </p>
             <div className="flex justify-center gap-4 flex-wrap">
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Free Forever Plan</span>
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">14-Day Free Trial</span>
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">Cancel Anytime</span>
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">No Setup Fees</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Free Forever</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">All Premium Features</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">No Limitations</span>
+              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">Early Bird Exclusive</span>
             </div>
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid lg:grid-cols-1 gap-8 mb-16 max-w-2xl mx-auto">
             {plans.map((plan, index) => (
               <div key={index} className={`relative ${plan.popular ? 'lg:scale-105' : ''}`}>
-                {plan.popular && (
+                {plan.earlyBird && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-cosmic">
+                    <span className="glass-card px-6 py-3 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-cosmic animate-pulse">
                       <Star size={16} />
-                      Most Popular
+                      Early Bird Exclusive
                     </span>
                   </div>
                 )}
@@ -229,19 +171,9 @@ const Pricing: React.FC = () => {
                   )}
 
                   <div className="mt-auto">
-                    {plan.name === "Free" ? (
-                      <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition block text-center">
-                        Get Started Free
-                      </a>
-                    ) : (
-                      <a href="/signup" className={`px-8 py-3 rounded-full font-semibold smooth-transition block text-center ${
-                        plan.popular 
-                          ? 'glass-card-cosmic text-white hover:soft-glow-cosmic' 
-                          : 'glass-card text-white hover:soft-glow-cosmic'
-                      }`}>
-                        Start {plan.name} Trial
-                      </a>
-                    )}
+                    <a href="/signup" className="glass-card-cosmic text-white px-8 py-4 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition block text-center text-lg">
+                      Claim Your Free Early Bird Access
+                    </a>
                   </div>
                 </div>
               </div>
@@ -250,25 +182,21 @@ const Pricing: React.FC = () => {
 
           {/* Feature Comparison */}
           <div className="mb-16">
-            <h2 className="text-heading text-center mb-12 gradient-text-purple">Detailed Feature Comparison</h2>
+            <h2 className="text-heading text-center mb-12 gradient-text-purple">What You Get as an Early Bird</h2>
             <div className="glass-card rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-700">
                       <th className="text-left p-6 text-subheading">Feature</th>
-                      <th className="text-center p-6 text-subheading">Free</th>
-                      <th className="text-center p-6 text-subheading">Creator</th>
-                      <th className="text-center p-6 text-subheading">Professional</th>
+                      <th className="text-center p-6 text-subheading">Early Bird Access</th>
                     </tr>
                   </thead>
                   <tbody>
                     {comparisonFeatures.map((feature, index) => (
                       <tr key={index} className="border-b border-gray-700 hover:bg-gray-800/50 smooth-transition">
                         <td className="p-6 text-body">{feature.feature}</td>
-                        <td className="p-6 text-center text-body">{feature.free}</td>
-                        <td className="p-6 text-center text-body">{feature.creator}</td>
-                        <td className="p-6 text-center text-body">{feature.professional}</td>
+                        <td className="p-6 text-center text-body">{feature.earlyBird}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -293,21 +221,21 @@ const Pricing: React.FC = () => {
           {/* CTA Section */}
           <div className="text-center">
             <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic">
-              <h3 className="text-heading mb-6">Ready to Start Building Your Universe?</h3>
+              <h3 className="text-heading mb-6">Ready to Join the Early Bird Community?</h3>
               <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
-                Join thousands of creators who trust MosCownpur for their world building needs. 
-                Start free today and upgrade when you're ready.
+                Don't miss out on this exclusive offer. Join thousands of creators who are already 
+                building amazing universes with MosCownpur - completely free.
               </p>
               <div className="flex justify-center gap-4 flex-wrap mb-6">
-                <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
-                  Start Free Trial
+                <a href="/signup" className="glass-card text-white px-8 py-4 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition text-lg">
+                  Get Free Early Bird Access
                 </a>
-                <a href="/features" className="glass-card border border-white text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                <a href="/features" className="glass-card border border-white text-white px-8 py-4 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
                   Explore Features
                 </a>
               </div>
-              <p className="text-caption text-gray-400">
-                No credit card required • 14-day free trial • Cancel anytime
+              <p className="text-caption text-white">
+                No credit card required • Free forever • All premium features included
               </p>
             </div>
           </div>
