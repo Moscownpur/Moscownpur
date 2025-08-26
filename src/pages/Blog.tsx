@@ -1,29 +1,72 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Search, Calendar, User, Tag, ArrowRight, Book, Lightbulb, Star, Clock, Eye } from 'lucide-react';
+import { Search, Calendar, User, ArrowRight, Book, Clock, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import PublicHeader from '../components/PublicHeader';
-import blogData from '../data/blogPosts.json';
+import { supabaseClient } from '../lib/supabaseClient';
 
 const Blog: React.FC = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory] = useState('');
 
-  const { posts: blogPosts, categories, popularTags } = blogData;
-  const featuredPost = blogPosts.find(post => post.featured);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      const { data } = await supabaseClient
+        .from('blogs')
+        .select('id, title, author_id, body, tags, category, created_at, updated_at')
+        .order('created_at', { ascending: false });
+      setBlogPosts(
+        (data || []).map((p: any) => ({
+          id: p.id,
+          title: p.title || 'Untitled',
+          excerpt: (p.body || '').slice(0, 160),
+          author: 'Admin',
+          date: p.created_at || new Date().toISOString(),
+          readTime: `${Math.max(1, Math.round(((p.body || '').split(' ').length) / 200))} min read`,
+          category: p.category || 'General',
+          tags: (p.tags || '').split(',').map((t: string) => t.trim()).filter(Boolean),
+          featured: false,
+          views: 0,
+        }))
+      );
+      setLoading(false);
+    };
+    fetchPosts();
+  }, []);
+
+  const categories = useMemo(() => {
+    const counts: Record<string, number> = {};
+    blogPosts.forEach((p) => {
+      const key = p.category || 'General';
+      counts[key] = (counts[key] || 0) + 1;
+    });
+    return Object.entries(counts).map(([name, count]) => ({ name, count }));
+  }, [blogPosts]);
+
+  const popularTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    blogPosts.forEach((p) => (p.tags || []).forEach((t: string) => tagSet.add(t)));
+    return Array.from(tagSet).slice(0, 12);
+  }, [blogPosts]);
+
+  const featuredPost = blogPosts[0];
 
   // Filter posts based on search and category
-  const filteredPosts = blogPosts.filter(post => {
+  const filteredPosts = blogPosts.filter((post: any) => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+                         post.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesCategory = !selectedCategory || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   const handlePostClick = (post: any) => {
-    navigate(`/blog/${post.slug}`);
+    navigate(`/blog/${post.id}`);
   };
 
   return (
@@ -107,7 +150,7 @@ const Blog: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex gap-2 mb-6 flex-wrap">
-                      {featuredPost.tags.slice(0, 3).map((tag, index) => (
+                      {(featuredPost.tags as string[]).slice(0, 3).map((tag: string, index: number) => (
                         <span key={index} className="glass-card text-gray-300 px-3 py-1 rounded-full text-xs smooth-transition">
                           {tag}
                         </span>
@@ -152,9 +195,9 @@ const Blog: React.FC = () => {
                 <div className="glass-card rounded-xl p-6">
                   <h5 className="text-subheading mb-4">Popular Tags</h5>
                   <div className="flex flex-wrap gap-2">
-                    {popularTags.map((tag, index) => (
-                      <span key={index} className="glass-card text-gray-300 px-3 py-1 rounded-full text-xs smooth-transition">
-                        {tag}
+                    {(popularTags as string[]).map((tagItem: string, tagIndex: number) => (
+                      <span key={tagIndex} className="glass-card text-gray-300 px-3 py-1 rounded-full text-xs smooth-transition">
+                        {tagItem}
                       </span>
                     ))}
                   </div>
@@ -165,7 +208,7 @@ const Blog: React.FC = () => {
             {/* Blog Posts */}
             <div className="lg:col-span-3">
               <div className="grid md:grid-cols-2 gap-8">
-                {filteredPosts.filter(post => !post.featured).map((post, index) => (
+                {(loading ? [] : filteredPosts.filter((post: any) => !post.featured)).map((post: any, index: number) => (
                   <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic cursor-pointer h-full" onClick={() => handlePostClick(post)}>
                     <div className="flex justify-between items-start mb-4">
                       <span className="glass-card px-3 py-1 rounded-full text-xs font-medium soft-glow-blue">{post.category}</span>
@@ -191,7 +234,7 @@ const Blog: React.FC = () => {
                       </div>
                     </div>
                     <div className="flex gap-2 mb-4 flex-wrap">
-                      {post.tags.slice(0, 2).map((tag, idx) => (
+                      {post.tags.slice(0, 2).map((tag: string, idx: number) => (
                         <span key={idx} className="glass-card text-gray-300 px-2 py-1 rounded-full text-xs smooth-transition">
                           {tag}
                         </span>
