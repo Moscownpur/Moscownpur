@@ -4,6 +4,7 @@ import { Plus, Film, Edit, Trash2, Search, Users, MapPin, Clock, Globe, Calendar
 import { motion } from 'framer-motion';
 import { useTimeline } from '../hooks/useTimeline';
 import { useWorlds } from '../hooks/useWorlds';
+import { useChapters } from '../hooks/useChapters';
 import Modal from '../components/Modal';
 import { Scene, World, TimelineEvent } from '../types';
 import { supabase } from '../lib/supabase';
@@ -13,20 +14,19 @@ import toast from 'react-hot-toast';
 const SceneManagement: React.FC = () => {
   const { scenes, loading, refetch, createScene } = useTimeline();
   const { worlds } = useWorlds();
+  const { chapters } = useChapters();
   const { user } = useAuth();
   
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedWorld, setSelectedWorld] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [events, setEvents] = useState<TimelineEvent[]>([]);
-  const [regions, setRegions] = useState<any[]>([]);
   
   // Form state
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     event_id: '',
-    region_id: '',
     world_id: '',
     scene_order: 1,
     ai_image_prompt: ''
@@ -39,30 +39,40 @@ const SceneManagement: React.FC = () => {
     return matchesSearch && matchesWorld;
   });
 
-  // Fetch events and regions when component mounts
+  // Fetch events when component mounts
   useEffect(() => {
     const fetchData = async () => {
       if (!supabase || !user) return;
 
       try {
-        // Fetch events
+        // Fetch events from the events table
         const { data: eventsData } = await supabase
-          .from('timeline_events')
-          .select('id, title, date')
-          .eq('created_by', user.id)
-          .order('date', { ascending: true });
+          .from('events')
+          .select('event_id, title, story_time')
+          .order('story_time', { ascending: true });
 
-        // Fetch regions
-        const { data: regionsData } = await supabase
-          .from('regions')
-          .select('id, name, world_id')
-          .eq('created_by', user.id)
-          .order('name', { ascending: true });
-
-        setEvents(eventsData || []);
-        setRegions(regionsData || []);
+        if (eventsData) {
+          // Map to TimelineEvent format
+          const mappedEvents = eventsData.map(event => ({
+            id: event.event_id,
+            title: event.title,
+            date: event.story_time,
+            era: '',
+            location: '',
+            involved_characters: [],
+            description: '',
+            type: 'Encounter' as const,
+            consequences: '',
+            world_id: '',
+            chapter_id: '',
+            created_by: user.id,
+            created_at: '',
+            updated_at: ''
+          }));
+          setEvents(mappedEvents);
+        }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching events:', error);
       }
     };
 
@@ -72,17 +82,20 @@ const SceneManagement: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title.trim() || !formData.world_id) {
+    if (!formData.description.trim() || !formData.event_id) {
       toast.error('Please fill in all required fields');
       return;
     }
 
     try {
       await createScene({
-        ...formData,
+        title: formData.title,
+        description: formData.description,
+        event_id: formData.event_id,
+        region_id: null,
         world_id: formData.world_id,
-        event_id: formData.event_id || '',
-        region_id: formData.region_id || null,
+        scene_order: formData.scene_order,
+        ai_image_prompt: formData.ai_image_prompt,
         dialogue: '',
         created_by: user?.id || ''
       });
@@ -92,7 +105,6 @@ const SceneManagement: React.FC = () => {
         title: '',
         description: '',
         event_id: '',
-        region_id: '',
         world_id: '',
         scene_order: 1,
         ai_image_prompt: ''
@@ -104,6 +116,14 @@ const SceneManagement: React.FC = () => {
 
   const handleInputChange = (field: string, value: string | number) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const getEventName = (eventId: string) => {
+    return events.find(e => e.id === eventId)?.title || 'Unknown Event';
+  };
+
+  const getWorldName = (worldId: string) => {
+    return worlds.find(w => w.id === worldId)?.name || 'Unknown World';
   };
 
   const getRoleColor = (role: string) => {
@@ -398,27 +418,6 @@ const SceneManagement: React.FC = () => {
                   {event.title} - {new Date(event.date).toLocaleDateString()}
                 </option>
               ))}
-            </select>
-          </div>
-
-          {/* Region Selection */}
-          <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
-              Region
-            </label>
-            <select
-              value={formData.region_id}
-              onChange={(e) => handleInputChange('region_id', e.target.value)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
-            >
-              <option value="">Select a region (optional)...</option>
-              {regions
-                .filter(region => !formData.world_id || region.world_id === formData.world_id)
-                .map(region => (
-                  <option key={region.id} value={region.id} className="bg-black">
-                    {region.name}
-                  </option>
-                ))}
             </select>
           </div>
 

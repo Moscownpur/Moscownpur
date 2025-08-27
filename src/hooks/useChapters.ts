@@ -19,18 +19,31 @@ export const useChapters = (worldId?: string) => {
       
       let query = supabase
         .from('chapters')
-        .select('*');
+        .select('chapter_id, world_id, title, chapter_order, template_type, status, timeline_version, created_at, updated_at');
 
       if (worldId) {
         query = query.eq('world_id', worldId);
-      } else {
-        query = query.eq('created_by', user?.id);
       }
 
-      const { data, error } = await query.order('order_index', { ascending: true });
+      const { data, error } = await query.order('chapter_order', { ascending: true });
 
       if (error) throw error;
-      setChapters(data || []);
+      
+      // Map database fields to UI fields
+      const mappedChapters = (data || []).map(chapter => ({
+        id: chapter.chapter_id,
+        world_id: chapter.world_id,
+        title: chapter.title,
+        description: '', // Default empty description
+        order_index: chapter.chapter_order,
+        template_type: chapter.template_type,
+        status: chapter.status,
+        timeline_version: chapter.timeline_version,
+        created_at: chapter.created_at,
+        updated_at: chapter.updated_at
+      }));
+      
+      setChapters(mappedChapters);
     } catch (error) {
       console.error('Error fetching chapters:', error);
       toast.error('Failed to load chapters');
@@ -48,18 +61,34 @@ export const useChapters = (worldId?: string) => {
       const { data, error } = await supabase
         .from('chapters')
         .insert([{
-          ...chapterData,
-          created_by: user?.id,
-          order_index: chapterData.order_index || chapters.length + 1
+          world_id: chapterData.world_id,
+          title: chapterData.title,
+          chapter_order: chapterData.order_index || chapters.length + 1,
+          template_type: chapterData.template_type,
+          status: chapterData.status || 'draft',
+          timeline_version: chapterData.timeline_version || 1
         }])
-        .select()
+        .select('chapter_id, world_id, title, chapter_order, template_type, status, timeline_version, created_at, updated_at')
         .single();
 
       if (error) throw error;
       
-      setChapters(prev => [...prev, data]);
+      const mappedChapter = {
+        id: data.chapter_id,
+        world_id: data.world_id,
+        title: data.title,
+        description: '', // Default empty description
+        order_index: data.chapter_order,
+        template_type: data.template_type,
+        status: data.status,
+        timeline_version: data.timeline_version,
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      };
+      
+      setChapters(prev => [...prev, mappedChapter]);
       toast.success('Chapter created successfully! 📖');
-      return data;
+      return mappedChapter;
     } catch (error) {
       console.error('Error creating chapter:', error);
       toast.error('Failed to create chapter');
@@ -73,19 +102,38 @@ export const useChapters = (worldId?: string) => {
         throw new Error('Database connection not available');
       }
 
+      const updateData: any = {};
+      if (updates.title !== undefined) updateData.title = updates.title;
+      if (updates.order_index !== undefined) updateData.chapter_order = updates.order_index;
+      if (updates.template_type !== undefined) updateData.template_type = updates.template_type;
+      if (updates.status !== undefined) updateData.status = updates.status;
+      if (updates.timeline_version !== undefined) updateData.timeline_version = updates.timeline_version;
+
       const { data, error } = await supabase
         .from('chapters')
-        .update(updates)
-        .eq('id', id)
-        .eq('created_by', user?.id)
-        .select()
+        .update(updateData)
+        .eq('chapter_id', id)
+        .select('chapter_id, world_id, title, chapter_order, template_type, status, timeline_version, created_at, updated_at')
         .single();
 
       if (error) throw error;
       
-      setChapters(prev => prev.map(chapter => chapter.id === id ? data : chapter));
+      const mappedChapter = {
+        id: data.chapter_id,
+        world_id: data.world_id,
+        title: data.title,
+        description: '', // Default empty description
+        order_index: data.chapter_order,
+        template_type: data.template_type,
+        status: data.status,
+        timeline_version: data.timeline_version,
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      };
+      
+      setChapters(prev => prev.map(chapter => chapter.id === id ? mappedChapter : chapter));
       toast.success('Chapter updated! ✨');
-      return data;
+      return mappedChapter;
     } catch (error) {
       console.error('Error updating chapter:', error);
       toast.error('Failed to update chapter');
@@ -102,8 +150,7 @@ export const useChapters = (worldId?: string) => {
       const { error } = await supabase
         .from('chapters')
         .delete()
-        .eq('id', id)
-        .eq('created_by', user?.id);
+        .eq('chapter_id', id);
 
       if (error) throw error;
       
@@ -122,16 +169,16 @@ export const useChapters = (worldId?: string) => {
         throw new Error('Database connection not available');
       }
 
-      // Update order_index for each chapter
+      // Update chapter_order for each chapter
       const updates = newOrder.map((chapter, index) => ({
-        id: chapter.id,
-        order_index: index + 1
+        chapter_id: chapter.id,
+        chapter_order: index + 1
       }));
 
       // Batch update all chapters
       const { error } = await supabase
         .from('chapters')
-        .upsert(updates, { onConflict: 'id' });
+        .upsert(updates, { onConflict: 'chapter_id' });
 
       if (error) throw error;
       
@@ -151,10 +198,9 @@ export const useChapters = (worldId?: string) => {
       }
 
       const { error } = await supabase
-        .from('timeline_events')
+        .from('events')
         .update({ chapter_id: chapterId })
-        .eq('id', eventId)
-        .eq('created_by', user?.id);
+        .eq('event_id', eventId);
 
       if (error) throw error;
       

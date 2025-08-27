@@ -154,9 +154,11 @@ export interface Chapter {
   id: string;
   world_id: string;
   title: string;
-  description: string;
+  description?: string;
   order_index: number;
-  created_by: string;
+  template_type?: string;
+  status?: 'draft' | 'published' | 'archived';
+  timeline_version?: number;
   created_at: string;
   updated_at: string;
 }
