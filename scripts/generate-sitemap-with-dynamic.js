@@ -163,6 +163,27 @@ async function generateSitemap() {
       console.log(`✅ Added public route: ${route.url}`);
     });
     
+    // Add HTTP versions of important pages for SEO
+    const httpRoutes = [
+      { url: '/', changefreq: 'weekly', priority: 1.0, lastmod: new Date().toISOString() },
+      { url: '/features', changefreq: 'monthly', priority: 0.9, lastmod: new Date().toISOString() },
+      { url: '/world-building-guide', changefreq: 'monthly', priority: 0.8, lastmod: new Date().toISOString() },
+      { url: '/pricing', changefreq: 'monthly', priority: 0.8, lastmod: new Date().toISOString() },
+      { url: '/blog', changefreq: 'weekly', priority: 0.7, lastmod: new Date().toISOString() },
+      { url: '/about', changefreq: 'monthly', priority: 0.6, lastmod: new Date().toISOString() },
+      { url: '/signup', changefreq: 'monthly', priority: 0.9, lastmod: new Date().toISOString() },
+      { url: '/login', changefreq: 'monthly', priority: 0.5, lastmod: new Date().toISOString() },
+    ];
+
+    httpRoutes.forEach(route => {
+      const httpRoute = {
+        ...route,
+        url: `http://www.moscownpur.in${route.url}`
+      };
+      sitemap.write(httpRoute);
+      console.log(`✅ Added HTTP route: http://www.moscownpur.in${route.url}`);
+    });
+    
     // Fetch and add dynamic routes
     const dynamicRoutes = await fetchDynamicRoutes();
     dynamicRoutes.forEach(route => {
@@ -181,9 +202,9 @@ async function generateSitemap() {
     writeStream.write(sitemapXML);
     writeStream.end();
     
-    const totalRoutes = publicRoutes.length + dynamicRoutes.length;
+    const totalRoutes = publicRoutes.length + dynamicRoutes.length + httpRoutes.length;
     console.log(`✅ Sitemap generated successfully at: ${outputPath}`);
-    console.log(`📊 Total routes: ${totalRoutes} (${publicRoutes.length} public + ${dynamicRoutes.length} dynamic)`);
+    console.log(`📊 Total routes: ${totalRoutes} (${publicRoutes.length} public + ${dynamicRoutes.length} dynamic + ${httpRoutes.length} HTTP)`);
     console.log(`🌐 Sitemap URL: ${baseURL}/sitemap.xml`);
     console.log(`🔒 Private routes excluded: /login, /signup, /admin/*, /dashboard/*`);
     
