@@ -2,6 +2,10 @@ import { SitemapStream, streamToPromise } from 'sitemap';
 import { createWriteStream } from 'fs';
 import { resolve } from 'path';
 import { createClient } from '@supabase/supabase-js';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 // Define your base URL
 const baseURL = 'https://www.moscownpur.in';
@@ -64,23 +68,6 @@ async function fetchDynamicRoutes() {
   const dynamicRoutes = [];
   
   try {
-    // Add blog posts from JSON file
-    console.log('🔍 Fetching blog posts...');
-    try {
-      const blogData = JSON.parse(await import('fs').then(fs => fs.readFileSync('./src/data/blogPosts.json', 'utf8')));
-      blogData.posts.forEach(post => {
-        dynamicRoutes.push({
-          url: `/blog/${post.slug}`,
-          changefreq: 'monthly',
-          priority: 0.6,
-          lastmod: new Date(post.date).toISOString(),
-        });
-      });
-      console.log(`✅ Added ${blogData.posts.length} blog post routes`);
-    } catch (blogError) {
-      console.log('⚠️  Blog posts file not found or invalid. Skipping blog routes.');
-    }
-    
     // Initialize Supabase client
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
     const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
@@ -132,6 +119,28 @@ async function fetchDynamicRoutes() {
         });
       });
       console.log(`✅ Added ${scenes.length} scene routes`);
+    }
+    
+    // Fetch blog posts from database
+    console.log('🔍 Fetching blog posts from database...');
+    const { data: blogs, error: blogsError } = await supabase
+      .from('blogs')
+      .select('id, title, created_at, updated_at')
+      .order('created_at', { ascending: false });
+    
+    if (blogsError) {
+      console.error('❌ Error fetching blogs:', blogsError);
+    } else if (blogs) {
+      blogs.forEach(blog => {
+        // Use the blog id for the URL since BlogPostPage uses id for routing
+        dynamicRoutes.push({
+          url: `/blog/${blog.id}`,
+          changefreq: 'monthly',
+          priority: 0.6,
+          lastmod: blog.updated_at || blog.created_at,
+        });
+      });
+      console.log(`✅ Added ${blogs.length} blog post routes from database`);
     }
     
   } catch (error) {
