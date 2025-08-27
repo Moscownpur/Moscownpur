@@ -28,6 +28,7 @@ const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const WorldManagement = lazy(() => import('./pages/WorldManagement'));
 const CharacterManagement = lazy(() => import('./pages/CharacterManagement'));
+const EventManagement = lazy(() => import('./pages/EventManagement'));
 const TimelineEvents = lazy(() => import('./pages/TimelineEvents'));
 const StoryScenes = lazy(() => import('./pages/StoryScenes'));
 const WorldDetails = lazy(() => import('./pages/WorldDetails'));
@@ -80,6 +81,7 @@ function App() {
                       <Route path="worlds/:id" element={<WorldDetails />} />
                       <Route path="chapters" element={<ChapterManagement />} />
                       <Route path="characters" element={<CharacterManagement />} />
+                      <Route path="events" element={<EventManagement />} />
                       <Route path="scenes" element={<SceneManagement />} />
                       <Route path="scenes/:id" element={<SceneDetail />} />
                       <Route path="timeline" element={<TimelineEvents />} />

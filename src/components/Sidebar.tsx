@@ -9,7 +9,8 @@ import {
   BookOpen,
   Film,
   FileText,
-  Bot
+  Bot,
+  Calendar
 } from 'lucide-react';
 
 const navigation = [
@@ -17,8 +18,9 @@ const navigation = [
   { name: 'Worlds', href: '/dashboard/worlds', icon: Globe },
   { name: 'Chapters', href: '/dashboard/chapters', icon: BookOpen },
   { name: 'Characters', href: '/dashboard/characters', icon: Users },
+  { name: 'Events', href: '/dashboard/events', icon: Clock },
   { name: 'Scenes', href: '/dashboard/scenes', icon: Film },
-  { name: 'Timeline', href: '/dashboard/timeline', icon: Clock },
+  { name: 'Timeline', href: '/dashboard/timeline', icon: Calendar },
 ];
 
 const Sidebar: React.FC = () => {
