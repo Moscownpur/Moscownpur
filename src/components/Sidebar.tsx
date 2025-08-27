@@ -9,19 +9,18 @@ import {
   BookOpen,
   Film,
   FileText,
-  Bot
+  Bot,
+  Calendar
 } from 'lucide-react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Worlds', href: '/dashboard/worlds', icon: Globe },
-  { name: 'Regions', href: '/dashboard/regions', icon: MapPin },
+  { name: 'Chapters', href: '/dashboard/chapters', icon: BookOpen },
   { name: 'Characters', href: '/dashboard/characters', icon: Users },
-  { name: 'Timeline', href: '/dashboard/timeline', icon: Clock },
-  { name: 'Chapters', href: '/dashboard/chapters', icon: FileText },
+  { name: 'Events', href: '/dashboard/events', icon: Clock },
   { name: 'Scenes', href: '/dashboard/scenes', icon: Film },
-  { name: 'Stories', href: '/dashboard/stories', icon: BookOpen },
-  { name: 'AI Test', href: '/dashboard/ai-test', icon: Bot },
+  { name: 'Timeline', href: '/dashboard/timeline', icon: Calendar },
 ];
 
 const Sidebar: React.FC = () => {

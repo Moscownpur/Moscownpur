@@ -1,104 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Film, Edit, Trash2, Search, Users, MapPin, Clock, Globe, Calendar } from 'lucide-react';
+import { Plus, Film, Edit, Trash2, Search, Users, MapPin, Clock, Globe, Calendar, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useTimeline } from '../hooks/useTimeline';
-import { useWorlds } from '../hooks/useWorlds';
+import { useScenes } from '../hooks/useScenes';
+import { useEvents } from '../hooks/useEvents';
+import { useChapters } from '../hooks/useChapters';
 import Modal from '../components/Modal';
-import { Scene, World, TimelineEvent } from '../types';
+import { Scene, TimelineEvent } from '../types';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 const SceneManagement: React.FC = () => {
-  const { scenes, loading, refetch, createScene } = useTimeline();
-  const { worlds } = useWorlds();
+  const { scenes, loading, refetch, createScene, updateScene, deleteScene } = useScenes();
+  const { events } = useEvents();
+  const { chapters } = useChapters();
   const { user } = useAuth();
   
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedWorld, setSelectedWorld] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [events, setEvents] = useState<TimelineEvent[]>([]);
-  const [regions, setRegions] = useState<any[]>([]);
+  const [editingScene, setEditingScene] = useState<Scene | null>(null);
   
   // Form state
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     event_id: '',
-    region_id: '',
-    world_id: '',
-    scene_order: 1,
     ai_image_prompt: ''
   });
 
   const filteredScenes = scenes.filter(scene => {
     const matchesSearch = scene.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          scene.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesWorld = !selectedWorld || scene.world_id === selectedWorld;
-    return matchesSearch && matchesWorld;
+    const matchesEvent = !selectedEvent || scene.event_id === selectedEvent;
+    return matchesSearch && matchesEvent;
   });
-
-  // Fetch events and regions when component mounts
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!supabase || !user) return;
-
-      try {
-        // Fetch events
-        const { data: eventsData } = await supabase
-          .from('timeline_events')
-          .select('id, title, date')
-          .eq('created_by', user.id)
-          .order('date', { ascending: true });
-
-        // Fetch regions
-        const { data: regionsData } = await supabase
-          .from('regions')
-          .select('id, name, world_id')
-          .eq('created_by', user.id)
-          .order('name', { ascending: true });
-
-        setEvents(eventsData || []);
-        setRegions(regionsData || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, [user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title.trim() || !formData.world_id) {
-      toast.error('Please fill in all required fields');
+    if (!formData.title.trim() || !formData.description.trim() || !formData.event_id) {
+      toast.error('Please fill in all required fields (Title, Description, and Event)');
       return;
     }
 
     try {
-      await createScene({
-        ...formData,
-        world_id: formData.world_id,
-        event_id: formData.event_id || '',
-        region_id: formData.region_id || null,
-        dialogue: '',
-        created_by: user?.id || ''
-      });
+      if (editingScene) {
+        await updateScene(editingScene.id, {
+          title: formData.title,
+          description: formData.description,
+          ai_image_prompt: formData.ai_image_prompt
+        });
+      } else {
+        await createScene({
+          title: formData.title,
+          description: formData.description,
+          event_id: formData.event_id,
+          region_id: null,
+          world_id: '',
+          scene_order: 0,
+          ai_image_prompt: formData.ai_image_prompt,
+          dialogue: '',
+          created_by: user?.id || ''
+        });
+      }
       
       setShowCreateModal(false);
+      setEditingScene(null);
       setFormData({
         title: '',
         description: '',
         event_id: '',
-        region_id: '',
-        world_id: '',
-        scene_order: 1,
         ai_image_prompt: ''
       });
     } catch (error) {
-      console.error('Error creating scene:', error);
+      console.error('Error saving scene:', error);
     }
   };
 
@@ -106,30 +83,31 @@ const SceneManagement: React.FC = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const getRoleColor = (role: string) => {
-    const colors = {
-      'protagonist': 'text-green-400 bg-green-500/20',
-      'antagonist': 'text-red-400 bg-red-500/20',
-      'ally': 'text-blue-400 bg-blue-500/20',
-      'enemy': 'text-orange-400 bg-orange-500/20',
-      'witness': 'text-gray-400 bg-gray-500/20',
-      'narrator': 'text-purple-400 bg-purple-500/20',
-      'participant': 'text-white bg-white/10'
-    };
-    return colors[role as keyof typeof colors] || 'text-white bg-white/10';
+  const handleEdit = (scene: Scene) => {
+    setEditingScene(scene);
+    setFormData({
+      title: scene.title,
+      description: scene.description,
+      event_id: scene.event_id,
+      ai_image_prompt: scene.ai_image_prompt
+    });
+    setShowCreateModal(true);
   };
 
-  const getStateColor = (state: string) => {
-    const colors = {
-      'normal': 'text-green-400',
-      'injured': 'text-yellow-400',
-      'dead': 'text-red-400',
-      'transformed': 'text-purple-400',
-      'missing': 'text-gray-400',
-      'empowered': 'text-blue-400',
-      'weakened': 'text-orange-400'
-    };
-    return colors[state as keyof typeof colors] || 'text-white';
+  const handleDelete = async (scene: Scene) => {
+    if (window.confirm(`Are you sure you want to delete "${scene.title}"?`)) {
+      await deleteScene(scene.id);
+    }
+  };
+
+  const getEventName = (eventId: string) => {
+    return events.find(e => e.id === eventId)?.title || 'Unknown Event';
+  };
+
+  const getChapterName = (eventId: string) => {
+    const event = events.find(e => e.id === eventId);
+    if (!event) return 'Unknown Chapter';
+    return chapters.find(c => c.id === event.chapter_id)?.title || 'Unknown Chapter';
   };
 
   return (
@@ -143,19 +121,22 @@ const SceneManagement: React.FC = () => {
         animate={{ opacity: 1, x: 0 }}
         className="flex items-center justify-between"
       >
-        <div>
-          <h1 className="text-display gradient-text-purple mb-4">
+        <div className="relative">
+          <h1 className="text-display gradient-text-cosmic mb-4">
             Scene Management
           </h1>
           <p className="text-subheading text-white/60">
-            Craft detailed scenes with character interactions and context
+            Create and manage story scenes
           </p>
         </div>
         <button
-          onClick={() => setShowCreateModal(true)}
-                      className="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3"
+          onClick={() => {
+            setEditingScene(null);
+            setShowCreateModal(true);
+          }}
+          className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center space-x-3"
         >
-          <Film size={20} />
+          <Plus size={20} />
           <span className="text-body">Create Scene</span>
         </button>
       </motion.div>
@@ -165,7 +146,7 @@ const SceneManagement: React.FC = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="flex flex-col lg:flex-row gap-4"
+        className="flex flex-col md:flex-row gap-4"
       >
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
@@ -177,20 +158,18 @@ const SceneManagement: React.FC = () => {
             className="w-full pl-14 pr-4 py-4 glass-card rounded-2xl focus:outline-none focus:soft-glow smooth-transition text-white placeholder-white/40 text-body"
           />
         </div>
-        
-        <div className="relative">
-          <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/40 w-5 h-5" />
-          <select
-            value={selectedWorld}
-            onChange={(e) => setSelectedWorld(e.target.value)}
-            className="pl-14 pr-8 py-4 glass-card rounded-2xl focus:outline-none focus:soft-glow smooth-transition text-white bg-transparent min-w-[180px]"
-          >
-            <option value="">All Worlds</option>
-            {worlds.map(world => (
-              <option key={world.id} value={world.id} className="bg-black">{world.name}</option>
-            ))}
-          </select>
-        </div>
+        <select
+          value={selectedEvent}
+          onChange={(e) => setSelectedEvent(e.target.value)}
+          className="px-4 py-4 glass-card rounded-2xl focus:outline-none focus:soft-glow smooth-transition text-white bg-transparent border border-white/20"
+        >
+          <option value="">All Events</option>
+          {events.map(event => (
+            <option key={event.id} value={event.id} className="bg-black">
+              {event.title}
+            </option>
+          ))}
+        </select>
       </motion.div>
 
       {/* Scenes Grid */}
@@ -198,45 +177,21 @@ const SceneManagement: React.FC = () => {
         <div className="flex items-center justify-center py-32">
           <div className="animate-spin rounded-full h-16 w-16 border-2 border-white/20 border-t-white/80"></div>
         </div>
-      ) : filteredScenes.length === 0 ? (
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center py-32"
-        >
-          <div className="w-24 h-24 glass-card rounded-3xl flex items-center justify-center mx-auto mb-8">
-            <Film className="w-12 h-12 text-white/60" />
-          </div>
-          <h3 className="text-heading gradient-text-purple mb-6">
-            No scenes found!
-          </h3>
-          <p className="text-body text-white/60 mb-10">
-            {searchTerm ? 'Try a different search term' : 'Create your first scene to bring your events to life'}
-          </p>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="px-8 py-4 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3 mx-auto"
-          >
-            <Film size={20} />
-            <span>Create Your First Scene</span>
-          </button>
-        </motion.div>
       ) : (
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {filteredScenes.map((scene, index) => (
-            <Link to={`/dashboard/scenes/${scene.id}`}>
             <motion.div
               key={scene.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ scale: 1.02, y: -4 }}
-                className="glass-card rounded-2xl p-8 group smooth-transition hover:soft-glow cursor-pointer"
+              className="glass-card rounded-2xl p-8 group smooth-transition hover:soft-glow"
             >
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center space-x-3">
@@ -248,23 +203,23 @@ const SceneManagement: React.FC = () => {
                       {scene.title}
                     </h3>
                     <span className="text-caption text-white/60 font-medium">
-                      Scene {scene.scene_order}
+                      Scene
                     </span>
                   </div>
                 </div>
                 <div className="flex space-x-2">
-                  <Link to={`/dashboard/scenes/${scene.id}`}>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
+                    onClick={() => handleEdit(scene)}
                     className="p-3 text-white/40 hover:text-white hover:glass-card rounded-xl smooth-transition"
                   >
                     <Edit size={18} />
                   </motion.button>
-                  </Link>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
+                    onClick={() => handleDelete(scene)}
                     className="p-3 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-xl smooth-transition"
                   >
                     <Trash2 size={18} />
@@ -272,68 +227,74 @@ const SceneManagement: React.FC = () => {
                 </div>
               </div>
               
+              <p className="text-body text-white/60 mb-6 line-clamp-3">
+                {scene.description}
+              </p>
+              
               <div className="space-y-4">
-                <p className="text-body text-white/70 line-clamp-3">
-                  {scene.description}
-                </p>
-                
-                {scene.dialogue && (
-                  <div className="glass-card rounded-xl p-4">
-                    <p className="text-caption text-white/60 mb-2">Dialogue:</p>
-                    <p className="text-body text-white/80 italic line-clamp-2">
-                      "{scene.dialogue}"
-                    </p>
+                <div className="flex items-center gap-2 text-caption text-white/60">
+                  <Clock size={14} />
+                  <span>{getEventName(scene.event_id)}</span>
+                </div>
+                <div className="flex items-center gap-2 text-caption text-white/60">
+                  <BookOpen size={14} />
+                  <span>{getChapterName(scene.event_id)}</span>
+                </div>
+                {scene.ai_image_prompt && (
+                  <div className="flex items-center gap-2 text-caption text-white/60">
+                    <span>🎨 AI Image Prompt Available</span>
                   </div>
                 )}
-                
-                {/* Scene Characters */}
-                {(scene as any).scene_characters && (scene as any).scene_characters.length > 0 && (
-                  <div>
-                    <p className="text-caption text-white/60 mb-3 flex items-center gap-2">
-                      <Users size={14} />
-                      Characters in Scene:
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {(scene as any).scene_characters.map((sc: any, idx: number) => (
-                        <div
-                          key={idx}
-                          className={`px-3 py-2 rounded-full text-caption font-medium ${getRoleColor(sc.role_in_scene)}`}
-                        >
-                          <span className="font-semibold">{sc.characters?.name}</span>
-                          <span className="mx-2">•</span>
-                          <span className={getStateColor(sc.character_state)}>{sc.character_state}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
                 <div className="flex items-center justify-between text-caption text-white/40 pt-4 border-t border-white/5">
-                  <div className="flex items-center gap-4">
-                    {(scene as any).regions?.name && (
-                      <div className="flex items-center gap-1">
-                        <MapPin size={12} />
-                        <span>{(scene as any).regions.name}</span>
-                      </div>
-                    )}
-                  </div>
+                  <span className="gradient-text-cosmic">
+                    Scene
+                  </span>
                   <span>{new Date(scene.created_at).toLocaleDateString()}</span>
                 </div>
               </div>
             </motion.div>
-            </Link>
           ))}
         </motion.div>
       )}
 
-      {/* Create Scene Modal */}
+      {filteredScenes.length === 0 && !loading && (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center py-32"
+        >
+          <div className="w-24 h-24 glass-card rounded-3xl flex items-center justify-center mx-auto mb-8">
+            <Film className="w-12 h-12 text-white/60" />
+          </div>
+          <h3 className="text-heading gradient-text-cosmic mb-6">
+            No scenes found!
+          </h3>
+          <p className="text-body text-white/60 mb-10">
+            {searchTerm ? 'Try a different search term' : 'Time to create your first scene'}
+          </p>
+          <button
+            onClick={() => {
+              setEditingScene(null);
+              setShowCreateModal(true);
+            }}
+            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-3 mx-auto"
+          >
+            <Plus size={20} />
+            <span>Create Your First Scene</span>
+          </button>
+        </motion.div>
+      )}
+
+      {/* Scene Form Modal */}
       <Modal 
         isOpen={showCreateModal} 
-        onClose={() => setShowCreateModal(false)}
-        title="Create New Scene"
+        onClose={() => {
+          setShowCreateModal(false);
+          setEditingScene(null);
+        }}
+        title={editingScene ? 'Edit Scene' : 'Create New Scene'}
       >
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Title */}
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
               Scene Title *
@@ -342,101 +303,45 @@ const SceneManagement: React.FC = () => {
               type="text"
               value={formData.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white placeholder-white/50 focus:outline-none focus:border-purple-500/50"
+              className="w-full px-4 py-3 glass-card rounded-xl focus:outline-none focus:soft-glow text-white placeholder-white/40"
               placeholder="Enter scene title..."
               required
             />
           </div>
 
-          {/* Description */}
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
-              Description
+              Scene Description *
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white placeholder-white/50 focus:outline-none focus:border-purple-500/50 resize-none"
+              className="w-full px-4 py-3 glass-card rounded-xl focus:outline-none focus:soft-glow text-white placeholder-white/40"
               placeholder="Describe the scene..."
-              rows={3}
+              rows={4}
+              required
             />
           </div>
 
-          {/* World Selection */}
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
-              World *
-            </label>
-            <select
-              value={formData.world_id}
-              onChange={(e) => handleInputChange('world_id', e.target.value)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
-              required
-            >
-              <option value="">Select a world...</option>
-              {worlds.map(world => (
-                <option key={world.id} value={world.id} className="bg-black">
-                  {world.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Event Selection */}
-          <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
-              Timeline Event
+              Event *
             </label>
             <select
               value={formData.event_id}
               onChange={(e) => handleInputChange('event_id', e.target.value)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
+              className="w-full px-4 py-3 glass-card rounded-xl focus:outline-none focus:soft-glow text-white bg-transparent"
+              required
             >
-              <option value="">Select an event (optional)...</option>
+              <option value="">Select an event...</option>
               {events.map(event => (
                 <option key={event.id} value={event.id} className="bg-black">
-                  {event.title} - {new Date(event.date).toLocaleDateString()}
+                  {event.title} - {getChapterName(event.id)}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* Region Selection */}
-          <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
-              Region
-            </label>
-            <select
-              value={formData.region_id}
-              onChange={(e) => handleInputChange('region_id', e.target.value)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
-            >
-              <option value="">Select a region (optional)...</option>
-              {regions
-                .filter(region => !formData.world_id || region.world_id === formData.world_id)
-                .map(region => (
-                  <option key={region.id} value={region.id} className="bg-black">
-                    {region.name}
-                  </option>
-                ))}
-            </select>
-          </div>
-
-          {/* Scene Order */}
-          <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">
-              Scene Order
-            </label>
-            <input
-              type="number"
-              value={formData.scene_order}
-              onChange={(e) => handleInputChange('scene_order', parseInt(e.target.value) || 1)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-purple-500/50"
-              min="1"
-            />
-          </div>
-
-          {/* AI Image Prompt */}
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
               AI Image Prompt
@@ -444,28 +349,30 @@ const SceneManagement: React.FC = () => {
             <textarea
               value={formData.ai_image_prompt}
               onChange={(e) => handleInputChange('ai_image_prompt', e.target.value)}
-              className="w-full bg-black/20 border border-white/10 rounded-lg p-3 text-white placeholder-white/50 focus:outline-none focus:border-purple-500/50 resize-none"
+              className="w-full px-4 py-3 glass-card rounded-xl focus:outline-none focus:soft-glow text-white placeholder-white/40"
               placeholder="Describe the visual style for AI image generation..."
-              rows={2}
+              rows={3}
             />
           </div>
 
-          {/* Submit Button */}
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex justify-end space-x-4 pt-6 border-t border-white/10">
             <button
               type="button"
-              onClick={() => setShowCreateModal(false)}
-              className="px-6 py-3 text-white/60 hover:text-white hover:bg-white/10 rounded-lg smooth-transition"
+              onClick={() => {
+                setShowCreateModal(false);
+                setEditingScene(null);
+              }}
+              className="px-6 py-3 glass-card rounded-xl text-white hover:soft-glow transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-lg font-semibold hover:scale-105 smooth-transition soft-glow-orange"
+              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 transition-transform"
             >
-              Create Scene
+              {editingScene ? 'Update Scene' : 'Create Scene'}
             </button>
-        </div>
+          </div>
         </form>
       </Modal>
     </motion.div>

@@ -1,21 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Users, MapPin, Clock, BookOpen, Plus, Sparkles, Zap, Heart } from 'lucide-react';
+import { Globe, Users, MapPin, Clock, BookOpen, Plus, Sparkles, Zap, Heart, Film } from 'lucide-react';
 import { motion } from 'framer-motion';
 import GlowCard from '../components/ui/GlowCard';
 import NeonButton from '../components/ui/NeonButton';
 import FloatingEmoji from '../components/ui/FloatingEmoji';
 import { useWorlds } from '../hooks/useWorlds';
+import { useChapters } from '../hooks/useChapters';
+import { useCharacters } from '../hooks/useCharacters';
+import { useTimeline } from '../hooks/useTimeline';
 
 const Dashboard: React.FC = () => {
   const { worlds, loading } = useWorlds();
+  const { chapters } = useChapters();
+  const { characters } = useCharacters();
+  const { scenes } = useTimeline();
 
   const stats = [
     { name: 'Worlds', value: worlds.length, icon: Globe, color: 'purple', emoji: '🌍' },
-    { name: 'Characters', value: 0, icon: Users, color: 'blue', emoji: '👥' },
-    { name: 'Regions', value: 0, icon: MapPin, color: 'green', emoji: '🗺️' },
-    { name: 'Timeline Events', value: 0, icon: Clock, color: 'yellow', emoji: '⏰' },
-    { name: 'Stories', value: 0, icon: BookOpen, color: 'pink', emoji: '📚' },
+    { name: 'Chapters', value: chapters.length, icon: BookOpen, color: 'blue', emoji: '📖' },
+    { name: 'Characters', value: characters.length, icon: Users, color: 'green', emoji: '👥' },
+    { name: 'Scenes', value: scenes.length, icon: Film, color: 'orange', emoji: '🎬' },
   ];
 
   const containerVariants = {
@@ -39,6 +44,13 @@ const Dashboard: React.FC = () => {
       }
     }
   };
+
+  const quickActions = [
+    { name: 'Add World', icon: Globe, gradient: 'gradient-text-purple', path: '/dashboard/worlds' },
+    { name: 'Add Chapter', icon: BookOpen, gradient: 'gradient-text-blue', path: '/dashboard/chapters' },
+    { name: 'Add Character', icon: Users, gradient: 'gradient-text-green', path: '/dashboard/characters' },
+    { name: 'Add Scene', icon: Film, gradient: 'gradient-text-orange', path: '/dashboard/scenes' },
+  ];
 
   return (
     <motion.div 
@@ -173,12 +185,7 @@ const Dashboard: React.FC = () => {
       {/* Quick Actions */}
       <motion.div variants={itemVariants}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { name: 'Create Character', icon: Users, gradient: 'gradient-text-blue', path: '/dashboard/characters' },
-            { name: 'Add Region', icon: MapPin, gradient: 'gradient-text-green', path: '/dashboard/regions' },
-            { name: 'Timeline Event', icon: Clock, gradient: 'gradient-text-orange', path: '/dashboard/timeline' },
-            { name: 'Write Story', icon: BookOpen, gradient: 'gradient-text-pink', path: '/dashboard/stories' },
-          ].map((action) => (
+          {quickActions.map((action) => (
             <Link key={action.name} to={action.path}>
               <motion.div 
                 whileHover={{ scale: 1.02, y: -4 }}

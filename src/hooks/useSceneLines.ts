@@ -18,22 +18,38 @@ export const useSceneLines = (sceneId: string) => {
       }
       
       const { data, error } = await supabase
-        .from('scene_lines')
+        .from('dialogues')
         .select(`
-          *,
-          characters:character_id(name),
-          scene_characters(role_in_scene)
+          dialogue_id,
+          scene_id,
+          character_id,
+          content,
+          delivery_type,
+          sequence,
+          sentiment_score,
+          created_at,
+          updated_at,
+          characters:character_id(name)
         `)
         .eq('scene_id', sceneId)
-        .order('order_index', { ascending: true });
+        .order('sequence', { ascending: true });
 
       if (error) throw error;
       
       // Transform the data to match our interface
       const transformedLines: SceneLineWithCharacter[] = (data || []).map(line => ({
-        ...line,
+        id: line.dialogue_id,
+        scene_id: line.scene_id,
+        type: line.character_id ? 'character' : 'narration',
+        character_id: line.character_id,
+        display_name: line.characters?.name || 'Narrator',
+        text: line.content,
+        order_index: line.sequence,
+        created_by: user?.id || '',
+        created_at: line.created_at,
+        updated_at: line.updated_at,
         character_name: line.characters?.name,
-        character_role: line.scene_characters?.[0]?.role_in_scene
+        character_role: line.character_id ? 'participant' : 'narrator'
       }));
       
       setLines(transformedLines);
@@ -52,26 +68,44 @@ export const useSceneLines = (sceneId: string) => {
       }
 
       const { data, error } = await supabase
-        .from('scene_lines')
+        .from('dialogues')
         .insert([{
-          ...lineData,
           scene_id: sceneId,
-          created_by: user?.id,
-          order_index: lineData.order_index || lines.length + 1
+          character_id: lineData.character_id,
+          content: lineData.text,
+          delivery_type: lineData.type === 'character' ? 'speech_bubble' : 'narration',
+          sequence: lineData.order_index || lines.length + 1,
+          sentiment_score: null
         }])
         .select(`
-          *,
-          characters:character_id(name),
-          scene_characters(role_in_scene)
+          dialogue_id,
+          scene_id,
+          character_id,
+          content,
+          delivery_type,
+          sequence,
+          sentiment_score,
+          created_at,
+          updated_at,
+          characters:character_id(name)
         `)
         .single();
 
       if (error) throw error;
       
       const newLine: SceneLineWithCharacter = {
-        ...data,
+        id: data.dialogue_id,
+        scene_id: data.scene_id,
+        type: data.character_id ? 'character' : 'narration',
+        character_id: data.character_id,
+        display_name: data.characters?.name || 'Narrator',
+        text: data.content,
+        order_index: data.sequence,
+        created_by: user?.id || '',
+        created_at: data.created_at,
+        updated_at: data.updated_at,
         character_name: data.characters?.name,
-        character_role: data.scene_characters?.[0]?.role_in_scene
+        character_role: data.character_id ? 'participant' : 'narrator'
       };
       
       setLines(prev => [...prev, newLine]);
@@ -90,24 +124,44 @@ export const useSceneLines = (sceneId: string) => {
         throw new Error('Database connection not available');
       }
 
+      const updateData: any = {};
+      if (updates.text !== undefined) updateData.content = updates.text;
+      if (updates.order_index !== undefined) updateData.sequence = updates.order_index;
+      if (updates.character_id !== undefined) updateData.character_id = updates.character_id;
+
       const { data, error } = await supabase
-        .from('scene_lines')
-        .update(updates)
-        .eq('id', id)
-        .eq('created_by', user?.id)
+        .from('dialogues')
+        .update(updateData)
+        .eq('dialogue_id', id)
         .select(`
-          *,
-          characters:character_id(name),
-          scene_characters(role_in_scene)
+          dialogue_id,
+          scene_id,
+          character_id,
+          content,
+          delivery_type,
+          sequence,
+          sentiment_score,
+          created_at,
+          updated_at,
+          characters:character_id(name)
         `)
         .single();
 
       if (error) throw error;
       
       const updatedLine: SceneLineWithCharacter = {
-        ...data,
+        id: data.dialogue_id,
+        scene_id: data.scene_id,
+        type: data.character_id ? 'character' : 'narration',
+        character_id: data.character_id,
+        display_name: data.characters?.name || 'Narrator',
+        text: data.content,
+        order_index: data.sequence,
+        created_by: user?.id || '',
+        created_at: data.created_at,
+        updated_at: data.updated_at,
         character_name: data.characters?.name,
-        character_role: data.scene_characters?.[0]?.role_in_scene
+        character_role: data.character_id ? 'participant' : 'narrator'
       };
       
       setLines(prev => prev.map(line => line.id === id ? updatedLine : line));
@@ -127,10 +181,9 @@ export const useSceneLines = (sceneId: string) => {
       }
       
       const { error } = await supabase
-        .from('scene_lines')
+        .from('dialogues')
         .delete()
-        .eq('id', id)
-        .eq('created_by', user?.id);
+        .eq('dialogue_id', id);
 
       if (error) throw error;
       
@@ -149,16 +202,16 @@ export const useSceneLines = (sceneId: string) => {
         throw new Error('Database connection not available');
       }
 
-      // Update order_index for each line
+      // Update sequence for each line
       const updates = newOrder.map((line, index) => ({
-        id: line.id,
-        order_index: index + 1
+        dialogue_id: line.id,
+        sequence: index + 1
       }));
 
       // Batch update all lines
       const { error } = await supabase
-        .from('scene_lines')
-        .upsert(updates, { onConflict: 'id' });
+        .from('dialogues')
+        .upsert(updates, { onConflict: 'dialogue_id' });
 
       if (error) throw error;
       

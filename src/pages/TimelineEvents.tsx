@@ -31,15 +31,52 @@ const TimelineEvents: React.FC = () => {
       if (!supabase || !user) return;
 
       try {
+        // Fetch events and join with chapters
         const { data, error } = await supabase
-          .from('timeline_with_chapters')
-          .select('*')
-          .eq('created_by', user.id)
-          .order('chapter_order', { ascending: true })
-          .order('date', { ascending: true });
+          .from('events')
+          .select(`
+            event_id,
+            chapter_id,
+            story_time,
+            title,
+            context,
+            timeline_version,
+            created_at,
+            updated_at,
+            chapters!inner(
+              chapter_id,
+              title,
+              chapter_order,
+              world_id
+            )
+          `)
+          .order('story_time', { ascending: true });
 
         if (error) throw error;
-        setEventsWithChapters(data || []);
+        
+        // Map to TimelineEventWithChapters format
+        const mappedEvents = (data || []).map(event => ({
+          id: event.event_id,
+          title: event.title,
+          date: event.story_time,
+          era: '',
+          location: '',
+          involved_characters: [],
+          description: '',
+          type: 'Encounter' as const,
+          consequences: '',
+          world_id: event.chapters.world_id,
+          chapter_id: event.chapter_id,
+          created_by: user.id,
+          created_at: event.created_at,
+          updated_at: event.updated_at,
+          chapter_title: event.chapters.title,
+          chapter_order: event.chapters.chapter_order,
+          scene_count: 0,
+          scenes: []
+        }));
+        
+        setEventsWithChapters(mappedEvents);
       } catch (error) {
         console.error('Error fetching events with chapters:', error);
       }
@@ -100,15 +137,7 @@ const TimelineEvents: React.FC = () => {
     try {
       await assignEventToChapter(eventId, chapterId);
       // Refresh the events list
-      const { data, error } = await supabase
-        .from('timeline_with_chapters')
-        .select('*')
-        .eq('created_by', user?.id)
-        .order('chapter_order', { ascending: true })
-        .order('date', { ascending: true });
-
-      if (error) throw error;
-      setEventsWithChapters(data || []);
+      refetch();
     } catch (error) {
       console.error('Error assigning event to chapter:', error);
     }
