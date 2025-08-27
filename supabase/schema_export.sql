@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict rNoLJz2q3JVg2b9NSdGHp56PFhrRnZp1eGOoHn9ykz8iY9wSWgwkEpvc5u7CqRD
+\restrict nFSfZRQvMgYgDbfVYyCywdNedeXRkY1izAccdieV3stCgLmUSlcaApAFqZiiOOA
 
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.6 (Ubuntu 17.6-1.pgdg24.04+1)
@@ -389,6 +389,18 @@ CREATE TYPE realtime.wal_rls AS (
 
 
 ALTER TYPE realtime.wal_rls OWNER TO supabase_admin;
+
+--
+-- Name: buckettype; Type: TYPE; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TYPE storage.buckettype AS ENUM (
+    'STANDARD',
+    'ANALYTICS'
+);
+
+
+ALTER TYPE storage.buckettype OWNER TO supabase_storage_admin;
 
 --
 -- Name: email(); Type: FUNCTION; Schema: auth; Owner: supabase_auth_admin
@@ -1741,6 +1753,28 @@ $$;
 ALTER FUNCTION realtime.topic() OWNER TO supabase_realtime_admin;
 
 --
+-- Name: add_prefixes(text, text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.add_prefixes(_bucket_id text, _name text) RETURNS void
+    LANGUAGE plpgsql SECURITY DEFINER
+    AS $$
+DECLARE
+    prefixes text[];
+BEGIN
+    prefixes := "storage"."get_prefixes"("_name");
+
+    IF array_length(prefixes, 1) > 0 THEN
+        INSERT INTO storage.prefixes (name, bucket_id)
+        SELECT UNNEST(prefixes) as name, "_bucket_id" ON CONFLICT DO NOTHING;
+    END IF;
+END;
+$$;
+
+
+ALTER FUNCTION storage.add_prefixes(_bucket_id text, _name text) OWNER TO supabase_storage_admin;
+
+--
 -- Name: can_insert_object(text, text, uuid, jsonb); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
 --
 
@@ -1760,20 +1794,98 @@ $$;
 ALTER FUNCTION storage.can_insert_object(bucketid text, name text, owner uuid, metadata jsonb) OWNER TO supabase_storage_admin;
 
 --
+-- Name: delete_prefix(text, text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.delete_prefix(_bucket_id text, _name text) RETURNS boolean
+    LANGUAGE plpgsql SECURITY DEFINER
+    AS $$
+BEGIN
+    -- Check if we can delete the prefix
+    IF EXISTS(
+        SELECT FROM "storage"."prefixes"
+        WHERE "prefixes"."bucket_id" = "_bucket_id"
+          AND level = "storage"."get_level"("_name") + 1
+          AND "prefixes"."name" COLLATE "C" LIKE "_name" || '/%'
+        LIMIT 1
+    )
+    OR EXISTS(
+        SELECT FROM "storage"."objects"
+        WHERE "objects"."bucket_id" = "_bucket_id"
+          AND "storage"."get_level"("objects"."name") = "storage"."get_level"("_name") + 1
+          AND "objects"."name" COLLATE "C" LIKE "_name" || '/%'
+        LIMIT 1
+    ) THEN
+    -- There are sub-objects, skip deletion
+    RETURN false;
+    ELSE
+        DELETE FROM "storage"."prefixes"
+        WHERE "prefixes"."bucket_id" = "_bucket_id"
+          AND level = "storage"."get_level"("_name")
+          AND "prefixes"."name" = "_name";
+        RETURN true;
+    END IF;
+END;
+$$;
+
+
+ALTER FUNCTION storage.delete_prefix(_bucket_id text, _name text) OWNER TO supabase_storage_admin;
+
+--
+-- Name: delete_prefix_hierarchy_trigger(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.delete_prefix_hierarchy_trigger() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    prefix text;
+BEGIN
+    prefix := "storage"."get_prefix"(OLD."name");
+
+    IF coalesce(prefix, '') != '' THEN
+        PERFORM "storage"."delete_prefix"(OLD."bucket_id", prefix);
+    END IF;
+
+    RETURN OLD;
+END;
+$$;
+
+
+ALTER FUNCTION storage.delete_prefix_hierarchy_trigger() OWNER TO supabase_storage_admin;
+
+--
+-- Name: enforce_bucket_name_length(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.enforce_bucket_name_length() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+begin
+    if length(new.name) > 100 then
+        raise exception 'bucket name "%" is too long (% characters). Max is 100.', new.name, length(new.name);
+    end if;
+    return new;
+end;
+$$;
+
+
+ALTER FUNCTION storage.enforce_bucket_name_length() OWNER TO supabase_storage_admin;
+
+--
 -- Name: extension(text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
 --
 
 CREATE FUNCTION storage.extension(name text) RETURNS text
-    LANGUAGE plpgsql
+    LANGUAGE plpgsql IMMUTABLE
     AS $$
 DECLARE
-_parts text[];
-_filename text;
+    _parts text[];
+    _filename text;
 BEGIN
-	select string_to_array(name, '/') into _parts;
-	select _parts[array_length(_parts,1)] into _filename;
-	-- @todo return the last part instead of 2
-	return reverse(split_part(reverse(_filename), '.', 1));
+    SELECT string_to_array(name, '/') INTO _parts;
+    SELECT _parts[array_length(_parts,1)] INTO _filename;
+    RETURN reverse(split_part(reverse(_filename), '.', 1));
 END
 $$;
 
@@ -1803,13 +1915,15 @@ ALTER FUNCTION storage.filename(name text) OWNER TO supabase_storage_admin;
 --
 
 CREATE FUNCTION storage.foldername(name text) RETURNS text[]
-    LANGUAGE plpgsql
+    LANGUAGE plpgsql IMMUTABLE
     AS $$
 DECLARE
-_parts text[];
+    _parts text[];
 BEGIN
-	select string_to_array(name, '/') into _parts;
-	return _parts[1:array_length(_parts,1)-1];
+    -- Split on "/" to get path segments
+    SELECT string_to_array(name, '/') INTO _parts;
+    -- Return everything except the last segment
+    RETURN _parts[1 : array_length(_parts,1) - 1];
 END
 $$;
 
@@ -1817,15 +1931,75 @@ $$;
 ALTER FUNCTION storage.foldername(name text) OWNER TO supabase_storage_admin;
 
 --
+-- Name: get_level(text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.get_level(name text) RETURNS integer
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $$
+SELECT array_length(string_to_array("name", '/'), 1);
+$$;
+
+
+ALTER FUNCTION storage.get_level(name text) OWNER TO supabase_storage_admin;
+
+--
+-- Name: get_prefix(text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.get_prefix(name text) RETURNS text
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $_$
+SELECT
+    CASE WHEN strpos("name", '/') > 0 THEN
+             regexp_replace("name", '[\/]{1}[^\/]+\/?$', '')
+         ELSE
+             ''
+        END;
+$_$;
+
+
+ALTER FUNCTION storage.get_prefix(name text) OWNER TO supabase_storage_admin;
+
+--
+-- Name: get_prefixes(text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.get_prefixes(name text) RETURNS text[]
+    LANGUAGE plpgsql IMMUTABLE STRICT
+    AS $$
+DECLARE
+    parts text[];
+    prefixes text[];
+    prefix text;
+BEGIN
+    -- Split the name into parts by '/'
+    parts := string_to_array("name", '/');
+    prefixes := '{}';
+
+    -- Construct the prefixes, stopping one level below the last part
+    FOR i IN 1..array_length(parts, 1) - 1 LOOP
+            prefix := array_to_string(parts[1:i], '/');
+            prefixes := array_append(prefixes, prefix);
+    END LOOP;
+
+    RETURN prefixes;
+END;
+$$;
+
+
+ALTER FUNCTION storage.get_prefixes(name text) OWNER TO supabase_storage_admin;
+
+--
 -- Name: get_size_by_bucket(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
 --
 
 CREATE FUNCTION storage.get_size_by_bucket() RETURNS TABLE(size bigint, bucket_id text)
-    LANGUAGE plpgsql
+    LANGUAGE plpgsql STABLE
     AS $$
 BEGIN
     return query
-        select sum((metadata->>'size')::int) as size, obj.bucket_id
+        select sum((metadata->>'size')::bigint) as size, obj.bucket_id
         from "storage".objects as obj
         group by obj.bucket_id;
 END
@@ -1929,6 +2103,68 @@ $_$;
 ALTER FUNCTION storage.list_objects_with_delimiter(bucket_id text, prefix_param text, delimiter_param text, max_keys integer, start_after text, next_token text) OWNER TO supabase_storage_admin;
 
 --
+-- Name: objects_insert_prefix_trigger(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.objects_insert_prefix_trigger() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    PERFORM "storage"."add_prefixes"(NEW."bucket_id", NEW."name");
+    NEW.level := "storage"."get_level"(NEW."name");
+
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION storage.objects_insert_prefix_trigger() OWNER TO supabase_storage_admin;
+
+--
+-- Name: objects_update_prefix_trigger(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.objects_update_prefix_trigger() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    old_prefixes TEXT[];
+BEGIN
+    -- Ensure this is an update operation and the name has changed
+    IF TG_OP = 'UPDATE' AND (NEW."name" <> OLD."name" OR NEW."bucket_id" <> OLD."bucket_id") THEN
+        -- Retrieve old prefixes
+        old_prefixes := "storage"."get_prefixes"(OLD."name");
+
+        -- Remove old prefixes that are only used by this object
+        WITH all_prefixes as (
+            SELECT unnest(old_prefixes) as prefix
+        ),
+        can_delete_prefixes as (
+             SELECT prefix
+             FROM all_prefixes
+             WHERE NOT EXISTS (
+                 SELECT 1 FROM "storage"."objects"
+                 WHERE "bucket_id" = OLD."bucket_id"
+                   AND "name" <> OLD."name"
+                   AND "name" LIKE (prefix || '%')
+             )
+         )
+        DELETE FROM "storage"."prefixes" WHERE name IN (SELECT prefix FROM can_delete_prefixes);
+
+        -- Add new prefixes
+        PERFORM "storage"."add_prefixes"(NEW."bucket_id", NEW."name");
+    END IF;
+    -- Set the new level
+    NEW."level" := "storage"."get_level"(NEW."name");
+
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION storage.objects_update_prefix_trigger() OWNER TO supabase_storage_admin;
+
+--
 -- Name: operation(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
 --
 
@@ -1944,49 +2180,91 @@ $$;
 ALTER FUNCTION storage.operation() OWNER TO supabase_storage_admin;
 
 --
+-- Name: prefixes_insert_trigger(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.prefixes_insert_trigger() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    PERFORM "storage"."add_prefixes"(NEW."bucket_id", NEW."name");
+    RETURN NEW;
+END;
+$$;
+
+
+ALTER FUNCTION storage.prefixes_insert_trigger() OWNER TO supabase_storage_admin;
+
+--
 -- Name: search(text, text, integer, integer, integer, text, text, text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
 --
 
 CREATE FUNCTION storage.search(prefix text, bucketname text, limits integer DEFAULT 100, levels integer DEFAULT 1, offsets integer DEFAULT 0, search text DEFAULT ''::text, sortcolumn text DEFAULT 'name'::text, sortorder text DEFAULT 'asc'::text) RETURNS TABLE(name text, id uuid, updated_at timestamp with time zone, created_at timestamp with time zone, last_accessed_at timestamp with time zone, metadata jsonb)
+    LANGUAGE plpgsql
+    AS $$
+declare
+    can_bypass_rls BOOLEAN;
+begin
+    SELECT rolbypassrls
+    INTO can_bypass_rls
+    FROM pg_roles
+    WHERE rolname = coalesce(nullif(current_setting('role', true), 'none'), current_user);
+
+    IF can_bypass_rls THEN
+        RETURN QUERY SELECT * FROM storage.search_v1_optimised(prefix, bucketname, limits, levels, offsets, search, sortcolumn, sortorder);
+    ELSE
+        RETURN QUERY SELECT * FROM storage.search_legacy_v1(prefix, bucketname, limits, levels, offsets, search, sortcolumn, sortorder);
+    END IF;
+end;
+$$;
+
+
+ALTER FUNCTION storage.search(prefix text, bucketname text, limits integer, levels integer, offsets integer, search text, sortcolumn text, sortorder text) OWNER TO supabase_storage_admin;
+
+--
+-- Name: search_legacy_v1(text, text, integer, integer, integer, text, text, text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.search_legacy_v1(prefix text, bucketname text, limits integer DEFAULT 100, levels integer DEFAULT 1, offsets integer DEFAULT 0, search text DEFAULT ''::text, sortcolumn text DEFAULT 'name'::text, sortorder text DEFAULT 'asc'::text) RETURNS TABLE(name text, id uuid, updated_at timestamp with time zone, created_at timestamp with time zone, last_accessed_at timestamp with time zone, metadata jsonb)
     LANGUAGE plpgsql STABLE
     AS $_$
 declare
-  v_order_by text;
-  v_sort_order text;
+    v_order_by text;
+    v_sort_order text;
 begin
-  case
-    when sortcolumn = 'name' then
-      v_order_by = 'name';
-    when sortcolumn = 'updated_at' then
-      v_order_by = 'updated_at';
-    when sortcolumn = 'created_at' then
-      v_order_by = 'created_at';
-    when sortcolumn = 'last_accessed_at' then
-      v_order_by = 'last_accessed_at';
-    else
-      v_order_by = 'name';
-  end case;
+    case
+        when sortcolumn = 'name' then
+            v_order_by = 'name';
+        when sortcolumn = 'updated_at' then
+            v_order_by = 'updated_at';
+        when sortcolumn = 'created_at' then
+            v_order_by = 'created_at';
+        when sortcolumn = 'last_accessed_at' then
+            v_order_by = 'last_accessed_at';
+        else
+            v_order_by = 'name';
+        end case;
 
-  case
-    when sortorder = 'asc' then
-      v_sort_order = 'asc';
-    when sortorder = 'desc' then
-      v_sort_order = 'desc';
-    else
-      v_sort_order = 'asc';
-  end case;
+    case
+        when sortorder = 'asc' then
+            v_sort_order = 'asc';
+        when sortorder = 'desc' then
+            v_sort_order = 'desc';
+        else
+            v_sort_order = 'asc';
+        end case;
 
-  v_order_by = v_order_by || ' ' || v_sort_order;
+    v_order_by = v_order_by || ' ' || v_sort_order;
 
-  return query execute
-    'with folders as (
-       select path_tokens[$1] as folder
-       from storage.objects
-         where objects.name ilike $2 || $3 || ''%''
-           and bucket_id = $4
-           and array_length(objects.path_tokens, 1) <> $1
-       group by folder
-       order by folder ' || v_sort_order || '
+    return query execute
+        'with folders as (
+           select path_tokens[$1] as folder
+           from storage.objects
+             where objects.name ilike $2 || $3 || ''%''
+               and bucket_id = $4
+               and array_length(objects.path_tokens, 1) <> $1
+           group by folder
+           order by folder ' || v_sort_order || '
      )
      (select folder as "name",
             null as id,
@@ -2012,7 +2290,126 @@ end;
 $_$;
 
 
-ALTER FUNCTION storage.search(prefix text, bucketname text, limits integer, levels integer, offsets integer, search text, sortcolumn text, sortorder text) OWNER TO supabase_storage_admin;
+ALTER FUNCTION storage.search_legacy_v1(prefix text, bucketname text, limits integer, levels integer, offsets integer, search text, sortcolumn text, sortorder text) OWNER TO supabase_storage_admin;
+
+--
+-- Name: search_v1_optimised(text, text, integer, integer, integer, text, text, text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.search_v1_optimised(prefix text, bucketname text, limits integer DEFAULT 100, levels integer DEFAULT 1, offsets integer DEFAULT 0, search text DEFAULT ''::text, sortcolumn text DEFAULT 'name'::text, sortorder text DEFAULT 'asc'::text) RETURNS TABLE(name text, id uuid, updated_at timestamp with time zone, created_at timestamp with time zone, last_accessed_at timestamp with time zone, metadata jsonb)
+    LANGUAGE plpgsql STABLE
+    AS $_$
+declare
+    v_order_by text;
+    v_sort_order text;
+begin
+    case
+        when sortcolumn = 'name' then
+            v_order_by = 'name';
+        when sortcolumn = 'updated_at' then
+            v_order_by = 'updated_at';
+        when sortcolumn = 'created_at' then
+            v_order_by = 'created_at';
+        when sortcolumn = 'last_accessed_at' then
+            v_order_by = 'last_accessed_at';
+        else
+            v_order_by = 'name';
+        end case;
+
+    case
+        when sortorder = 'asc' then
+            v_sort_order = 'asc';
+        when sortorder = 'desc' then
+            v_sort_order = 'desc';
+        else
+            v_sort_order = 'asc';
+        end case;
+
+    v_order_by = v_order_by || ' ' || v_sort_order;
+
+    return query execute
+        'with folders as (
+           select (string_to_array(name, ''/''))[level] as name
+           from storage.prefixes
+             where lower(prefixes.name) like lower($2 || $3) || ''%''
+               and bucket_id = $4
+               and level = $1
+           order by name ' || v_sort_order || '
+     )
+     (select name,
+            null as id,
+            null as updated_at,
+            null as created_at,
+            null as last_accessed_at,
+            null as metadata from folders)
+     union all
+     (select path_tokens[level] as "name",
+            id,
+            updated_at,
+            created_at,
+            last_accessed_at,
+            metadata
+     from storage.objects
+     where lower(objects.name) like lower($2 || $3) || ''%''
+       and bucket_id = $4
+       and level = $1
+     order by ' || v_order_by || ')
+     limit $5
+     offset $6' using levels, prefix, search, bucketname, limits, offsets;
+end;
+$_$;
+
+
+ALTER FUNCTION storage.search_v1_optimised(prefix text, bucketname text, limits integer, levels integer, offsets integer, search text, sortcolumn text, sortorder text) OWNER TO supabase_storage_admin;
+
+--
+-- Name: search_v2(text, text, integer, integer, text); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE FUNCTION storage.search_v2(prefix text, bucket_name text, limits integer DEFAULT 100, levels integer DEFAULT 1, start_after text DEFAULT ''::text) RETURNS TABLE(key text, name text, id uuid, updated_at timestamp with time zone, created_at timestamp with time zone, metadata jsonb)
+    LANGUAGE plpgsql STABLE
+    AS $_$
+BEGIN
+    RETURN query EXECUTE
+        $sql$
+        SELECT * FROM (
+            (
+                SELECT
+                    split_part(name, '/', $4) AS key,
+                    name || '/' AS name,
+                    NULL::uuid AS id,
+                    NULL::timestamptz AS updated_at,
+                    NULL::timestamptz AS created_at,
+                    NULL::jsonb AS metadata
+                FROM storage.prefixes
+                WHERE name COLLATE "C" LIKE $1 || '%'
+                AND bucket_id = $2
+                AND level = $4
+                AND name COLLATE "C" > $5
+                ORDER BY prefixes.name COLLATE "C" LIMIT $3
+            )
+            UNION ALL
+            (SELECT split_part(name, '/', $4) AS key,
+                name,
+                id,
+                updated_at,
+                created_at,
+                metadata
+            FROM storage.objects
+            WHERE name COLLATE "C" LIKE $1 || '%'
+                AND bucket_id = $2
+                AND level = $4
+                AND name COLLATE "C" > $5
+            ORDER BY name COLLATE "C" LIMIT $3)
+        ) obj
+        ORDER BY name COLLATE "C" LIMIT $3;
+        $sql$
+        USING prefix, bucket_name, limits, levels, start_after;
+END;
+$_$;
+
+
+ALTER FUNCTION storage.search_v2(prefix text, bucket_name text, limits integer, levels integer, start_after text) OWNER TO supabase_storage_admin;
 
 --
 -- Name: update_updated_at_column(); Type: FUNCTION; Schema: storage; Owner: supabase_storage_admin
@@ -2818,7 +3215,7 @@ ALTER TABLE public.user_roles OWNER TO postgres;
 -- Name: TABLE user_roles; Type: COMMENT; Schema: public; Owner: postgres
 --
 
-COMMENT ON TABLE public.user_roles IS 'Stores user roles with strict admin-only access. Users cannot view their own roles.';
+COMMENT ON TABLE public.user_roles IS 'Stores user roles. Users can view their own role. Admin operations require service role.';
 
 
 --
@@ -2944,7 +3341,8 @@ CREATE TABLE storage.buckets (
     avif_autodetection boolean DEFAULT false,
     file_size_limit bigint,
     allowed_mime_types text[],
-    owner_id text
+    owner_id text,
+    type storage.buckettype DEFAULT 'STANDARD'::storage.buckettype NOT NULL
 );
 
 
@@ -2956,6 +3354,21 @@ ALTER TABLE storage.buckets OWNER TO supabase_storage_admin;
 
 COMMENT ON COLUMN storage.buckets.owner IS 'Field is deprecated, use owner_id instead';
 
+
+--
+-- Name: buckets_analytics; Type: TABLE; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TABLE storage.buckets_analytics (
+    id text NOT NULL,
+    type storage.buckettype DEFAULT 'ANALYTICS'::storage.buckettype NOT NULL,
+    format text DEFAULT 'ICEBERG'::text NOT NULL,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL
+);
+
+
+ALTER TABLE storage.buckets_analytics OWNER TO supabase_storage_admin;
 
 --
 -- Name: migrations; Type: TABLE; Schema: storage; Owner: supabase_storage_admin
@@ -2987,7 +3400,8 @@ CREATE TABLE storage.objects (
     path_tokens text[] GENERATED ALWAYS AS (string_to_array(name, '/'::text)) STORED,
     version text,
     owner_id text,
-    user_metadata jsonb
+    user_metadata jsonb,
+    level integer
 );
 
 
@@ -2999,6 +3413,21 @@ ALTER TABLE storage.objects OWNER TO supabase_storage_admin;
 
 COMMENT ON COLUMN storage.objects.owner IS 'Field is deprecated, use owner_id instead';
 
+
+--
+-- Name: prefixes; Type: TABLE; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TABLE storage.prefixes (
+    bucket_id text NOT NULL,
+    name text NOT NULL COLLATE pg_catalog."C",
+    level integer GENERATED ALWAYS AS (storage.get_level(name)) STORED NOT NULL,
+    created_at timestamp with time zone DEFAULT now(),
+    updated_at timestamp with time zone DEFAULT now()
+);
+
+
+ALTER TABLE storage.prefixes OWNER TO supabase_storage_admin;
 
 --
 -- Name: s3_multipart_uploads; Type: TABLE; Schema: storage; Owner: supabase_storage_admin
@@ -3416,6 +3845,14 @@ ALTER TABLE ONLY realtime.schema_migrations
 
 
 --
+-- Name: buckets_analytics buckets_analytics_pkey; Type: CONSTRAINT; Schema: storage; Owner: supabase_storage_admin
+--
+
+ALTER TABLE ONLY storage.buckets_analytics
+    ADD CONSTRAINT buckets_analytics_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: buckets buckets_pkey; Type: CONSTRAINT; Schema: storage; Owner: supabase_storage_admin
 --
 
@@ -3445,6 +3882,14 @@ ALTER TABLE ONLY storage.migrations
 
 ALTER TABLE ONLY storage.objects
     ADD CONSTRAINT objects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: prefixes prefixes_pkey; Type: CONSTRAINT; Schema: storage; Owner: supabase_storage_admin
+--
+
+ALTER TABLE ONLY storage.prefixes
+    ADD CONSTRAINT prefixes_pkey PRIMARY KEY (bucket_id, level, name);
 
 
 --
@@ -4075,6 +4520,13 @@ CREATE INDEX idx_multipart_uploads_list ON storage.s3_multipart_uploads USING bt
 
 
 --
+-- Name: idx_name_bucket_level_unique; Type: INDEX; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE UNIQUE INDEX idx_name_bucket_level_unique ON storage.objects USING btree (name COLLATE "C", bucket_id, level);
+
+
+--
 -- Name: idx_objects_bucket_id_name; Type: INDEX; Schema: storage; Owner: supabase_storage_admin
 --
 
@@ -4082,10 +4534,31 @@ CREATE INDEX idx_objects_bucket_id_name ON storage.objects USING btree (bucket_i
 
 
 --
+-- Name: idx_objects_lower_name; Type: INDEX; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE INDEX idx_objects_lower_name ON storage.objects USING btree ((path_tokens[level]), lower(name) text_pattern_ops, bucket_id, level);
+
+
+--
+-- Name: idx_prefixes_lower_name; Type: INDEX; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE INDEX idx_prefixes_lower_name ON storage.prefixes USING btree (bucket_id, level, ((string_to_array(name, '/'::text))[level]), lower(name) text_pattern_ops);
+
+
+--
 -- Name: name_prefix_search; Type: INDEX; Schema: storage; Owner: supabase_storage_admin
 --
 
 CREATE INDEX name_prefix_search ON storage.objects USING btree (name text_pattern_ops);
+
+
+--
+-- Name: objects_bucket_id_level_idx; Type: INDEX; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE UNIQUE INDEX objects_bucket_id_level_idx ON storage.objects USING btree (bucket_id, level, name COLLATE "C");
 
 
 --
@@ -4191,6 +4664,48 @@ CREATE TRIGGER update_validation_rules_updated_at BEFORE UPDATE ON public.valida
 --
 
 CREATE TRIGGER tr_check_filters BEFORE INSERT OR UPDATE ON realtime.subscription FOR EACH ROW EXECUTE FUNCTION realtime.subscription_check_filters();
+
+
+--
+-- Name: buckets enforce_bucket_name_length_trigger; Type: TRIGGER; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TRIGGER enforce_bucket_name_length_trigger BEFORE INSERT OR UPDATE OF name ON storage.buckets FOR EACH ROW EXECUTE FUNCTION storage.enforce_bucket_name_length();
+
+
+--
+-- Name: objects objects_delete_delete_prefix; Type: TRIGGER; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TRIGGER objects_delete_delete_prefix AFTER DELETE ON storage.objects FOR EACH ROW EXECUTE FUNCTION storage.delete_prefix_hierarchy_trigger();
+
+
+--
+-- Name: objects objects_insert_create_prefix; Type: TRIGGER; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TRIGGER objects_insert_create_prefix BEFORE INSERT ON storage.objects FOR EACH ROW EXECUTE FUNCTION storage.objects_insert_prefix_trigger();
+
+
+--
+-- Name: objects objects_update_create_prefix; Type: TRIGGER; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TRIGGER objects_update_create_prefix BEFORE UPDATE ON storage.objects FOR EACH ROW WHEN (((new.name <> old.name) OR (new.bucket_id <> old.bucket_id))) EXECUTE FUNCTION storage.objects_update_prefix_trigger();
+
+
+--
+-- Name: prefixes prefixes_create_hierarchy; Type: TRIGGER; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TRIGGER prefixes_create_hierarchy BEFORE INSERT ON storage.prefixes FOR EACH ROW WHEN ((pg_trigger_depth() < 1)) EXECUTE FUNCTION storage.prefixes_insert_trigger();
+
+
+--
+-- Name: prefixes prefixes_delete_hierarchy; Type: TRIGGER; Schema: storage; Owner: supabase_storage_admin
+--
+
+CREATE TRIGGER prefixes_delete_hierarchy AFTER DELETE ON storage.prefixes FOR EACH ROW EXECUTE FUNCTION storage.delete_prefix_hierarchy_trigger();
 
 
 --
@@ -4430,6 +4945,14 @@ ALTER TABLE ONLY public.worlds
 
 ALTER TABLE ONLY storage.objects
     ADD CONSTRAINT "objects_bucketId_fkey" FOREIGN KEY (bucket_id) REFERENCES storage.buckets(id);
+
+
+--
+-- Name: prefixes prefixes_bucketId_fkey; Type: FK CONSTRAINT; Schema: storage; Owner: supabase_storage_admin
+--
+
+ALTER TABLE ONLY storage.prefixes
+    ADD CONSTRAINT "prefixes_bucketId_fkey" FOREIGN KEY (bucket_id) REFERENCES storage.buckets(id);
 
 
 --
@@ -5107,36 +5630,28 @@ ALTER TABLE public.user_roles ENABLE ROW LEVEL SECURITY;
 -- Name: user_roles user_roles_delete_policy; Type: POLICY; Schema: public; Owner: postgres
 --
 
-CREATE POLICY user_roles_delete_policy ON public.user_roles FOR DELETE USING ((EXISTS ( SELECT 1
-   FROM public.user_roles ur
-  WHERE ((ur.user_id = auth.uid()) AND (ur.is_admin = true)))));
+CREATE POLICY user_roles_delete_policy ON public.user_roles FOR DELETE USING (true);
 
 
 --
 -- Name: user_roles user_roles_insert_policy; Type: POLICY; Schema: public; Owner: postgres
 --
 
-CREATE POLICY user_roles_insert_policy ON public.user_roles FOR INSERT WITH CHECK ((EXISTS ( SELECT 1
-   FROM public.user_roles ur
-  WHERE ((ur.user_id = auth.uid()) AND (ur.is_admin = true)))));
+CREATE POLICY user_roles_insert_policy ON public.user_roles FOR INSERT WITH CHECK (true);
 
 
 --
 -- Name: user_roles user_roles_select_policy; Type: POLICY; Schema: public; Owner: postgres
 --
 
-CREATE POLICY user_roles_select_policy ON public.user_roles FOR SELECT USING ((EXISTS ( SELECT 1
-   FROM public.user_roles ur
-  WHERE ((ur.user_id = auth.uid()) AND (ur.is_admin = true)))));
+CREATE POLICY user_roles_select_policy ON public.user_roles FOR SELECT USING ((user_id = auth.uid()));
 
 
 --
 -- Name: user_roles user_roles_update_policy; Type: POLICY; Schema: public; Owner: postgres
 --
 
-CREATE POLICY user_roles_update_policy ON public.user_roles FOR UPDATE USING ((EXISTS ( SELECT 1
-   FROM public.user_roles ur
-  WHERE ((ur.user_id = auth.uid()) AND (ur.is_admin = true)))));
+CREATE POLICY user_roles_update_policy ON public.user_roles FOR UPDATE USING (true);
 
 
 --
@@ -5226,6 +5741,12 @@ ALTER TABLE realtime.messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE storage.buckets ENABLE ROW LEVEL SECURITY;
 
 --
+-- Name: buckets_analytics; Type: ROW SECURITY; Schema: storage; Owner: supabase_storage_admin
+--
+
+ALTER TABLE storage.buckets_analytics ENABLE ROW LEVEL SECURITY;
+
+--
 -- Name: migrations; Type: ROW SECURITY; Schema: storage; Owner: supabase_storage_admin
 --
 
@@ -5236,6 +5757,12 @@ ALTER TABLE storage.migrations ENABLE ROW LEVEL SECURITY;
 --
 
 ALTER TABLE storage.objects ENABLE ROW LEVEL SECURITY;
+
+--
+-- Name: prefixes; Type: ROW SECURITY; Schema: storage; Owner: supabase_storage_admin
+--
+
+ALTER TABLE storage.prefixes ENABLE ROW LEVEL SECURITY;
 
 --
 -- Name: s3_multipart_uploads; Type: ROW SECURITY; Schema: storage; Owner: supabase_storage_admin
@@ -6499,6 +7026,15 @@ GRANT ALL ON TABLE storage.buckets TO postgres WITH GRANT OPTION;
 
 
 --
+-- Name: TABLE buckets_analytics; Type: ACL; Schema: storage; Owner: supabase_storage_admin
+--
+
+GRANT ALL ON TABLE storage.buckets_analytics TO service_role;
+GRANT ALL ON TABLE storage.buckets_analytics TO authenticated;
+GRANT ALL ON TABLE storage.buckets_analytics TO anon;
+
+
+--
 -- Name: TABLE objects; Type: ACL; Schema: storage; Owner: supabase_storage_admin
 --
 
@@ -6506,6 +7042,15 @@ GRANT ALL ON TABLE storage.objects TO anon;
 GRANT ALL ON TABLE storage.objects TO authenticated;
 GRANT ALL ON TABLE storage.objects TO service_role;
 GRANT ALL ON TABLE storage.objects TO postgres WITH GRANT OPTION;
+
+
+--
+-- Name: TABLE prefixes; Type: ACL; Schema: storage; Owner: supabase_storage_admin
+--
+
+GRANT ALL ON TABLE storage.prefixes TO service_role;
+GRANT ALL ON TABLE storage.prefixes TO authenticated;
+GRANT ALL ON TABLE storage.prefixes TO anon;
 
 
 --
@@ -6829,5 +7374,5 @@ ALTER EVENT TRIGGER pgrst_drop_watch OWNER TO supabase_admin;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict rNoLJz2q3JVg2b9NSdGHp56PFhrRnZp1eGOoHn9ykz8iY9wSWgwkEpvc5u7CqRD
+\unrestrict nFSfZRQvMgYgDbfVYyCywdNedeXRkY1izAccdieV3stCgLmUSlcaApAFqZiiOOA
 
