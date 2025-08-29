@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Logo Color Demo</title>
+  <style>
+    body {
+      background: black;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+
+    .logo-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: grayscale(100%) brightness(1.2) contrast(1.1);
+      z-index: 1;
+    }
+
+    .brightness-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      mix-blend-mode: soft-light;
+      z-index: 2;
+      opacity: 0;
+    }
+
+    .tint-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--tint-color);
+      mix-blend-mode: color;
+      z-index: 3;
+      opacity: 0;
+    }
+
+    .color-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd23f, #ff6b9d);
+      mix-blend-mode: multiply;
+      z-index: 4;
+      opacity: 0.8;
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 80px;
+    }
+
+    .control-group label {
+      font-size: 11px;
+      color: #ccc;
+      text-align: center;
+    }
+
+    .step-indicator {
+      position: absolute;
+      top: -30px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #888;
+    }
+
+    .step {
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: #333;
+    }
+
+    .step.active {
+      background: #666;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="logo-container">
+    <div class="step-indicator">
+      <div class="step active">1. Grayscale</div>
+      <div class="step" id="brightnessStep">2. Brightness</div>
+      <div class="step" id="tintStep">3. Tint</div>
+      <div class="step" id="colorStep">4. Color</div>
+    </div>
+    <img src="logo-v2.png" alt="Logo" class="logo">
+    <div class="brightness-overlay" id="brightnessOverlay"></div>
+    <div class="tint-overlay" id="tintOverlay"></div>
+    <div class="color-overlay" id="colorOverlay"></div>
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <label for="brightnessSlider">Brightness</label>
+      <input type="range" id="brightnessSlider" min="0" max="100" value="0">
+    </div>
+    
+    <div class="control-group">
+      <label for="tintColor">Tint Color</label>
+      <input type="color" id="tintColor" value="#ff6b35">
+    </div>
+    
+    <div class="control-group">
+      <label for="tintOpacity">Tint Strength</label>
+      <input type="range" id="tintOpacity" min="0" max="100" value="0">
+    </div>
+    
+    <div class="control-group">
+      <label for="primaryColor">Primary</label>
+      <input type="color" id="primaryColor" value="#ff6b35">
+    </div>
+    
+    <div class="control-group">
+      <label for="secondaryColor">Secondary</label>
+      <input type="color" id="secondaryColor" value="#f7931e">
+    </div>
+    
+    <div class="control-group">
+      <label for="tertiaryColor">Tertiary</label>
+      <input type="color" id="tertiaryColor" value="#ffd23f">
+    </div>
+
+    
+    <div class="control-group">
+      <label for="colorOpacity">Color Strength</label>
+      <input type="range" id="colorOpacity" min="0" max="100" value="80">
+    </div>
+  </div>
+
+  <script>
+    const brightnessSlider = document.getElementById("brightnessSlider");
+    const tintColor = document.getElementById("tintColor");
+    const tintOpacity = document.getElementById("tintOpacity");
+    const primaryColorPicker = document.getElementById("primaryColor");
+    const secondaryColorPicker = document.getElementById("secondaryColor");
+    const tertiaryColorPicker = document.getElementById("tertiaryColor");
+    const colorOpacity = document.getElementById("colorOpacity");
+    
+    const brightnessOverlay = document.getElementById("brightnessOverlay");
+    const tintOverlay = document.getElementById("tintOverlay");
+    const colorOverlay = document.getElementById("colorOverlay");
+    
+    const brightnessStep = document.getElementById("brightnessStep");
+    const tintStep = document.getElementById("tintStep");
+    const colorStep = document.getElementById("colorStep");
+
+    function updateEffects() {
+      // Step 2: Brightness adjustment
+      const brightness = brightnessSlider.value / 100;
+      brightnessOverlay.style.opacity = brightness;
+      
+      // Step 3: Color tint
+      const tintStrength = tintOpacity.value / 100;
+      tintOverlay.style.background = tintColor.value;
+      tintOverlay.style.opacity = tintStrength;
+      
+      // Step 4: Main color overlay
+      const colorStrength = colorOpacity.value / 100;
+      colorOverlay.style.background = `linear-gradient(135deg, ${primaryColorPicker.value} 25%, ${secondaryColorPicker.value} 50%, ${tertiaryColorPicker.value} 75%)`;
+      colorOverlay.style.opacity = colorStrength;
+      
+      // Update step indicators
+      brightnessStep.className = brightness > 0 ? "step active" : "step";
+      tintStep.className = tintStrength > 0 ? "step active" : "step";
+      colorStep.className = colorStrength > 0 ? "step active" : "step";
+    }
+
+    brightnessSlider.addEventListener("input", updateEffects);
+    tintColor.addEventListener("input", updateEffects);
+    tintOpacity.addEventListener("input", updateEffects);
+    primaryColorPicker.addEventListener("input", updateEffects);
+    secondaryColorPicker.addEventListener("input", updateEffects);
+    tertiaryColorPicker.addEventListener("input", updateEffects);
+    colorOpacity.addEventListener("input", updateEffects);
+
+    // Initialize effects
+    updateEffects();
+  </script>
+</body>
+</html>
