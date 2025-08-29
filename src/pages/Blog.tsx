@@ -4,6 +4,7 @@ import { Search, Calendar, User, ArrowRight, Book, Clock, Eye } from 'lucide-rea
 import { useNavigate } from 'react-router-dom';
 import PublicHeader from '../components/PublicHeader';
 import { supabaseClient } from '../lib/supabaseClient';
+import logoImage from '/logo.jpg';
 
 const Blog: React.FC = () => {
   const navigate = useNavigate();
@@ -96,7 +97,7 @@ const Blog: React.FC = () => {
             </p>
             
             {/* Search Bar */}
-            <div className="flex justify-center mb-8">
+            {/* <div className="flex justify-center mb-8">
               <div className="w-full max-w-md">
                 <div className="glass-card rounded-full flex items-center px-6 py-3">
                   <Search className="text-gray-400 mr-3" size={20} />
@@ -112,14 +113,14 @@ const Blog: React.FC = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="flex justify-center gap-4 flex-wrap">
+            {/* <div className="flex justify-center gap-4 flex-wrap">
               <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">World Building</span>
               <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Character Development</span>
               <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">Writing Tips</span>
               <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">AI Tools</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Featured Post */}
@@ -128,7 +129,7 @@ const Blog: React.FC = () => {
               <div className="glass-card rounded-2xl p-8 smooth-transition hover:soft-glow-cosmic">
                 <div className="grid lg:grid-cols-3 gap-8 items-center">
                   <div className="lg:col-span-2">
-                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium soft-glow-orange mb-4 inline-block">Featured Article</span>
+                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium soft-glow-orange mb-4 inline-block">Latest Article</span>
                     <h2 className="text-heading mb-4">{featuredPost.title}</h2>
                     <p className="text-subheading text-gray-300 mb-6">{featuredPost.excerpt}</p>
                     <div className="flex items-center gap-6 mb-6 flex-wrap">
@@ -144,10 +145,10 @@ const Blog: React.FC = () => {
                         <Clock className="text-gray-400 mr-2" size={16} />
                         <span className="text-body">{featuredPost.readTime}</span>
                       </div>
-                      <div className="flex items-center">
+                      {/* <div className="flex items-center">
                         <Eye className="text-gray-400 mr-2" size={16} />
                         <span className="text-body">{featuredPost.views.toLocaleString()} views</span>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="flex gap-2 mb-6 flex-wrap">
                       {(featuredPost.tags as string[]).slice(0, 3).map((tag: string, index: number) => (
@@ -164,7 +165,7 @@ const Blog: React.FC = () => {
                     </button>
                   </div>
                   <div className="text-center">
-                    <Book size={80} className="gradient-text-cosmic mx-auto mb-4" />
+                    <img src={logoImage} alt="Moscownpur Logo" className="w-20 h-20 mx-auto mb-4" />
                     <h5 className="text-subheading">Featured Article</h5>
                     <p className="text-caption text-gray-400">Most popular this week</p>
                   </div>
@@ -212,10 +213,10 @@ const Blog: React.FC = () => {
                   <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic cursor-pointer h-full" onClick={() => handlePostClick(post)}>
                     <div className="flex justify-between items-start mb-4">
                       <span className="glass-card px-3 py-1 rounded-full text-xs font-medium soft-glow-blue">{post.category}</span>
-                      <div className="flex items-center text-gray-400">
+                      {/* <div className="flex items-center text-gray-400">
                         <Eye size={14} className="mr-1" />
                         <span className="text-xs">{post.views.toLocaleString()}</span>
-                      </div>
+                      </div> */}
                     </div>
                     <h5 className="text-subheading mb-3">{post.title}</h5>
                     <p className="text-body text-gray-400 mb-4">{post.excerpt}</p>
@@ -248,38 +249,70 @@ const Blog: React.FC = () => {
               </div>
 
               {/* Load More Button */}
-              <div className="text-center mt-12">
+              {/* <div className="text-center mt-12">
                 <button className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
                   Load More Articles
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
 
-          {/* Newsletter Signup */}
+          {/* Social Media Follow */}
           <div className="mt-16">
             <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic text-center">
-              <h3 className="text-heading mb-6">Stay Updated with Writing Tips</h3>
+              <h3 className="text-heading mb-6">Follow Us for More Content</h3>
               <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
-                Get the latest world building tips, character development advice, and creative writing 
-                resources delivered to your inbox every week.
+                Stay connected with us on social media for the latest world building tips, 
+                character development advice, and creative writing resources.
               </p>
-              <div className="flex justify-center mb-4">
-                <div className="w-full max-w-md">
-                  <div className="glass-card rounded-full flex items-center px-6 py-3">
-                    <input 
-                      type="email" 
-                      placeholder="Enter your email address" 
-                      className="bg-transparent text-white flex-1 outline-none placeholder-gray-400"
-                    />
-                    <button className="glass-card-cosmic px-4 py-2 rounded-full text-sm font-medium hover:soft-glow-cosmic smooth-transition">
-                      Subscribe
-                    </button>
-                  </div>
-                </div>
+              <div className="flex justify-center gap-4 mb-6 flex-wrap">
+                <a 
+                  href="https://www.linkedin.com/in/moscownpur" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="glass-card text-white px-6 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                  LinkedIn
+                </a>
+                <a 
+                  href="https://x.com/moscownpur" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="glass-card text-white px-6 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                  X (Twitter)
+                </a>
+                <a 
+                  href="https://www.instagram.com/moscownpur/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="glass-card text-white px-6 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 6.62 5.367 11.987 11.988 11.987 6.62 0 11.987-5.367 11.987-11.987C24.014 5.367 18.637.001 12.017.001zM8.449 16.988c-1.297 0-2.448-.49-3.323-1.297C4.198 14.895 3.708 13.744 3.708 12.447s.49-2.448 1.297-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.807.875 1.297 2.026 1.297 3.323s-.49 2.448-1.297 3.323c-.875.807-2.026 1.297-3.323 1.297zm7.718-1.297c-.875.807-2.026 1.297-3.323 1.297s-2.448-.49-3.323-1.297c-.807-.875-1.297-2.026-1.297-3.323s.49-2.448 1.297-3.323c.875-.807 2.026-1.297 3.323-1.297s2.448.49 3.323 1.297c.807.875 1.297 2.026 1.297 3.323s-.49 2.448-1.297 3.323z"/>
+                  </svg>
+                  Instagram
+                </a>
+                <a 
+                  href="https://www.youtube.com/@Moscownpur" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="glass-card text-white px-6 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition flex items-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  YouTube
+                </a>
               </div>
-              <p className="text-caption text-gray-400">
-                No spam, unsubscribe anytime. We respect your privacy.
+              <p className="text-caption text-white">
+                Follow us for daily inspiration, tips, and behind-the-scenes content
               </p>
             </div>
           </div>
