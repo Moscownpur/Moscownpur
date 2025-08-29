@@ -168,7 +168,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Newsletter Signup */}
-        <div className="mt-12 pt-8 border-t border-white/10">
+        {/* <div className="mt-12 pt-8 border-t border-white/10">
           <div className="bg-black rounded-2xl p-8 text-center">
             <h3 className="text-heading mb-4">Stay Updated with Creative Insights</h3>
             <p className="text-subheading text-gray-200 mb-6 max-w-2xl mx-auto">
@@ -187,7 +187,7 @@ const Footer: React.FC = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Bottom Bar */}
