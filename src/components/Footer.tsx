@@ -179,7 +179,7 @@ const Footer: React.FC = () => {
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="flex-1 glass-card px-4 py-3 rounded-full text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="flex-1 glass-card px-4 py-3 rounded-full text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-purple-500"
                 aria-label="Email address for newsletter"
               />
               <button className="glass-card-cosmic text-white px-6 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
