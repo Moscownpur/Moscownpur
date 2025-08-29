@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
+import Footer from '../components/Footer';
 import logoImage from '/logo.jpg';
 
 // Custom Logo component for features
@@ -425,25 +426,8 @@ const Landing: React.FC = () => {
           </div>
         </motion.section>
 
-        {/* Footer */}
-        <motion.footer 
-          variants={itemVariants}
-          className="px-8 py-12 border-t border-white/5"
-        >
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="flex items-center justify-center space-x-3 mb-4">
-              <div className="p-2 glass-card rounded-xl">
-                <LogoIcon className="w-12 h-12" />
-              </div>
-              <span className="text-xl font-bold gradient-text-cosmic">
-                Moscownpur
-              </span>
-            </div>
-            <p className="text-white/60">
-              Empowering creators to build infinite worlds
-            </p>
-          </div>
-        </motion.footer>
+        {/* SEO-Optimized Footer */}
+        <Footer />
       </motion.div>
     </div>
   );
