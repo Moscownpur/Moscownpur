@@ -203,11 +203,11 @@ const Landing: React.FC = () => {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="mb-8"
             >
-              <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
+              <h2 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
                 <span className="gradient-text-cosmic">Create Your Own</span>
                 <br />
                 <span className="text-white">Fictional Cinematic Universe</span>
-              </h1>
+              </h2>
               <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed">
                 The ultimate platform for worldbuilders, storytellers, and creators. 
                 Design universes, craft characters, and chronicle epic tales.
