@@ -82,9 +82,9 @@ const Landing: React.FC = () => {
               <div className="">
                 <img src={logoImage} alt="Moscownpur Logo" className="w-20 h-20" />
               </div>
-              <h2 className="text-2xl font-bold gradient-text-cosmic">
+              <h1 className="text-2xl font-bold gradient-text-cosmic">
                 Moscownpur
-              </h2>
+              </h1>
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link to="/features">
