@@ -357,28 +357,28 @@ const Landing: React.FC = () => {
                       <div className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl">
                         <BookOpen className="w-6 h-6" />
                       </div>
-                      <div>
-                        <h4 className="text-white font-semibold">Unified Workspace</h4>
-                        <p className="text-white/60 text-sm">All your creative elements in one place</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl">
-                        <Users className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="text-white font-semibold">Character Relationships</h4>
-                        <p className="text-white/60 text-sm">Track complex character interactions</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl">
-                        <Clock className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h4 className="text-white font-semibold">Timeline Management</h4>
-                        <p className="text-white/60 text-sm">Chronicle events across your universe</p>
-                      </div>
+                                        <div>
+                    <h5 className="text-white font-semibold">Unified Workspace</h5>
+                    <p className="text-white/60 text-sm">All your creative elements in one place</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl">
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h5 className="text-white font-semibold">Character Relationships</h5>
+                    <p className="text-white/60 text-sm">Track complex character interactions</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl">
+                    <Clock className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h5 className="text-white font-semibold">Timeline Management</h5>
+                    <p className="text-white/60 text-sm">Chronicle events across your universe</p>
+                  </div>
                     </div>
                   </div>
                 </div>
@@ -394,9 +394,9 @@ const Landing: React.FC = () => {
         >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
+              <h3 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
                 Create Your Own Fictional Cinematic Universe
-              </h2>
+              </h3>
               <p className="text-xl text-white/70 max-w-3xl mx-auto">
                 MosCownpur is the ultimate platform for worldbuilders, storytellers, and creators who want to build immersive fictional universes. 
                 Whether you're writing a novel, creating a game world, or developing a cinematic universe, our comprehensive tools help you bring your vision to life.
@@ -406,7 +406,7 @@ const Landing: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
               <div className="space-y-8">
                 <div className="glass-card rounded-2xl p-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">World Building Excellence</h3>
+                  <h4 className="text-2xl font-bold text-white mb-4">World Building Excellence</h4>
                   <p className="text-white/80 leading-relaxed mb-4">
                     Create detailed fictional universes with our advanced world building tools. Design complex societies, 
                     establish unique physics and magic systems, and craft rich cultural backgrounds that make your universe feel alive and authentic.
@@ -420,7 +420,7 @@ const Landing: React.FC = () => {
                 </div>
 
                 <div className="glass-card rounded-2xl p-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">Character Development & Management</h3>
+                  <h4 className="text-2xl font-bold text-white mb-4">Character Development & Management</h4>
                   <p className="text-white/80 leading-relaxed mb-4">
                     Develop compelling characters with rich backstories, complex relationships, and detailed personality traits. 
                     Track character arcs, relationships, and development throughout your story.
@@ -436,7 +436,7 @@ const Landing: React.FC = () => {
 
               <div className="space-y-8">
                 <div className="glass-card rounded-2xl p-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">Timeline & Event Management</h3>
+                  <h4 className="text-2xl font-bold text-white mb-4">Timeline & Event Management</h4>
                   <p className="text-white/80 leading-relaxed mb-4">
                     Chronicle the history of your fictional universe with our comprehensive timeline tools. 
                     Track major events, character milestones, and world-changing moments that shape your narrative.
@@ -450,7 +450,7 @@ const Landing: React.FC = () => {
                 </div>
 
                 <div className="glass-card rounded-2xl p-8">
-                  <h3 className="text-2xl font-bold text-white mb-4">Story Creation & Organization</h3>
+                  <h4 className="text-2xl font-bold text-white mb-4">Story Creation & Organization</h4>
                   <p className="text-white/80 leading-relaxed mb-4">
                     Write and organize your stories with our intuitive story management system. 
                     Break down your narrative into chapters, scenes, and plot points while maintaining consistency across your universe.
@@ -466,22 +466,22 @@ const Landing: React.FC = () => {
             </div>
 
             <div className="glass-card rounded-2xl p-12 text-center">
-              <h3 className="text-3xl font-bold text-white mb-6">Why Choose MosCownpur for Your Fictional Universe?</h3>
+              <h4 className="text-3xl font-bold text-white mb-6">Why Choose MosCownpur for Your Fictional Universe?</h4>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                  <h4 className="text-xl font-semibold text-white mb-3">Professional Tools</h4>
+                  <h5 className="text-xl font-semibold text-white mb-3">Professional Tools</h5>
                   <p className="text-white/70">
                     Built by creators for creators, our platform provides professional-grade tools that scale with your creative vision.
                   </p>
                 </div>
                 <div>
-                  <h4 className="text-xl font-semibold text-white mb-3">Seamless Integration</h4>
+                  <h5 className="text-xl font-semibold text-white mb-3">Seamless Integration</h5>
                   <p className="text-white/70">
                     All your world building, character development, and storytelling tools work together in one unified platform.
                   </p>
                 </div>
                 <div>
-                  <h4 className="text-xl font-semibold text-white mb-3">Community Support</h4>
+                  <h5 className="text-xl font-semibold text-white mb-3">Community Support</h5>
                   <p className="text-white/70">
                     Join a community of passionate creators, share your worlds, and get inspired by fellow worldbuilders.
                   </p>

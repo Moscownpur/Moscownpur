@@ -14,6 +14,7 @@ export default defineConfig({
     }),
   ],
   build: {
+    sourcemap: true, // Enable source maps for better debugging
     rollupOptions: {
       output: {
         manualChunks: {
