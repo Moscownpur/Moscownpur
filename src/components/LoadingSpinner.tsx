@@ -63,7 +63,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   return (
     <div className="loading-container">
       <img src={logoImage} alt="MosCownpur Logo" className="loading-logo" />
-      <h1 className="loading-title">MosCownpur</h1>
+      <h2 className="loading-title">MosCownpur</h2>
       <p className="loading-subtitle">Empowering creators to build infinite worlds</p>
       
       {showProgress ? (
