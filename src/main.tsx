@@ -5,9 +5,13 @@ import './index.css';
 import { preloadCritical } from './utils/lazyImports';
 import { preloadUI } from './components/LazyUI';
 import { preloadCommonIcons } from './utils/iconLoader';
+import { initializeAllOptimizations } from './utils/performance';
 
 // Defer non-critical initialization
 const initApp = () => {
+  // Initialize performance optimizations early
+  initializeAllOptimizations();
+  
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <App />

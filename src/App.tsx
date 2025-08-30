@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
@@ -11,6 +11,7 @@ import Layout from './components/Layout';
 import { useSEO } from './hooks/useSEO';
 import StructuredData from './components/StructuredData';
 import LoadingSpinner from './components/LoadingSpinner';
+import { initializeAllOptimizations } from './utils/performance';
 
 // Lazy load pages for better performance
 const Landing = lazy(() => import('./pages/Landing'));
@@ -51,6 +52,11 @@ const StructuredDataUpdater: React.FC = () => {
 };
 
 function App() {
+  // Initialize performance optimizations
+  useEffect(() => {
+    initializeAllOptimizations();
+  }, []);
+
   return (
     <HelmetProvider>
       <ThemeProvider>

@@ -82,9 +82,9 @@ const Landing: React.FC = () => {
               <div className="">
                 <img src={logoImage} alt="Moscownpur Logo" className="w-20 h-20" />
               </div>
-              <h1 className="text-2xl font-bold gradient-text-cosmic">
+              <h2 className="text-2xl font-bold gradient-text-cosmic">
                 Moscownpur
-              </h1>
+              </h2>
             </div>
             <div className="hidden md:flex items-center space-x-6">
               <Link to="/features">
@@ -204,9 +204,9 @@ const Landing: React.FC = () => {
               className="mb-8"
             >
               <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-                <span className="gradient-text-cosmic">Create</span>
+                <span className="gradient-text-cosmic">Create Your Own</span>
                 <br />
-                <span className="text-white">Infinite Worlds</span>
+                <span className="text-white">Fictional Cinematic Universe</span>
               </h1>
               <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed">
                 The ultimate platform for worldbuilders, storytellers, and creators. 
@@ -381,6 +381,110 @@ const Landing: React.FC = () => {
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Comprehensive Content Section for SEO */}
+        <motion.section 
+          variants={itemVariants}
+          className="px-8 py-20"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
+                Create Your Own Fictional Cinematic Universe
+              </h2>
+              <p className="text-xl text-white/70 max-w-3xl mx-auto">
+                MosCownpur is the ultimate platform for worldbuilders, storytellers, and creators who want to build immersive fictional universes. 
+                Whether you're writing a novel, creating a game world, or developing a cinematic universe, our comprehensive tools help you bring your vision to life.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+              <div className="space-y-8">
+                <div className="glass-card rounded-2xl p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4">World Building Excellence</h3>
+                  <p className="text-white/80 leading-relaxed mb-4">
+                    Create detailed fictional universes with our advanced world building tools. Design complex societies, 
+                    establish unique physics and magic systems, and craft rich cultural backgrounds that make your universe feel alive and authentic.
+                  </p>
+                  <ul className="space-y-2 text-white/70">
+                    <li>• Geographic mapping and region design</li>
+                    <li>• Cultural and societal development</li>
+                    <li>• Magic system and technology creation</li>
+                    <li>• Historical timeline and lore management</li>
+                  </ul>
+                </div>
+
+                <div className="glass-card rounded-2xl p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4">Character Development & Management</h3>
+                  <p className="text-white/80 leading-relaxed mb-4">
+                    Develop compelling characters with rich backstories, complex relationships, and detailed personality traits. 
+                    Track character arcs, relationships, and development throughout your story.
+                  </p>
+                  <ul className="space-y-2 text-white/70">
+                    <li>• Character profile creation and management</li>
+                    <li>• Relationship mapping and family trees</li>
+                    <li>• Character arc tracking and development</li>
+                    <li>• Personality and motivation analysis</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="space-y-8">
+                <div className="glass-card rounded-2xl p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4">Timeline & Event Management</h3>
+                  <p className="text-white/80 leading-relaxed mb-4">
+                    Chronicle the history of your fictional universe with our comprehensive timeline tools. 
+                    Track major events, character milestones, and world-changing moments that shape your narrative.
+                  </p>
+                  <ul className="space-y-2 text-white/70">
+                    <li>• Interactive timeline creation</li>
+                    <li>• Event categorization and tagging</li>
+                    <li>• Character involvement tracking</li>
+                    <li>• Historical impact analysis</li>
+                  </ul>
+                </div>
+
+                <div className="glass-card rounded-2xl p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4">Story Creation & Organization</h3>
+                  <p className="text-white/80 leading-relaxed mb-4">
+                    Write and organize your stories with our intuitive story management system. 
+                    Break down your narrative into chapters, scenes, and plot points while maintaining consistency across your universe.
+                  </p>
+                  <ul className="space-y-2 text-white/70">
+                    <li>• Chapter and scene organization</li>
+                    <li>• Plot point tracking and development</li>
+                    <li>• Story consistency checking</li>
+                    <li>• Collaborative writing features</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="glass-card rounded-2xl p-12 text-center">
+              <h3 className="text-3xl font-bold text-white mb-6">Why Choose MosCownpur for Your Fictional Universe?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                  <h4 className="text-xl font-semibold text-white mb-3">Professional Tools</h4>
+                  <p className="text-white/70">
+                    Built by creators for creators, our platform provides professional-grade tools that scale with your creative vision.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold text-white mb-3">Seamless Integration</h4>
+                  <p className="text-white/70">
+                    All your world building, character development, and storytelling tools work together in one unified platform.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold text-white mb-3">Community Support</h4>
+                  <p className="text-white/70">
+                    Join a community of passionate creators, share your worlds, and get inspired by fellow worldbuilders.
+                  </p>
                 </div>
               </div>
             </div>

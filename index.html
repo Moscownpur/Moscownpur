@@ -8,8 +8,8 @@
     <!-- Primary Meta Tags -->
     <title>MosCownpur - Fictional Universe Management App</title>
     <meta name="title" content="MosCownpur - Fictional Universe Management App" />
-    <meta name="description" content="Create, manage, and explore fictional universes with MosCownpur. Build worlds, characters, timelines, and stories with our comprehensive universe management platform." />
-    <meta name="keywords" content="fictional universe, world building, character management, story creation, timeline events, creative writing, universe management" />
+    <meta name="description" content="Create your own fictional cinematic universe with MosCownpur. Build worlds, manage characters, craft timelines, and write stories with our all-in-one platform." />
+    <meta name="keywords" content="fictional cinematic universe, fictional universe, world building, character management, story creation, timeline events, creative writing, universe management, cinematic universe creator" />
     <meta name="author" content="MosCownpur" />
     <meta name="robots" content="index, follow" />
     
@@ -17,7 +17,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.moscownpur.in/" />
     <meta property="og:title" content="MosCownpur - Fictional Universe Management App" />
-    <meta property="og:description" content="Create, manage, and explore fictional universes with MosCownpur. Build worlds, characters, timelines, and stories with our comprehensive universe management platform." />
+    <meta property="og:description" content="Create your own fictional cinematic universe with MosCownpur. Build worlds, manage characters, craft timelines, and write stories with our all-in-one platform." />
     <meta property="og:image" content="https://www.moscownpur.in/logo.jpg" />
     <meta property="og:site_name" content="MosCownpur" />
     <meta property="og:locale" content="en_US" />
@@ -26,7 +26,7 @@
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://www.moscownpur.in/" />
     <meta property="twitter:title" content="MosCownpur - Fictional Universe Management App" />
-    <meta property="twitter:description" content="Create, manage, and explore fictional universes with MosCownpur. Build worlds, characters, timelines, and stories with our comprehensive universe management platform." />
+    <meta property="twitter:description" content="Create your own fictional cinematic universe with MosCownpur. Build worlds, manage characters, craft timelines, and write stories with our all-in-one platform." />
     <meta property="twitter:image" content="https://www.moscownpur.in/logo.jpg" />
     
     <!-- Additional SEO Meta Tags -->
@@ -42,24 +42,238 @@
     <!-- Web App Manifest -->
     <link rel="manifest" href="/manifest.json" />
     
-    <!-- Preconnect to external domains for performance -->
+    <!-- Enhanced Resource Hints for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://vercel.live" />
     
     <!-- DNS prefetch for external domains -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//vercel.live" />
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/logo.jpg" as="image" type="image/jpeg" />
+    <link rel="preload" href="/src/main.tsx" as="script" type="module" />
     
     <!-- Performance optimizations -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="format-detection" content="telephone=no" />
     
-    <!-- Critical CSS inline -->
+    <!-- Enhanced Critical CSS inline -->
     <style>
       /* Critical CSS for initial render */
-      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif; }
-      #root { min-height: 100vh; background: #000; }
-      .loading-spinner { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+      * { box-sizing: border-box; }
+      
+      body { 
+        margin: 0; 
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        background: #000;
+        color: #fff;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      #root { 
+        min-height: 100vh; 
+        background: #000;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      /* Enhanced Loading Spinner with Branding */
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: #000000;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .loading-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+        animation: pulse 2s ease-in-out infinite;
+      }
+      
+      .loading-logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        margin-bottom: 24px;
+        animation: logoFloat 3s ease-in-out infinite;
+        z-index: 1;
+        position: relative;
+      }
+      
+      .loading-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        background: var(--cosmic-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        z-index: 1;
+        position: relative;
+      }
+      
+      .loading-subtitle {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 32px;
+        text-align: center;
+        z-index: 1;
+        position: relative;
+      }
+      
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top: 3px solid #F37335;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 1;
+        position: relative;
+      }
+      
+      .loading-progress {
+        width: 200px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 2px;
+        margin-top: 24px;
+        overflow: hidden;
+        z-index: 1;
+        position: relative;
+      }
+      
+      .loading-progress-bar {
+        height: 100%;
+        background: var(--cosmic-gradient);
+        border-radius: 2px;
+        animation: progress 2s ease-in-out infinite;
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+      }
+      
+      @keyframes logoFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      
+      @keyframes progress {
+        0% { width: 0%; }
+        50% { width: 70%; }
+        100% { width: 100%; }
+      }
+      
+      /* NoScript Styles */
+      .noscript-message {
+        background: var(--cosmic-gradient);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+      
+      .noscript-message a {
+        color: #fff;
+        text-decoration: underline;
+      }
+      
+      /* Pre-rendered content styles */
+      .prerendered-content {
+        background: #000;
+        color: #fff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+      }
+      
+      .prerendered-logo {
+        width: 120px;
+        height: 120px;
+        border-radius: 30px;
+        margin-bottom: 32px;
+      }
+      
+      .prerendered-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 16px;
+        background: var(--cosmic-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      .prerendered-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 32px;
+        max-width: 600px;
+      }
+      
+      .prerendered-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        max-width: 800px;
+        margin-top: 40px;
+      }
+      
+      .prerendered-feature {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 24px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      .prerendered-feature h3 {
+        color: #F37335;
+        margin-bottom: 12px;
+      }
+      
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .loading-title {
+          font-size: 1.5rem;
+        }
+        
+        .prerendered-title {
+          font-size: 2rem;
+        }
+        
+        .prerendered-features {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
     
     <!-- Structured Data (JSON-LD) -->
@@ -68,7 +282,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "MosCownpur",
-      "description": "Create, manage, and explore fictional universes with MosCownpur. Build worlds, characters, timelines, and stories with our comprehensive universe management platform.",
+      "description": "Create your own fictional cinematic universe with MosCownpur. Build worlds, manage characters, craft timelines, and write stories with our all-in-one platform.",
       "url": "https://www.moscownpur.in",
       "applicationCategory": "CreativeApplication",
       "operatingSystem": "Web Browser",
@@ -91,7 +305,7 @@
         }
       },
       "image": "https://www.moscownpur.in/logo.jpg",
-"screenshot": "https://www.moscownpur.in/logo.jpg",
+      "screenshot": "https://www.moscownpur.in/logo.jpg",
       "featureList": [
         "World Building",
         "Character Management", 
@@ -100,15 +314,180 @@
         "Scene Management",
         "Chapter Organization"
       ],
-      "keywords": "fictional universe, world building, character management, story creation, timeline events, creative writing, universe management",
+      "keywords": "fictional universe, world building, character management, story creation, timeline events, creative writing, universe management, fictional cinematic universe",
       "inLanguage": "en-US",
       "datePublished": "2024-01-01",
       "dateModified": "2024-12-31"
     }
     </script>
+
+    <!-- Local Business Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "MosCownpur",
+      "description": "Create your own fictional cinematic universe with MosCownpur. Professional world building and storytelling platform for creators.",
+      "url": "https://www.moscownpur.in",
+      "logo": "https://www.moscownpur.in/logo.jpg",
+      "image": "https://www.moscownpur.in/logo.jpg",
+      "telephone": "+91-XXXXXXXXXX",
+      "email": "contact@moscownpur.in",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN",
+        "addressRegion": "India"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "20.5937",
+        "longitude": "78.9629"
+      },
+      "openingHours": "Mo-Su 00:00-23:59",
+      "priceRange": "Free",
+      "currenciesAccepted": "USD, INR",
+      "paymentAccepted": "Credit Card, PayPal, Bank Transfer",
+      "areaServed": "Worldwide",
+      "serviceArea": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": "20.5937",
+          "longitude": "78.9629"
+        },
+        "geoRadius": "20000"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "World Building Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "World Building Platform",
+              "description": "Create detailed fictional universes with advanced tools"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Character Management System",
+              "description": "Develop and manage complex characters with relationships"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Timeline Management",
+              "description": "Chronicle events and history of your fictional universe"
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/moscownpur",
+        "https://x.com/moscownpur",
+        "https://www.instagram.com/moscownpur/",
+        "https://www.youtube.com/@Moscownpur"
+      ]
+    }
+    </script>
   </head>
   <body>
+    <!-- NoScript Message for Users with JavaScript Disabled -->
+    <noscript>
+      <div class="noscript-message">
+        <h1>JavaScript Required</h1>
+        <p>MosCownpur requires JavaScript to function properly. Please enable JavaScript in your browser to continue.</p>
+        <p>If you're having trouble, please <a href="mailto:contact@moscownpur.in">contact our support team</a>.</p>
+      </div>
+    </noscript>
+
+    <!-- Enhanced Loading Indicator with Branding -->
+    <div id="loading-screen" class="loading-container">
+      <img src="/logo.jpg" alt="MosCownpur Logo" class="loading-logo" />
+      <h1 class="loading-title">MosCownpur</h1>
+      <p class="loading-subtitle">Empowering creators to build infinite worlds</p>
+      <div class="loading-spinner"></div>
+      <div class="loading-progress">
+        <div class="loading-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- Pre-rendered Content for Better SEO and User Experience -->
+    <div id="prerendered-content" class="prerendered-content" style="display: none;">
+      <img src="/logo.jpg" alt="MosCownpur Logo" class="prerendered-logo" />
+      <h1 class="prerendered-title">MosCownpur</h1>
+      <p class="prerendered-subtitle">
+        Create, manage, and explore fictional universes with our comprehensive world-building and storytelling platform. 
+        Build immersive worlds, develop compelling characters, and craft epic stories.
+      </p>
+      <div class="prerendered-features">
+        <div class="prerendered-feature">
+          <h3>World Building</h3>
+          <p>Create detailed universes with rich lore, geography, and cultures</p>
+        </div>
+        <div class="prerendered-feature">
+          <h3>Character Management</h3>
+          <p>Develop complex characters with backstories and relationships</p>
+        </div>
+        <div class="prerendered-feature">
+          <h3>Timeline Events</h3>
+          <p>Chronicle historical moments and timeline-shaping events</p>
+        </div>
+        <div class="prerendered-feature">
+          <h3>Story Creation</h3>
+          <p>Write and organize chapters, scenes, and storylines</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main App Root -->
     <div id="root"></div>
+
+    <!-- Enhanced Script Loading with Error Handling -->
+    <script>
+      // Hide loading screen and show pre-rendered content if JavaScript fails
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const loadingScreen = document.getElementById('loading-screen');
+          const prerenderedContent = document.getElementById('prerendered-content');
+          
+          if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+          }
+          
+          // Show pre-rendered content if app doesn't load within 5 seconds
+          setTimeout(function() {
+            if (document.getElementById('root').children.length === 0) {
+              if (prerenderedContent) {
+                prerenderedContent.style.display = 'flex';
+              }
+            }
+          }, 5000);
+        }, 1000);
+      });
+
+      // Error handling for script loading
+      window.addEventListener('error', function(e) {
+        console.error('Script loading error:', e);
+        const loadingScreen = document.getElementById('loading-screen');
+        const prerenderedContent = document.getElementById('prerendered-content');
+        
+        if (loadingScreen) {
+          loadingScreen.style.display = 'none';
+        }
+        
+        if (prerenderedContent) {
+          prerenderedContent.style.display = 'flex';
+        }
+      });
+    </script>
+
+    <!-- Main Application Script -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
