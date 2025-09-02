@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict nFSfZRQvMgYgDbfVYyCywdNedeXRkY1izAccdieV3stCgLmUSlcaApAFqZiiOOA
+\restrict ZsnOYRJGJdWivEEG7dyNw3iU05atjaIkusAFBESUIMZZsntG26JcsQZez35GbPV
 
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.6 (Ubuntu 17.6-1.pgdg24.04+1)
@@ -219,6 +219,18 @@ CREATE TYPE auth.factor_type AS ENUM (
 
 
 ALTER TYPE auth.factor_type OWNER TO supabase_auth_admin;
+
+--
+-- Name: oauth_registration_type; Type: TYPE; Schema: auth; Owner: supabase_auth_admin
+--
+
+CREATE TYPE auth.oauth_registration_type AS ENUM (
+    'dynamic',
+    'manual'
+);
+
+
+ALTER TYPE auth.oauth_registration_type OWNER TO supabase_auth_admin;
 
 --
 -- Name: one_time_token_type; Type: TYPE; Schema: auth; Owner: supabase_auth_admin
@@ -2613,6 +2625,31 @@ COMMENT ON TABLE auth.mfa_factors IS 'auth: stores metadata about factors';
 
 
 --
+-- Name: oauth_clients; Type: TABLE; Schema: auth; Owner: supabase_auth_admin
+--
+
+CREATE TABLE auth.oauth_clients (
+    id uuid NOT NULL,
+    client_id text NOT NULL,
+    client_secret_hash text NOT NULL,
+    registration_type auth.oauth_registration_type NOT NULL,
+    redirect_uris text NOT NULL,
+    grant_types text NOT NULL,
+    client_name text,
+    client_uri text,
+    logo_uri text,
+    created_at timestamp with time zone DEFAULT now() NOT NULL,
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    deleted_at timestamp with time zone,
+    CONSTRAINT oauth_clients_client_name_length CHECK ((char_length(client_name) <= 1024)),
+    CONSTRAINT oauth_clients_client_uri_length CHECK ((char_length(client_uri) <= 2048)),
+    CONSTRAINT oauth_clients_logo_uri_length CHECK ((char_length(logo_uri) <= 2048))
+);
+
+
+ALTER TABLE auth.oauth_clients OWNER TO supabase_auth_admin;
+
+--
 -- Name: one_time_tokens; Type: TABLE; Schema: auth; Owner: supabase_auth_admin
 --
 
@@ -3183,7 +3220,8 @@ CREATE TABLE public.scenes (
     cultural_tags uuid[],
     validation_status jsonb,
     created_at timestamp with time zone DEFAULT now(),
-    updated_at timestamp with time zone DEFAULT now()
+    updated_at timestamp with time zone DEFAULT now(),
+    title character varying(255) NOT NULL
 );
 
 
@@ -3194,6 +3232,13 @@ ALTER TABLE public.scenes OWNER TO postgres;
 --
 
 COMMENT ON TABLE public.scenes IS 'Stores scenes within events. Scenes contain the actual content of the story.';
+
+
+--
+-- Name: COLUMN scenes.title; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN public.scenes.title IS 'The title of the scene, separate from the narration content';
 
 
 --
@@ -3578,6 +3623,22 @@ ALTER TABLE ONLY auth.mfa_factors
 
 ALTER TABLE ONLY auth.mfa_factors
     ADD CONSTRAINT mfa_factors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: oauth_clients oauth_clients_client_id_key; Type: CONSTRAINT; Schema: auth; Owner: supabase_auth_admin
+--
+
+ALTER TABLE ONLY auth.oauth_clients
+    ADD CONSTRAINT oauth_clients_client_id_key UNIQUE (client_id);
+
+
+--
+-- Name: oauth_clients oauth_clients_pkey; Type: CONSTRAINT; Schema: auth; Owner: supabase_auth_admin
+--
+
+ALTER TABLE ONLY auth.oauth_clients
+    ADD CONSTRAINT oauth_clients_pkey PRIMARY KEY (id);
 
 
 --
@@ -4023,6 +4084,20 @@ CREATE INDEX mfa_factors_user_id_idx ON auth.mfa_factors USING btree (user_id);
 
 
 --
+-- Name: oauth_clients_client_id_idx; Type: INDEX; Schema: auth; Owner: supabase_auth_admin
+--
+
+CREATE INDEX oauth_clients_client_id_idx ON auth.oauth_clients USING btree (client_id);
+
+
+--
+-- Name: oauth_clients_deleted_at_idx; Type: INDEX; Schema: auth; Owner: supabase_auth_admin
+--
+
+CREATE INDEX oauth_clients_deleted_at_idx ON auth.oauth_clients USING btree (deleted_at);
+
+
+--
 -- Name: one_time_tokens_relates_to_hash_idx; Type: INDEX; Schema: auth; Owner: supabase_auth_admin
 --
 
@@ -4447,6 +4522,13 @@ CREATE INDEX scenes_cultural_tags_idx ON public.scenes USING gin (cultural_tags)
 --
 
 CREATE INDEX scenes_event_id_idx ON public.scenes USING btree (event_id);
+
+
+--
+-- Name: scenes_title_idx; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX scenes_title_idx ON public.scenes USING btree (title);
 
 
 --
@@ -6729,6 +6811,14 @@ GRANT ALL ON TABLE auth.mfa_factors TO dashboard_user;
 
 
 --
+-- Name: TABLE oauth_clients; Type: ACL; Schema: auth; Owner: supabase_auth_admin
+--
+
+GRANT ALL ON TABLE auth.oauth_clients TO postgres;
+GRANT ALL ON TABLE auth.oauth_clients TO dashboard_user;
+
+
+--
 -- Name: TABLE one_time_tokens; Type: ACL; Schema: auth; Owner: supabase_auth_admin
 --
 
@@ -7374,5 +7464,5 @@ ALTER EVENT TRIGGER pgrst_drop_watch OWNER TO supabase_admin;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict nFSfZRQvMgYgDbfVYyCywdNedeXRkY1izAccdieV3stCgLmUSlcaApAFqZiiOOA
+\unrestrict ZsnOYRJGJdWivEEG7dyNw3iU05atjaIkusAFBESUIMZZsntG26JcsQZez35GbPV
 
