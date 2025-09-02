@@ -49,7 +49,7 @@ class AuthService {
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('is_admin')
-        .eq('id', data.user.id)
+        .eq('user_id', data.user.id)
         .single();
 
       if (roleError && roleError.code !== 'PGRST116') {
@@ -142,7 +142,7 @@ class AuthService {
       const { data: userRole, error: roleError } = await supabase
         .from('user_roles')
         .select('is_admin')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .single();
 
       if (roleError && roleError.code !== 'PGRST116') {
@@ -189,7 +189,7 @@ class AuthService {
         const { data: userRole } = await supabase
           .from('user_roles')
           .select('is_admin')
-          .eq('id', session.user.id)
+          .eq('user_id', session.user.id)
           .single();
 
         const authUser: AuthUser = {

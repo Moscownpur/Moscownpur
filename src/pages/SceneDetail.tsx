@@ -5,9 +5,10 @@ import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { Scene, Character, SceneWithDialogue } from '../types';
-import DialogueEditor from '../components/ui/DialogueEditor';
+import DialogueList from '../components/DialogueList';
 import Modal from '../components/Modal';
 import toast from 'react-hot-toast';
+import { useDialogues } from '../hooks/useDialogues';
 
 const SceneDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -16,8 +17,19 @@ const SceneDetail: React.FC = () => {
   const [scene, setScene] = useState<SceneWithDialogue | null>(null);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showDialogueEditor, setShowDialogueEditor] = useState(false);
+  const [showDialogueManager, setShowDialogueManager] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  
+  // Use our custom dialogue hook
+  const {
+    dialogues,
+    loading: dialoguesLoading,
+    error: dialoguesError,
+    addDialogue,
+    updateDialogue,
+    deleteDialogue,
+    refreshDialogues
+  } = useDialogues(id || '');
 
   useEffect(() => {
     if (id && user) {
@@ -142,11 +154,11 @@ const SceneDetail: React.FC = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setShowDialogueEditor(!showDialogueEditor)}
+            onClick={() => setShowDialogueManager(!showDialogueManager)}
             className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-xl font-semibold hover:scale-105 smooth-transition soft-glow-orange flex items-center gap-2"
           >
             <MessageSquare className="w-5 h-5" />
-            {showDialogueEditor ? 'Hide' : 'Edit'} Dialogue
+            {showDialogueManager ? 'Hide' : 'Manage'} Dialogues
           </motion.button>
           
           <motion.button
@@ -186,42 +198,52 @@ const SceneDetail: React.FC = () => {
             </p>
           </div>
 
-          {/* Dialogue Editor */}
-          {showDialogueEditor && (
+          {/* Dialogue Manager */}
+          {showDialogueManager && (
             <div className="glass-card rounded-2xl p-8">
-              <DialogueEditor
+              {dialoguesError && (
+                <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                  <p className="text-red-400 text-sm">Error loading dialogues: {dialoguesError}</p>
+                </div>
+              )}
+              <DialogueList
                 sceneId={scene.id}
+                dialogues={dialogues}
                 characters={characters}
-                onClose={() => setShowDialogueEditor(false)}
+                onAddDialogue={addDialogue}
+                onUpdateDialogue={updateDialogue}
+                onDeleteDialogue={deleteDialogue}
+                isEditable={true}
               />
             </div>
           )}
 
           {/* Dialogue Preview */}
-          {!showDialogueEditor && scene.dialogue_lines && scene.dialogue_lines.length > 0 && (
+          {!showDialogueManager && dialogues.length > 0 && (
             <div className="glass-card rounded-2xl p-8">
               <div className="flex items-center gap-3 mb-6">
                 <MessageSquare className="w-7 h-7 text-blue-400" />
                 <h2 className="text-heading gradient-text-cosmic">Scene Dialogue</h2>
                 <span className="px-3 py-1 text-caption font-medium glass-card text-white/80 rounded-full">
-                  {scene.line_count} lines
+                  {dialogues.length} dialogue{dialogues.length !== 1 ? 's' : ''}
                 </span>
               </div>
               <div className="space-y-4">
-                {scene.dialogue_lines.map((line, index) => (
-                  <div key={line.id} className="glass-card rounded-xl p-4">
+                {dialogues.map((dialogue) => (
+                  <div key={dialogue.dialogue_id} className="glass-card rounded-xl p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-sm font-medium text-white/80">
-                        {line.type === 'character' ? `@${line.display_name}` : line.display_name}
+                        {dialogue.character_id 
+                          ? `@${characters.find(c => c.id === dialogue.character_id)?.name || 'Unknown'}`
+                          : 'Narration'
+                        }
                       </span>
-                      {line.type === 'character' && line.character_role && (
-                        <span className="px-2 py-1 text-xs rounded-full border border-blue-400/20 bg-blue-400/10 text-blue-400">
-                          {line.character_role}
-                        </span>
-                      )}
+                      <span className="px-2 py-1 text-xs rounded-full border border-blue-400/20 bg-blue-400/10 text-blue-400 capitalize">
+                        {dialogue.delivery_type.replace('_', ' ')}
+                      </span>
                     </div>
-                    <div className={`${line.type === 'narration' ? 'italic text-white/70' : 'text-white'}`}>
-                      {line.text}
+                    <div className={`${dialogue.delivery_type === 'narration' ? 'italic text-white/70' : 'text-white'}`}>
+                      {dialogue.content}
                     </div>
                   </div>
                 ))}

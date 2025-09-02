@@ -10,7 +10,8 @@ import {
   Film,
   FileText,
   Bot,
-  Calendar
+  Calendar,
+  MessageSquare
 } from 'lucide-react';
 
 const navigation = [
@@ -20,6 +21,7 @@ const navigation = [
   { name: 'Characters', href: '/dashboard/characters', icon: Users },
   { name: 'Events', href: '/dashboard/events', icon: Clock },
   { name: 'Scenes', href: '/dashboard/scenes', icon: Film },
+  { name: 'Dialogues', href: '/dashboard/dialogues', icon: MessageSquare },
   { name: 'Timeline', href: '/dashboard/timeline', icon: Calendar },
 ];
 

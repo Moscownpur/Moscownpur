@@ -152,7 +152,7 @@ export const useAdminData = () => {
       const { error } = await supabase
         .from('user_roles')
         .upsert({ 
-          id: userId, 
+          user_id: userId, 
           is_admin: makeAdmin 
         });
 

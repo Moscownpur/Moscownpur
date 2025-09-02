@@ -52,27 +52,27 @@ const DialogueComponent: React.FC<DialogueComponentProps> = ({
   const getDeliveryTypeColor = (type: string) => {
     switch (type) {
       case 'speech_bubble':
-        return 'bg-blue-100 border-blue-300 text-blue-800';
+        return 'bg-blue-500/20 border-blue-500/40 text-blue-400';
       case 'narration':
-        return 'bg-gray-100 border-gray-300 text-gray-800';
+        return 'bg-white/10 border-white/20 text-white/80';
       case 'thought':
-        return 'bg-purple-100 border-purple-300 text-purple-800';
+        return 'bg-purple-500/20 border-purple-500/40 text-purple-400';
       case 'song':
-        return 'bg-green-100 border-green-300 text-green-800';
+        return 'bg-green-500/20 border-green-500/40 text-green-400';
       default:
-        return 'bg-blue-100 border-blue-300 text-blue-800';
+        return 'bg-blue-500/20 border-blue-500/40 text-blue-400';
     }
   };
 
-  const getSentimentColor = (score?: number) => {
-    if (!score) return 'text-gray-500';
-    if (score > 0.3) return 'text-green-600';
-    if (score < -0.3) return 'text-red-600';
-    return 'text-yellow-600';
+  const getSentimentColor = (score?: number | null) => {
+    if (!score || score === null) return 'text-white/60';
+    if (score > 0.3) return 'text-green-400';
+    if (score < -0.3) return 'text-red-400';
+    return 'text-yellow-400';
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-4 border-l-4 border-blue-500">
+    <div className="glass-card rounded-xl p-4 mb-4 border-l-4 border-blue-500/50">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-full ${getDeliveryTypeColor(dialogue.delivery_type)}`}>
@@ -81,11 +81,11 @@ const DialogueComponent: React.FC<DialogueComponentProps> = ({
           <div>
             <div className="flex items-center space-x-2">
               {character && (
-                <span className="font-semibold text-gray-800">{character.name}</span>
+                <span className="font-semibold text-white">{character.name}</span>
               )}
-              <span className="text-sm text-gray-500">#{dialogue.sequence}</span>
+              <span className="text-sm text-white/60">#{dialogue.sequence}</span>
             </div>
-            <div className="text-xs text-gray-400 capitalize">
+            <div className="text-xs text-white/40 capitalize">
               {dialogue.delivery_type.replace('_', ' ')}
             </div>
           </div>
@@ -95,13 +95,13 @@ const DialogueComponent: React.FC<DialogueComponentProps> = ({
           <div className="flex space-x-2">
             <button
               onClick={() => onEdit?.(dialogue)}
-              className="text-blue-600 hover:text-blue-800 text-sm px-2 py-1 rounded hover:bg-blue-50"
+              className="text-blue-400 hover:text-blue-300 text-sm px-2 py-1 rounded hover:bg-blue-500/10 transition-colors"
             >
               Edit
             </button>
             <button
               onClick={() => onDelete?.(dialogue.dialogue_id)}
-              className="text-red-600 hover:text-red-800 text-sm px-2 py-1 rounded hover:bg-red-50"
+              className="text-red-400 hover:text-red-300 text-sm px-2 py-1 rounded hover:bg-red-500/10 transition-colors"
             >
               Delete
             </button>
@@ -110,14 +110,14 @@ const DialogueComponent: React.FC<DialogueComponentProps> = ({
       </div>
 
       <div className="mb-3">
-        <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">
+        <p className="text-white leading-relaxed whitespace-pre-wrap">
           {dialogue.content}
         </p>
       </div>
 
-      <div className="flex items-center justify-between text-xs text-gray-500">
+      <div className="flex items-center justify-between text-xs text-white/60">
         <div className="flex items-center space-x-4">
-          {dialogue.sentiment_score !== undefined && (
+          {dialogue.sentiment_score !== undefined && dialogue.sentiment_score !== null && (
             <span className={`${getSentimentColor(dialogue.sentiment_score)}`}>
               Sentiment: {dialogue.sentiment_score.toFixed(2)}
             </span>

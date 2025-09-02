@@ -40,6 +40,8 @@ const AITest = lazy(() => import('./components/AITest'));
 const AIIntegration = lazy(() => import('./pages/AIIntegration'));
 const SupabaseTest = lazy(() => import('./pages/SupabaseTest'));
 const PerformanceDashboard = lazy(() => import('./pages/PerformanceDashboard'));
+const DialogueDemo = lazy(() => import('./pages/DialogueDemo'));
+const DialogueManagement = lazy(() => import('./pages/DialogueManagement'));
 
 // Component to handle SEO updates
 const SEOUpdater: React.FC = () => {
@@ -78,6 +80,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/supabase-test" element={<SupabaseTest />} />
                     <Route path="/performance" element={<PerformanceDashboard />} />
+                    <Route path="/dialogue-demo" element={<DialogueDemo />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -92,6 +95,7 @@ function App() {
                       <Route path="events" element={<EventManagement />} />
                       <Route path="scenes" element={<SceneManagement />} />
                       <Route path="scenes/:id" element={<SceneDetail />} />
+                      <Route path="dialogues" element={<DialogueManagement />} />
                       <Route path="timeline" element={<TimelineEvents />} />
                       <Route path="stories" element={<StoryScenes />} />
                       <Route path="ai-test" element={<AITest />} />

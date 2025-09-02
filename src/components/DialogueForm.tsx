@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Plus, Save, Edit3 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 interface Dialogue {
   dialogue_id: string;
@@ -66,7 +67,15 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!content.trim()) return;
+    if (!content.trim()) {
+      toast.error('Please enter dialogue content');
+      return;
+    }
+    
+    if (!sceneId) {
+      toast.error('No scene selected. Please select a scene first.');
+      return;
+    }
 
     const dialogueData = {
       scene_id: sceneId,
@@ -101,37 +110,46 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
     onCancel();
   };
 
-  if (!isOpen) return null;
+
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-xl font-semibold text-gray-800">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[9999] backdrop-blur-sm">
+      <div className="glass-card rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-white/20">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
+          <h2 className="text-xl font-semibold text-white">
             {editingDialogue ? 'Edit Dialogue' : 'Add New Dialogue'}
           </h2>
           <button
             onClick={handleCancel}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-white/60 hover:text-white transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Scene Info */}
+          {!sceneId && (
+            <div className="p-4 bg-red-500/20 border border-red-500/40 rounded-lg">
+              <p className="text-red-400 text-sm">
+                ⚠️ No scene selected. Please select a scene from the filters above before adding a dialogue.
+              </p>
+            </div>
+          )}
+          
           {/* Character Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Character (Optional for narration)
             </label>
             <select
               value={characterId}
               onChange={(e) => setCharacterId(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
-              <option value="">No character (Narration)</option>
+              <option value="" className="bg-gray-800 text-white">No character (Narration)</option>
               {characters.map((character) => (
-                <option key={character.character_id} value={character.character_id}>
+                <option key={character.character_id} value={character.character_id} className="bg-gray-800 text-white">
                   {character.name}
                 </option>
               ))}
@@ -140,7 +158,7 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
 
           {/* Delivery Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Delivery Type
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -154,8 +172,8 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
                   key={type.value}
                   className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
                     deliveryType === type.value
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-blue-500 bg-blue-500/20 text-blue-400'
+                      : 'border-white/20 bg-white/5 hover:border-white/40 text-white/80 hover:text-white'
                   }`}
                 >
                   <input
@@ -175,7 +193,7 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
 
           {/* Sequence */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Sequence Number
             </label>
             <input
@@ -183,16 +201,16 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
               value={sequence}
               onChange={(e) => setSequence(parseInt(e.target.value) || 1)}
               min="1"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-white/60 mt-1">
               This determines the order of dialogues in the scene
             </p>
           </div>
 
           {/* Content */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-white mb-2">
               Dialogue Content
             </label>
             <textarea
@@ -200,27 +218,27 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
               onChange={(e) => setContent(e.target.value)}
               rows={6}
               placeholder="Enter the dialogue, narration, thought, or song lyrics..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-white/60 mt-1">
               {content.length} characters
             </p>
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end space-x-3 pt-4 border-t">
+          <div className="flex justify-end space-x-3 pt-4 border-t border-white/10">
             <button
               type="button"
               onClick={handleCancel}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-white/80 bg-white/10 rounded-lg hover:bg-white/20 transition-colors border border-white/20"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center space-x-2"
-              disabled={!content.trim()}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg hover:scale-105 transition-all duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!content.trim() || !sceneId}
             >
               {editingDialogue ? (
                 <>

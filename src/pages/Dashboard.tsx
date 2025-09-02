@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Users, MapPin, Clock, BookOpen, Plus, Sparkles, Zap, Heart, Film } from 'lucide-react';
+import { Globe, Users, MapPin, Clock, BookOpen, Plus, Sparkles, Zap, Heart, Film, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import GlowCard from '../components/ui/GlowCard';
 import NeonButton from '../components/ui/NeonButton';
@@ -9,18 +9,40 @@ import { useWorlds } from '../hooks/useWorlds';
 import { useChapters } from '../hooks/useChapters';
 import { useCharacters } from '../hooks/useCharacters';
 import { useTimeline } from '../hooks/useTimeline';
+import { useDialogues } from '../hooks/useDialogues';
+import { supabase } from '../lib/supabase';
 
 const Dashboard: React.FC = () => {
   const { worlds, loading } = useWorlds();
   const { chapters } = useChapters();
   const { characters } = useCharacters();
   const { scenes } = useTimeline();
+  const [dialogueCount, setDialogueCount] = useState(0);
+
+  useEffect(() => {
+    const fetchDialogueCount = async () => {
+      try {
+        const { count, error } = await supabase
+          .from('dialogues')
+          .select('*', { count: 'exact', head: true });
+        
+        if (!error && count !== null) {
+          setDialogueCount(count);
+        }
+      } catch (error) {
+        console.error('Error fetching dialogue count:', error);
+      }
+    };
+
+    fetchDialogueCount();
+  }, []);
 
   const stats = [
     { name: 'Worlds', value: worlds.length, icon: Globe, color: 'purple', emoji: '🌍' },
     { name: 'Chapters', value: chapters.length, icon: BookOpen, color: 'blue', emoji: '📖' },
     { name: 'Characters', value: characters.length, icon: Users, color: 'green', emoji: '👥' },
     { name: 'Scenes', value: scenes.length, icon: Film, color: 'orange', emoji: '🎬' },
+    { name: 'Dialogues', value: dialogueCount, icon: MessageSquare, color: 'cyan', emoji: '💬' },
   ];
 
   const containerVariants = {
@@ -50,6 +72,7 @@ const Dashboard: React.FC = () => {
     { name: 'Add Chapter', icon: BookOpen, gradient: 'gradient-text-blue', path: '/dashboard/chapters' },
     { name: 'Add Character', icon: Users, gradient: 'gradient-text-green', path: '/dashboard/characters' },
     { name: 'Add Scene', icon: Film, gradient: 'gradient-text-orange', path: '/dashboard/scenes' },
+    { name: 'Manage Dialogues', icon: MessageSquare, gradient: 'gradient-text-cyan', path: '/dashboard/dialogues' },
   ];
 
   return (
@@ -184,7 +207,7 @@ const Dashboard: React.FC = () => {
 
       {/* Quick Actions */}
       <motion.div variants={itemVariants}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {quickActions.map((action) => (
             <Link key={action.name} to={action.path}>
               <motion.div 

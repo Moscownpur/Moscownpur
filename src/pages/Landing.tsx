@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap, Globe } from 'lucide-react';
+import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap, Globe, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
 import logoImage from '/logo.jpg';
@@ -486,6 +486,45 @@ const Landing: React.FC = () => {
                     Join a community of passionate creators, share your worlds, and get inspired by fellow worldbuilders.
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
+        {/* Demo Section */}
+        <motion.section 
+          variants={itemVariants}
+          className="px-8 py-20"
+        >
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
+                Try It Out
+              </h2>
+              <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                Experience our powerful dialogue system firsthand with our interactive demo
+              </p>
+            </div>
+            
+            <div className="glass-card rounded-2xl p-12 text-center">
+              <div className="max-w-3xl mx-auto">
+                <h3 className="text-3xl font-bold text-white mb-6">Dialogue System Demo</h3>
+                <p className="text-white/80 leading-relaxed mb-8">
+                  See how our advanced dialogue system handles different types of storytelling elements: 
+                  character speech, narration, internal thoughts, and even musical elements. 
+                  Experience the power of our sequence management and character integration.
+                </p>
+                <Link to="/dialogue-demo">
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-10 py-5 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-lg font-semibold rounded-2xl hover:shadow-lg transition-all duration-300 flex items-center gap-3 mx-auto"
+                  >
+                    <MessageSquare size={24} />
+                    Try the Demo
+                    <ArrowRight size={20} />
+                  </motion.button>
+                </Link>
               </div>
             </div>
           </div>
