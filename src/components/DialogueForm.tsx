@@ -20,9 +20,36 @@ interface Character {
   traits?: any;
 }
 
+interface Scene {
+  scene_id: string;
+  title: string;
+  event_id: string;
+}
+
+interface Event {
+  event_id: string;
+  title: string;
+  chapter_id: string;
+}
+
+interface Chapter {
+  chapter_id: string;
+  title: string;
+  world_id: string;
+}
+
+interface World {
+  world_id: string;
+  name: string;
+}
+
 interface DialogueFormProps {
   sceneId: string;
   characters: Character[];
+  scenes: Scene[];
+  events: Event[];
+  chapters: Chapter[];
+  worlds: World[];
   existingDialogues: Dialogue[];
   onSave: (dialogue: Omit<Dialogue, 'dialogue_id' | 'created_at' | 'updated_at'>) => void;
   onUpdate?: (dialogue: Dialogue) => void;
@@ -34,6 +61,10 @@ interface DialogueFormProps {
 const DialogueForm: React.FC<DialogueFormProps> = ({
   sceneId,
   characters,
+  scenes,
+  events,
+  chapters,
+  worlds,
   existingDialogues,
   onSave,
   onUpdate,
@@ -42,6 +73,7 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
   isOpen
 }) => {
   const [content, setContent] = useState('');
+  const [selectedSceneId, setSelectedSceneId] = useState<string>(sceneId);
   const [characterId, setCharacterId] = useState<string>('');
   const [deliveryType, setDeliveryType] = useState<'speech_bubble' | 'narration' | 'thought' | 'song'>('speech_bubble');
   const [sequence, setSequence] = useState(1);
@@ -49,6 +81,7 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
   useEffect(() => {
     if (editingDialogue) {
       setContent(editingDialogue.content);
+      setSelectedSceneId(editingDialogue.scene_id);
       setCharacterId(editingDialogue.character_id || '');
       setDeliveryType(editingDialogue.delivery_type);
       setSequence(editingDialogue.sequence);
@@ -59,10 +92,11 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
         : 0;
       setSequence(maxSequence + 1);
       setContent('');
+      setSelectedSceneId(sceneId);
       setCharacterId('');
       setDeliveryType('speech_bubble');
     }
-  }, [editingDialogue, existingDialogues]);
+  }, [editingDialogue, existingDialogues, sceneId]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,13 +106,13 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
       return;
     }
     
-    if (!sceneId) {
+    if (!selectedSceneId) {
       toast.error('No scene selected. Please select a scene first.');
       return;
     }
 
     const dialogueData = {
-      scene_id: sceneId,
+      scene_id: selectedSceneId,
       character_id: characterId || undefined,
       content: content.trim(),
       delivery_type: deliveryType,
@@ -104,6 +138,7 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
 
   const handleCancel = () => {
     setContent('');
+    setSelectedSceneId(sceneId);
     setCharacterId('');
     setDeliveryType('speech_bubble');
     setSequence(1);
@@ -128,14 +163,52 @@ const DialogueForm: React.FC<DialogueFormProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Scene Info */}
-          {!sceneId && (
-            <div className="p-4 bg-red-500/20 border border-red-500/40 rounded-lg">
-              <p className="text-red-400 text-sm">
-                ⚠️ No scene selected. Please select a scene from the filters above before adding a dialogue.
-              </p>
-            </div>
-          )}
+          {/* Scene Selection */}
+          <div>
+            <label className="block text-sm font-medium text-white mb-2">
+              Scene *
+            </label>
+            <select
+              value={selectedSceneId}
+              onChange={(e) => setSelectedSceneId(e.target.value)}
+              className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              required
+            >
+              <option value="" className="bg-gray-800 text-white">Select a scene...</option>
+              {scenes.map((scene) => {
+                // Find the event, chapter, and world for this scene
+                const event = events.find(e => e.event_id === scene.event_id);
+                const chapter = event ? chapters.find(c => c.chapter_id === event.chapter_id) : null;
+                const world = chapter ? worlds.find(w => w.world_id === chapter.world_id) : null;
+                
+                const context = world && chapter && event 
+                  ? `(${world.name} → ${chapter.title} → ${event.title})`
+                  : '';
+                
+                return (
+                  <option 
+                    key={scene.scene_id} 
+                    value={scene.scene_id} 
+                    className="bg-gray-800 text-white"
+                  >
+                    {scene.title} {context}
+                  </option>
+                );
+              })}
+            </select>
+            <p className="text-xs text-white/60 mt-1">
+              Choose the scene where this dialogue will appear
+            </p>
+            
+            {/* Warning if changing scene during edit */}
+            {editingDialogue && selectedSceneId !== editingDialogue.scene_id && (
+              <div className="mt-2 p-2 bg-yellow-500/20 border border-yellow-500/40 rounded-lg">
+                <p className="text-yellow-400 text-xs">
+                  ⚠️ Changing the scene may affect dialogue permissions and context
+                </p>
+              </div>
+            )}
+          </div>
           
           {/* Character Selection */}
           <div>

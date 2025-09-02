@@ -737,6 +737,10 @@ const DialogueManagement: React.FC = () => {
         <DialogueForm
           sceneId={filterScene !== 'all' ? filterScene : (scenes.length > 0 ? scenes[0].scene_id : '')}
           characters={characters}
+          scenes={scenes}
+          events={events}
+          chapters={chapters}
+          worlds={worlds}
           existingDialogues={dialogues}
           onSave={handleAddDialogue}
           onUpdate={handleUpdateDialogue}

@@ -215,6 +215,10 @@ const DialogueList: React.FC<DialogueListProps> = ({
       <DialogueForm
         sceneId={sceneId}
         characters={characters}
+        scenes={[{ scene_id: sceneId, title: 'Current Scene', event_id: '' }]}
+        events={[{ event_id: '', title: 'Current Event', chapter_id: '' }]}
+        chapters={[{ chapter_id: '', title: 'Current Chapter', world_id: '' }]}
+        worlds={[{ world_id: '', name: 'Current World' }]}
         existingDialogues={dialogues}
         onSave={handleSave}
         onUpdate={handleSave}
