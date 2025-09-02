@@ -17,9 +17,20 @@ export const useCharacters = () => {
         return;
       }
       
+      // Only fetch characters from user's worlds
       const { data, error } = await supabase
         .from('characters')
-        .select('character_id, world_id, name, origin_story, traits, created_at, updated_at')
+        .select(`
+          character_id, 
+          world_id, 
+          name, 
+          origin_story, 
+          traits, 
+          created_at, 
+          updated_at,
+          worlds!inner(user_id)
+        `)
+        .eq('worlds.user_id', user?.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;

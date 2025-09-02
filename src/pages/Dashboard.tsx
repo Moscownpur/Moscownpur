@@ -10,9 +10,11 @@ import { useChapters } from '../hooks/useChapters';
 import { useCharacters } from '../hooks/useCharacters';
 import { useTimeline } from '../hooks/useTimeline';
 import { useDialogues } from '../hooks/useDialogues';
+import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 
 const Dashboard: React.FC = () => {
+  const { user } = useAuth();
   const { worlds, loading } = useWorlds();
   const { chapters } = useChapters();
   const { characters } = useCharacters();
@@ -22,11 +24,65 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchDialogueCount = async () => {
       try {
-        const { count, error } = await supabase
+        // First get user's worlds
+        const { data: worldsData, error: worldsError } = await supabase
+          .from('worlds')
+          .select('world_id')
+          .eq('user_id', user?.id);
+
+        if (worldsError || !worldsData || worldsData.length === 0) {
+          setDialogueCount(0);
+          return;
+        }
+
+        const userWorldIds = worldsData.map(w => w.world_id);
+
+        // Get chapters in user's worlds
+        const { data: chaptersData, error: chaptersError } = await supabase
+          .from('chapters')
+          .select('chapter_id')
+          .in('world_id', userWorldIds);
+
+        if (chaptersError || !chaptersData || chaptersData.length === 0) {
+          setDialogueCount(0);
+          return;
+        }
+
+        const userChapterIds = chaptersData.map(c => c.chapter_id);
+
+        // Get events in user's chapters
+        const { data: eventsData, error: eventsError } = await supabase
+          .from('events')
+          .select('event_id')
+          .in('chapter_id', userChapterIds);
+
+        if (eventsError || !eventsData || eventsData.length === 0) {
+          setDialogueCount(0);
+          return;
+        }
+
+        const userEventIds = eventsData.map(e => e.event_id);
+
+        // Get scenes in user's events
+        const { data: scenesData, error: scenesError } = await supabase
+          .from('scenes')
+          .select('scene_id')
+          .in('event_id', userEventIds);
+
+        if (scenesError || !scenesData || scenesData.length === 0) {
+          setDialogueCount(0);
+          return;
+        }
+
+        const userSceneIds = scenesData.map(s => s.scene_id);
+
+        // Count dialogues in user's scenes
+        const { count, error: countError } = await supabase
           .from('dialogues')
-          .select('*', { count: 'exact', head: true });
+          .select('*', { count: 'exact', head: true })
+          .in('scene_id', userSceneIds);
         
-        if (!error && count !== null) {
+        if (!countError && count !== null) {
           setDialogueCount(count);
         }
       } catch (error) {
@@ -34,8 +90,10 @@ const Dashboard: React.FC = () => {
       }
     };
 
-    fetchDialogueCount();
-  }, []);
+    if (user) {
+      fetchDialogueCount();
+    }
+  }, [user]);
 
   const stats = [
     { name: 'Worlds', value: worlds.length, icon: Globe, color: 'purple', emoji: '🌍' },

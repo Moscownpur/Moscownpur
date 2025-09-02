@@ -24,6 +24,21 @@ export const useTimeline = (worldId?: string) => {
         .select('event_id, chapter_id, story_time, title, context, timeline_version, created_at, updated_at');
 
       if (worldId) {
+        // Verify the world belongs to the user before fetching events
+        const { data: worldCheck, error: worldError } = await supabase
+          .from('worlds')
+          .select('world_id')
+          .eq('world_id', worldId)
+          .eq('user_id', user?.id)
+          .single();
+        
+        if (worldError || !worldCheck) {
+          console.error('World not found or access denied');
+          setEvents([]);
+          setLoading(false);
+          return;
+        }
+        
         // We need to join with chapters to filter by world_id
         query = supabase
           .from('events')
@@ -39,6 +54,23 @@ export const useTimeline = (worldId?: string) => {
             chapters!inner(world_id)
           `)
           .eq('chapters.world_id', worldId);
+      } else {
+        // If no worldId specified, only fetch events from user's worlds
+        query = supabase
+          .from('events')
+          .select(`
+            event_id, 
+            chapter_id, 
+            story_time, 
+            title, 
+            context, 
+            timeline_version, 
+            created_at, 
+            updated_at,
+            chapters!inner(world_id),
+            worlds!inner(user_id)
+          `)
+          .eq('worlds.user_id', user?.id);
       }
 
       const { data, error } = await query.order('story_time', { ascending: true });

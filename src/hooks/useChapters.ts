@@ -22,7 +22,39 @@ export const useChapters = (worldId?: string) => {
         .select('chapter_id, world_id, title, chapter_order, template_type, status, timeline_version, created_at, updated_at');
 
       if (worldId) {
+        // Verify the world belongs to the user before fetching chapters
+        const { data: worldCheck, error: worldError } = await supabase
+          .from('worlds')
+          .select('world_id')
+          .eq('world_id', worldId)
+          .eq('user_id', user?.id)
+          .single();
+        
+        if (worldError || !worldCheck) {
+          console.error('World not found or access denied');
+          setChapters([]);
+          setLoading(false);
+          return;
+        }
+        
         query = query.eq('world_id', worldId);
+      } else {
+        // If no worldId specified, only fetch chapters from user's worlds
+        query = supabase
+          .from('chapters')
+          .select(`
+            chapter_id, 
+            world_id, 
+            title, 
+            chapter_order, 
+            template_type, 
+            status, 
+            timeline_version, 
+            created_at, 
+            updated_at,
+            worlds!inner(user_id)
+          `)
+          .eq('worlds.user_id', user?.id);
       }
 
       const { data, error } = await query.order('chapter_order', { ascending: true });

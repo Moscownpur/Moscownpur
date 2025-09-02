@@ -1,17 +1,41 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
 import { Dialogue, DialogueCreate, DialogueUpdate, DialogueFilters } from '../types/dialogue';
 
 export const useDialogues = (sceneId: string) => {
   const [dialogues, setDialogues] = useState<Dialogue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
 
   // Fetch dialogues for a scene
   const fetchDialogues = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
+
+      // First verify the scene belongs to the user's world
+      const { data: sceneCheck, error: sceneError } = await supabase
+        .from('scenes')
+        .select(`
+          scene_id,
+          events!inner(
+            chapters!inner(
+              worlds!inner(user_id)
+            )
+          )
+        `)
+        .eq('scene_id', sceneId)
+        .eq('events.chapters.worlds.user_id', user?.id)
+        .single();
+
+      if (sceneError || !sceneCheck) {
+        console.error('Scene not found or access denied');
+        setDialogues([]);
+        setLoading(false);
+        return;
+      }
 
       const { data, error: fetchError } = await supabase
         .from('dialogues')

@@ -77,28 +77,71 @@ const DialogueManagement: React.FC = () => {
     try {
       setLoading(true);
       
-      // Fetch all data in parallel
-      const [
-        { data: worldsData },
-        { data: chaptersData },
-        { data: eventsData },
-        { data: scenesData },
-        { data: charactersData },
-        { data: dialoguesData }
-      ] = await Promise.all([
-        supabase.from('worlds').select('*').eq('user_id', user?.id),
-        supabase.from('chapters').select('*'),
-        supabase.from('events').select('*'),
-        supabase.from('scenes').select('*'),
-        supabase.from('characters').select('*'),
-        supabase.from('dialogues').select('*').order('sequence', { ascending: true })
-      ]);
+      // First, get user's worlds
+      const { data: worldsData, error: worldsError } = await supabase
+        .from('worlds')
+        .select('*')
+        .eq('user_id', user?.id);
 
-      if (worldsData) setWorlds(worldsData);
+      if (worldsError) throw worldsError;
+      if (!worldsData || worldsData.length === 0) {
+        setWorlds([]);
+        setChapters([]);
+        setEvents([]);
+        setScenes([]);
+        setCharacters([]);
+        setDialogues([]);
+        setLoading(false);
+        return;
+      }
+
+      const userWorldIds = worldsData.map(w => w.world_id);
+      setWorlds(worldsData);
+
+      // Fetch chapters in user's worlds
+      const { data: chaptersData, error: chaptersError } = await supabase
+        .from('chapters')
+        .select('*')
+        .in('world_id', userWorldIds);
+
+      if (chaptersError) throw chaptersError;
       if (chaptersData) setChapters(chaptersData);
+
+      // Fetch events in user's chapters
+      const { data: eventsData, error: eventsError } = await supabase
+        .from('events')
+        .select('*')
+        .in('chapter_id', chaptersData?.map(c => c.chapter_id) || []);
+
+      if (eventsError) throw eventsError;
       if (eventsData) setEvents(eventsData);
+
+      // Fetch scenes in user's events
+      const { data: scenesData, error: scenesError } = await supabase
+        .from('scenes')
+        .select('*')
+        .in('event_id', eventsData?.map(e => e.event_id) || []);
+
+      if (scenesError) throw scenesError;
       if (scenesData) setScenes(scenesData);
+
+      // Fetch characters in user's worlds
+      const { data: charactersData, error: charactersError } = await supabase
+        .from('characters')
+        .select('*')
+        .in('world_id', userWorldIds);
+
+      if (charactersError) throw charactersError;
       if (charactersData) setCharacters(charactersData);
+
+      // Fetch dialogues in user's scenes
+      const { data: dialoguesData, error: dialoguesError } = await supabase
+        .from('dialogues')
+        .select('*')
+        .in('scene_id', scenesData?.map(s => s.scene_id) || [])
+        .order('sequence', { ascending: true });
+
+      if (dialoguesError) throw dialoguesError;
       if (dialoguesData) {
         // Enrich dialogues with context
         const enrichedDialogues = dialoguesData.map(dialogue => {
