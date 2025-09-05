@@ -26,7 +26,6 @@
     "@vercel/speed-insights": "^1.2.0",
     "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.7",
-    "dotenv": "^17.2.1",
     "framer-motion": "^12.23.6",
     "lucide-react": "^0.525.0",
     "react": "^18.3.1",

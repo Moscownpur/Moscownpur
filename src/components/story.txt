@@ -1,0 +1,87 @@
+# Fixed Pipeline for Consistent Story Generation (v2)
+
+This pipeline is designed to generate a story with consistent characters using multiple AI models. The process starts with user input, includes a user confirmation checkpoint, proceeds through a structured conversation between two characters organized into phases, integrates periodic summarization and narration triggers, and ends with a master summary. The output is saved in both JSON and Markdown formats.
+
+---
+
+## Pipeline Steps
+
+**User Input**: The user provides rough story ideas and specifies the total number of utterances (N) and the summarization interval (x).
+
+**Prompt Refinement and Phase Planning (Model A)**: Model A refines the rough input into a detailed prompt and generates a proposed multi-phase plan (e.g., setup, rising action, climax, resolution).
+
+**User Confirmation Checkpoint**: The phase plan and refined prompt are shown to the user for review and optional edits. Once approved, no further human intervention is required.
+
+**Opening Scene (Model A)**: Model A generates an opening scene based on the refined and confirmed prompt.
+
+**Conversation Flow (Char1 and Char2)**: Character models alternate utterances for N turns, guided by the current phase context.
+
+**Summarization (Model S)**: At defined intervals, Model S summarizes the most recent segment of dialogue.
+
+**Narration Trigger (Model C and Model D)**: After each summarization, Model C evaluates whether narration should be added. Model C responses are strictly sanitized into a boolean (True/False) for reliability. If True, Model D generates engaging narration.
+
+**Master Summary (Model B)**: After all utterances are completed, Model B produces a comprehensive master summary using all segment summaries.
+
+**Output**: The orchestrator compiles results into JSON and Markdown files.
+
+---
+
+## Orchestrator Role
+
+The orchestrator coordinates the entire pipeline by:
+
+* Managing phases and ensuring smooth context transitions.
+* Alternating character turns.
+* Triggering summarization and narration checks.
+* Ensuring predictable Model C outputs via post-processing.
+* Applying API key and quota strategies.
+* Saving structured outputs.
+
+---
+
+## API Key and Quota Strategy
+
+* **Model A/S/D**: Implemented with a single model under different system roles.
+* **Char1 and Char2**: Managed under separate API keys to avoid rate limit conflicts.
+* **Model B and Model C**: Kept as lightweight, independent models.
+
+---
+
+## Resource-Aware Orchestration
+
+* Utterance counts are throttled to avoid excessive API usage.
+* Summarization and narration checks may be batched per phase instead of at fixed intervals.
+* Outputs are cached where possible for reuse across runs.
+
+---
+
+## Data Storage
+
+The orchestrator stores:
+
+* Initial refined context.
+* Opening scene.
+* Conversations (Char1/Char2 turns).
+* Segment summaries (Model S).
+* Narrations (Model D).
+* Master summary (Model B).
+
+---
+
+## Output Files
+
+* **story\_data.json**: Structured representation of the entire story generation process.
+* **story\_output.md**: Human-readable version of the story with sections for context, scenes, dialogue, summaries, narration, and master summary.
+
+---
+
+## Improvements Over Initial Version
+
+* Introduction of **orchestrator role** for coordination.
+* **Phased context state** for natural story progression.
+* **User confirmation checkpoint** before autonomous execution.
+* Explicit **API key and quota strategy**.
+* **Model C hardening** to enforce consistent True/False outputs.
+* **Resource-aware orchestration** for efficient model usage.
+
+This updated design ensures scalability, reliability, and flexibility, making the pipeline suitable for production environments.
