@@ -6,7 +6,17 @@ Sitemap: https://www.moscownpur.in/sitemap.xml
 
 # Disallow private, admin, and auth routes
 Disallow: /admin/
+Disallow: /admin/dashboard
 Disallow: /dashboard/
+Disallow: /dashboard/ai-test
+Disallow: /dashboard/chapters
+Disallow: /dashboard/worlds/
+Disallow: /dashboard/characters/
+Disallow: /dashboard/events/
+Disallow: /dashboard/scenes/
+Disallow: /dashboard/timeline/
+Disallow: /dashboard/stories/
+Disallow: /dashboard/ai-integration/
 Disallow: /forgot-password
 Disallow: /api/
 Disallow: /_next/

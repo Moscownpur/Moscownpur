@@ -66,8 +66,11 @@ const publicRoutes = [
     priority: 0.4,
     lastmod: new Date().toISOString(),
   },
-  // Note: Removed all private routes (/admin/*, /dashboard/*)
-  // These should not be indexed by search engines
+  // Note: Excluded all private routes from sitemap:
+  // - /admin/* (admin dashboard, admin login)
+  // - /dashboard/* (user dashboard, ai-test, chapters, worlds, characters, events, scenes, timeline, stories, ai-integration)
+  // - /forgot-password (password reset page)
+  // These routes are also disallowed in robots.txt
 ];
 
 async function fetchDynamicRoutes() {
@@ -213,7 +216,11 @@ async function generateSitemap() {
     console.log(`✅ Sitemap generated successfully at: ${outputPath}`);
     console.log(`📊 Total routes: ${totalRoutes} (${publicRoutes.length} public + ${dynamicRoutes.length} dynamic + ${httpRoutes.length} HTTP)`);
     console.log(`🌐 Sitemap URL: ${baseURL}/sitemap.xml`);
-    console.log(`🔒 Private routes excluded: /login, /signup, /admin/*, /dashboard/*`);
+    console.log(`🔒 Private routes excluded: /admin/*, /dashboard/*, /forgot-password`);
+    console.log(`📈 SEO Optimizations:`);
+    console.log(`   - Priority hierarchy: Homepage (1.0) > Features (0.9) > Signup (0.8) > Blog (0.7) > About (0.6) > Login (0.5) > Performance (0.4)`);
+    console.log(`   - Private routes properly excluded from indexing`);
+    console.log(`   - HTTP/HTTPS versions included for comprehensive indexing`);
     
   } catch (error) {
     console.error('❌ Error generating sitemap:', error);
