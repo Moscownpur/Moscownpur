@@ -51,13 +51,19 @@ const publicRoutes = [
   {
     url: '/signup',
     changefreq: 'monthly',
-    priority: 0.9,
+    priority: 0.8,
     lastmod: new Date().toISOString(),
   },
   {
     url: '/login',
     changefreq: 'monthly',
     priority: 0.5,
+    lastmod: new Date().toISOString(),
+  },
+  {
+    url: '/performance',
+    changefreq: 'monthly',
+    priority: 0.4,
     lastmod: new Date().toISOString(),
   },
   // Note: Removed all private routes (/admin/*, /dashboard/*)
@@ -171,8 +177,9 @@ async function generateSitemap() {
       { url: '/pricing', changefreq: 'monthly', priority: 0.8, lastmod: new Date().toISOString() },
       { url: '/blog', changefreq: 'weekly', priority: 0.7, lastmod: new Date().toISOString() },
       { url: '/about', changefreq: 'monthly', priority: 0.6, lastmod: new Date().toISOString() },
-      { url: '/signup', changefreq: 'monthly', priority: 0.9, lastmod: new Date().toISOString() },
+      { url: '/signup', changefreq: 'monthly', priority: 0.8, lastmod: new Date().toISOString() },
       { url: '/login', changefreq: 'monthly', priority: 0.5, lastmod: new Date().toISOString() },
+      { url: '/performance', changefreq: 'monthly', priority: 0.4, lastmod: new Date().toISOString() },
     ];
 
     httpRoutes.forEach(route => {

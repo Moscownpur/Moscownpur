@@ -11,6 +11,21 @@ Disallow: /forgot-password
 Disallow: /api/
 Disallow: /_next/
 Disallow: /static/
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /dist/
+Disallow: /.env
+Disallow: /.git/
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /tsconfig.json
+Disallow: /vite.config.ts
+Disallow: /tailwind.config.js
+Disallow: /eslint.config.js
+Disallow: /postcss.config.js
+Disallow: /vercel.json
+Disallow: /supabase/
+Disallow: /scripts/
 
 # Allow public content pages
 Allow: /$
@@ -18,6 +33,7 @@ Allow: /about
 Allow: /features
 Allow: /pricing
 Allow: /world-building-guide
+Allow: /performance
 Allow: /login
 Allow: /signup
 
@@ -25,5 +41,23 @@ Allow: /signup
 Allow: /blog
 Allow: /blog/
 
+# Allow static assets
+Allow: /logo.jpg
+Allow: /logo-v2.png
+Allow: /og-image.png
+Allow: /manifest.json
+Allow: /robots.txt
+Allow: /sitemap.xml
+
 # Crawl delay for better server performance
-Crawl-delay: 1 
+Crawl-delay: 1
+
+# Special rules for different bots
+User-agent: Googlebot
+Crawl-delay: 0
+
+User-agent: Bingbot
+Crawl-delay: 1
+
+User-agent: Slurp
+Crawl-delay: 2 
