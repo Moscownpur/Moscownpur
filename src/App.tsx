@@ -8,6 +8,8 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { AdminAuthProvider } from './contexts/AdminAuthContext';
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminProtectedRoute from './components/AdminProtectedRoute';
 import { useSEO } from './hooks/useSEO';
 import StructuredData from './components/StructuredData';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -85,8 +87,22 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/admin/login" element={<AdminLogin />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/dashboard" element={<Layout />}>
+                    <Route 
+                      path="/admin/dashboard" 
+                      element={
+                        <AdminProtectedRoute>
+                          <AdminDashboard />
+                        </AdminProtectedRoute>
+                      } 
+                    />
+                    <Route 
+                      path="/dashboard" 
+                      element={
+                        <ProtectedRoute>
+                          <Layout />
+                        </ProtectedRoute>
+                      }
+                    >
                       <Route index element={<Dashboard />} />
                       <Route path="worlds" element={<WorldManagement />} />
                       <Route path="worlds/:id" element={<WorldDetails />} />
