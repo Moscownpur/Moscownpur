@@ -18,6 +18,7 @@ import {
   Code,
   Settings
 } from 'lucide-react';
+import { monitorCoreWebVitals } from '../utils/performance';
 
 interface PerformanceMetrics {
   fcp: number;
@@ -60,18 +61,26 @@ const PerformanceDashboard: React.FC = () => {
 
   useEffect(() => {
     const measurePerformance = () => {
-      // Simulate performance measurement
+      // Get real performance metrics
+      const realMetrics = monitorCoreWebVitals();
+      
+      // Get additional performance data from Navigation Timing API
+      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+      
+      // Calculate real metrics
       const newMetrics: PerformanceMetrics = {
-        fcp: Math.random() * 2000 + 500, // 500-2500ms
-        lcp: Math.random() * 3000 + 1000, // 1000-4000ms
-        fid: Math.random() * 100 + 10, // 10-110ms
-        cls: Math.random() * 0.1, // 0-0.1
-        ttfb: Math.random() * 500 + 100, // 100-600ms
-        domLoad: Math.random() * 2000 + 500, // 500-2500ms
-        windowLoad: Math.random() * 3000 + 1000, // 1000-4000ms
-        resourceCount: Math.floor(Math.random() * 50) + 20, // 20-70
-        totalSize: Math.random() * 2000 + 500, // 500-2500KB
-        cacheHitRate: Math.random() * 30 + 70 // 70-100%
+        fcp: realMetrics.firstContentfulPaint || 0,
+        lcp: realMetrics.largestContentfulPaint || 0,
+        fid: realMetrics.firstInputDelay || 0,
+        cls: realMetrics.cumulativeLayoutShift || 0,
+        ttfb: navigation ? navigation.responseStart - navigation.requestStart : 0,
+        domLoad: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : 0,
+        windowLoad: navigation ? navigation.loadEventEnd - navigation.navigationStart : 0,
+        resourceCount: resources.length,
+        totalSize: resources.reduce((total, resource) => total + (resource.transferSize || 0), 0) / 1024, // Convert to KB
+        cacheHitRate: resources.length > 0 ? 
+          (resources.filter(r => r.transferSize === 0).length / resources.length) * 100 : 0
       };
 
       setMetrics(newMetrics);
@@ -79,36 +88,61 @@ const PerformanceDashboard: React.FC = () => {
       setIsLoading(false);
     };
 
-    // Initial measurement
-    measurePerformance();
+    // Wait for page to load before measuring
+    if (document.readyState === 'complete') {
+      measurePerformance();
+    } else {
+      window.addEventListener('load', measurePerformance);
+    }
 
     // Update every 30 seconds
     const interval = setInterval(measurePerformance, 30000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('load', measurePerformance);
+    };
   }, []);
 
   useEffect(() => {
-    // Simulate resource metrics
-    const resourceTypes: Array<'script' | 'style' | 'image' | 'font' | 'other'> = ['script', 'style', 'image', 'font', 'other'];
-    const resourceNames = [
-      'main.js', 'vendor.js', 'styles.css', 'logo.png', 'Inter-font.woff2',
-      'analytics.js', 'icons.svg', 'background.jpg', 'components.js', 'utils.js'
-    ];
-
-    const newResources: ResourceMetric[] = resourceNames.map(name => {
-      const type = resourceTypes[Math.floor(Math.random() * resourceTypes.length)];
-      const size = Math.random() * 500 + 50;
-      const loadTime = Math.random() * 1000 + 100;
+    // Get real resource metrics from Performance API
+    const getResourceMetrics = () => {
+      const resourceEntries = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
       
-      let status: 'good' | 'warning' | 'poor' = 'good';
-      if (loadTime > 800) status = 'poor';
-      else if (loadTime > 400) status = 'warning';
+      const newResources: ResourceMetric[] = resourceEntries.map(entry => {
+        // Extract filename from URL
+        const url = new URL(entry.name);
+        const name = url.pathname.split('/').pop() || entry.name;
+        
+        // Determine resource type based on URL or initiatorType
+        let type: 'script' | 'style' | 'image' | 'font' | 'other' = 'other';
+        if (name.endsWith('.js') || entry.initiatorType === 'script') type = 'script';
+        else if (name.endsWith('.css') || entry.initiatorType === 'link') type = 'style';
+        else if (name.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) || entry.initiatorType === 'img') type = 'image';
+        else if (name.match(/\.(woff|woff2|ttf|otf)$/i) || entry.initiatorType === 'css') type = 'font';
+        
+        const size = (entry.transferSize || 0) / 1024; // Convert to KB
+        const loadTime = entry.responseEnd - entry.requestStart;
+        
+        let status: 'good' | 'warning' | 'poor' = 'good';
+        if (loadTime > 800) status = 'poor';
+        else if (loadTime > 400) status = 'warning';
 
-      return { name, type, size, loadTime, status };
-    });
+        return { name, type, size, loadTime, status };
+      });
 
-    setResources(newResources);
+      // Sort by load time (slowest first)
+      newResources.sort((a, b) => b.loadTime - a.loadTime);
+      
+      setResources(newResources);
+    };
+
+    // Get resource metrics after page load
+    if (document.readyState === 'complete') {
+      getResourceMetrics();
+    } else {
+      window.addEventListener('load', getResourceMetrics);
+    }
   }, []);
 
   const getScoreColor = (score: number) => {
@@ -180,14 +214,18 @@ const PerformanceDashboard: React.FC = () => {
             Performance Optimization Dashboard
           </motion.h1>
           <motion.p variants={itemVariants} className="text-gray-400">
-            Real-time monitoring of MosCownpur's performance metrics and optimization insights
+            Real-time monitoring of MosCownpur's performance metrics using actual browser performance data
           </motion.p>
           <motion.div variants={itemVariants} className="flex items-center gap-4 mt-4 text-sm text-gray-500">
             <Clock className="w-4 h-4" />
             <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Live monitoring active</span>
+              <span>Real performance data</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-400" />
+              <span>Core Web Vitals monitoring</span>
             </div>
           </motion.div>
         </motion.div>
