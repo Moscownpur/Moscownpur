@@ -9,16 +9,51 @@ import {
   CheckCircle, 
   BarChart3, 
   Gauge,
-  Smartphone,
-  Monitor,
-  Globe,
   Database,
   FileText,
   Image as ImageIcon,
   Code,
   Settings
 } from 'lucide-react';
-import { monitorCoreWebVitals } from '../utils/performance';
+// Performance monitoring utilities
+
+// Function to get current performance metrics from existing entries
+const getCurrentPerformanceMetrics = () => {
+  const metrics: any = {};
+  
+  // Get FCP from paint entries
+  const paintEntries = performance.getEntriesByType('paint');
+  const fcpEntry = paintEntries.find(entry => entry.name === 'first-contentful-paint');
+  if (fcpEntry) {
+    metrics.firstContentfulPaint = fcpEntry.startTime;
+  }
+  
+  // Get LCP from largest-contentful-paint entries
+  const lcpEntries = performance.getEntriesByType('largest-contentful-paint');
+  if (lcpEntries.length > 0) {
+    const lastLcpEntry = lcpEntries[lcpEntries.length - 1];
+    metrics.largestContentfulPaint = lastLcpEntry.startTime;
+  }
+  
+  // Get FID from first-input entries
+  const fidEntries = performance.getEntriesByType('first-input');
+  if (fidEntries.length > 0) {
+    const fidEntry = fidEntries[0] as any;
+    metrics.firstInputDelay = fidEntry.processingStart - fidEntry.startTime;
+  }
+  
+  // Get CLS from layout-shift entries
+  const clsEntries = performance.getEntriesByType('layout-shift');
+  let clsValue = 0;
+  clsEntries.forEach((entry: any) => {
+    if (!entry.hadRecentInput) {
+      clsValue += entry.value;
+    }
+  });
+  metrics.cumulativeLayoutShift = clsValue;
+  
+  return metrics;
+};
 
 interface PerformanceMetrics {
   fcp: number;
@@ -61,31 +96,67 @@ const PerformanceDashboard: React.FC = () => {
 
   useEffect(() => {
     const measurePerformance = () => {
-      // Get real performance metrics
-      const realMetrics = monitorCoreWebVitals();
-      
-      // Get additional performance data from Navigation Timing API
-      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-      const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
-      
-      // Calculate real metrics
-      const newMetrics: PerformanceMetrics = {
-        fcp: realMetrics.firstContentfulPaint || 0,
-        lcp: realMetrics.largestContentfulPaint || 0,
-        fid: realMetrics.firstInputDelay || 0,
-        cls: realMetrics.cumulativeLayoutShift || 0,
-        ttfb: navigation ? navigation.responseStart - navigation.requestStart : 0,
-        domLoad: navigation ? navigation.domContentLoadedEventEnd - navigation.navigationStart : 0,
-        windowLoad: navigation ? navigation.loadEventEnd - navigation.navigationStart : 0,
-        resourceCount: resources.length,
-        totalSize: resources.reduce((total, resource) => total + (resource.transferSize || 0), 0) / 1024, // Convert to KB
-        cacheHitRate: resources.length > 0 ? 
-          (resources.filter(r => r.transferSize === 0).length / resources.length) * 100 : 0
-      };
+      try {
+        // Get real performance metrics from existing entries
+        const realMetrics = getCurrentPerformanceMetrics();
+        
+        // Get additional performance data from Navigation Timing API
+        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+        const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+        
+        // Calculate real metrics with fallbacks
+        const newMetrics: PerformanceMetrics = {
+          fcp: realMetrics.firstContentfulPaint || 0,
+          lcp: realMetrics.largestContentfulPaint || 0,
+          fid: realMetrics.firstInputDelay || 0,
+          cls: realMetrics.cumulativeLayoutShift || 0,
+          ttfb: navigation ? navigation.responseStart - navigation.requestStart : 0,
+          domLoad: navigation ? navigation.domContentLoadedEventEnd - navigation.fetchStart : 0,
+          windowLoad: navigation ? navigation.loadEventEnd - navigation.fetchStart : 0,
+          resourceCount: resources.length,
+          totalSize: resources.reduce((total, resource) => total + (resource.transferSize || 0), 0) / 1024, // Convert to KB
+          cacheHitRate: resources.length > 0 ? 
+            (resources.filter(r => r.transferSize === 0).length / resources.length) * 100 : 0
+        };
 
-      setMetrics(newMetrics);
-      setLastUpdated(new Date());
-      setIsLoading(false);
+        // Debug information
+        console.log('Performance Dashboard - Real Metrics:', {
+          fcp: newMetrics.fcp,
+          lcp: newMetrics.lcp,
+          fid: newMetrics.fid,
+          cls: newMetrics.cls,
+          ttfb: newMetrics.ttfb,
+          resourceCount: newMetrics.resourceCount,
+          totalSize: newMetrics.totalSize
+        });
+
+        // If no real metrics are available yet, show a message
+        if (newMetrics.fcp === 0 && newMetrics.lcp === 0 && newMetrics.fid === 0 && newMetrics.cls === 0) {
+          console.log('Performance metrics not yet available. Page may still be loading.');
+        }
+
+        setMetrics(newMetrics);
+        setLastUpdated(new Date());
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error measuring performance:', error);
+        // Fallback to basic metrics if performance API fails
+        const newMetrics: PerformanceMetrics = {
+          fcp: 0,
+          lcp: 0,
+          fid: 0,
+          cls: 0,
+          ttfb: 0,
+          domLoad: 0,
+          windowLoad: 0,
+          resourceCount: 0,
+          totalSize: 0,
+          cacheHitRate: 0
+        };
+        setMetrics(newMetrics);
+        setLastUpdated(new Date());
+        setIsLoading(false);
+      }
     };
 
     // Wait for page to load before measuring
@@ -107,34 +178,50 @@ const PerformanceDashboard: React.FC = () => {
   useEffect(() => {
     // Get real resource metrics from Performance API
     const getResourceMetrics = () => {
-      const resourceEntries = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
-      
-      const newResources: ResourceMetric[] = resourceEntries.map(entry => {
-        // Extract filename from URL
-        const url = new URL(entry.name);
-        const name = url.pathname.split('/').pop() || entry.name;
+      try {
+        const resourceEntries = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
         
-        // Determine resource type based on URL or initiatorType
-        let type: 'script' | 'style' | 'image' | 'font' | 'other' = 'other';
-        if (name.endsWith('.js') || entry.initiatorType === 'script') type = 'script';
-        else if (name.endsWith('.css') || entry.initiatorType === 'link') type = 'style';
-        else if (name.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) || entry.initiatorType === 'img') type = 'image';
-        else if (name.match(/\.(woff|woff2|ttf|otf)$/i) || entry.initiatorType === 'css') type = 'font';
-        
-        const size = (entry.transferSize || 0) / 1024; // Convert to KB
-        const loadTime = entry.responseEnd - entry.requestStart;
-        
-        let status: 'good' | 'warning' | 'poor' = 'good';
-        if (loadTime > 800) status = 'poor';
-        else if (loadTime > 400) status = 'warning';
+        const newResources: ResourceMetric[] = resourceEntries.map(entry => {
+          try {
+            // Extract filename from URL
+            const url = new URL(entry.name);
+            const name = url.pathname.split('/').pop() || entry.name;
+            
+            // Determine resource type based on URL or initiatorType
+            let type: 'script' | 'style' | 'image' | 'font' | 'other' = 'other';
+            if (name.endsWith('.js') || entry.initiatorType === 'script') type = 'script';
+            else if (name.endsWith('.css') || entry.initiatorType === 'link') type = 'style';
+            else if (name.match(/\.(jpg|jpeg|png|gif|svg|webp)$/i) || entry.initiatorType === 'img') type = 'image';
+            else if (name.match(/\.(woff|woff2|ttf|otf)$/i) || entry.initiatorType === 'css') type = 'font';
+            
+            const size = (entry.transferSize || 0) / 1024; // Convert to KB
+            const loadTime = entry.responseEnd - entry.requestStart;
+            
+            let status: 'good' | 'warning' | 'poor' = 'good';
+            if (loadTime > 800) status = 'poor';
+            else if (loadTime > 400) status = 'warning';
 
-        return { name, type, size, loadTime, status };
-      });
+            return { name, type, size, loadTime, status };
+          } catch (error) {
+            console.error('Error processing resource entry:', error);
+            return {
+              name: entry.name,
+              type: 'other' as const,
+              size: 0,
+              loadTime: 0,
+              status: 'good' as const
+            };
+          }
+        });
 
-      // Sort by load time (slowest first)
-      newResources.sort((a, b) => b.loadTime - a.loadTime);
-      
-      setResources(newResources);
+        // Sort by load time (slowest first)
+        newResources.sort((a, b) => b.loadTime - a.loadTime);
+        
+        setResources(newResources);
+      } catch (error) {
+        console.error('Error getting resource metrics:', error);
+        setResources([]);
+      }
     };
 
     // Get resource metrics after page load
@@ -220,8 +307,10 @@ const PerformanceDashboard: React.FC = () => {
             <Clock className="w-4 h-4" />
             <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Real performance data</span>
+              <div className={`w-2 h-2 rounded-full animate-pulse ${
+                metrics.fcp > 0 || metrics.lcp > 0 ? 'bg-green-400' : 'bg-yellow-400'
+              }`}></div>
+              <span>{metrics.fcp > 0 || metrics.lcp > 0 ? 'Real performance data' : 'Collecting performance data...'}</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="w-4 h-4 text-green-400" />
