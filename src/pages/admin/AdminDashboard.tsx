@@ -1,21 +1,15 @@
 import React, { useState } from 'react';
-import { Users, Globe, Clock, Search, Filter, Eye, Trash2, UserCheck, UserX, ChevronRight, Film, Edit2 } from 'lucide-react';
+import { Users, Search, Filter, Eye, Trash2, Edit2, FileText } from 'lucide-react';
 import { motion } from 'framer-motion';
-import TimelineView from '../../components/TimelineView';
 import { useAdminData } from '../../hooks/useAdminData';
-import { useTimeline } from '../../hooks/useTimeline';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
-// import Modal from '../../components/Modal';
 
 const AdminDashboard: React.FC = () => {
-  const { users, worlds, loading, toggleUserStatus, deleteWorld } = useAdminData();
+  const { users, loading, toggleUserStatus } = useAdminData();
   const { admin, logout } = useAdminAuth();
-  const [selectedWorldId, setSelectedWorldId] = useState<string | null>(null);
-  // const [showTimelineModal, setShowTimelineModal] = useState(false);
-  const { events: timelineEvents, loading: timelineLoading } = useTimeline(selectedWorldId || undefined);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
-  const [activeTab, setActiveTab] = useState<'users' | 'worlds' | 'timeline' | 'blogs'>('users');
+  const [activeTab, setActiveTab] = useState<'users' | 'blogs'>('users');
   const [blogs, setBlogs] = useState<any[]>([]);
   const [blogForm, setBlogForm] = useState<{ id?: string; title: string; category: string; tags: string; body: string }>({ title: '', category: '', tags: '', body: '' });
   const [blogLoading, setBlogLoading] = useState(false);
@@ -29,19 +23,9 @@ const AdminDashboard: React.FC = () => {
     return matchesSearch;
   });
 
-  const filteredWorlds = worlds.filter(world =>
-    world.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    world.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (world.user_full_name && world.user_full_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    world.user_email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   const totalStats = {
     users: users.length,
-    worlds: worlds.length,
-    blogs: blogs.length,
-    characters: users.reduce((sum, user) => sum + user.character_count, 0),
-    events: users.reduce((sum, user) => sum + user.event_count, 0)
+    blogs: blogs.length
   };
 
   const containerVariants = {
@@ -154,12 +138,10 @@ const AdminDashboard: React.FC = () => {
         >
           {/* Stats Overview */}
           <motion.div variants={itemVariants}>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 { name: 'Total Users', value: totalStats.users, icon: Users, color: 'blue' },
-                { name: 'Total Worlds', value: totalStats.worlds, icon: Globe, color: 'purple' },
-                { name: 'Total Characters', value: totalStats.characters, icon: Users, color: 'green' },
-                { name: 'Total Events', value: totalStats.events, icon: Clock, color: 'orange' }
+                { name: 'Total Blogs', value: totalStats.blogs, icon: FileText, color: 'purple' }
               ].map((stat) => (
                 <motion.div
                   key={stat.name}
@@ -192,26 +174,6 @@ const AdminDashboard: React.FC = () => {
                 }`}
               >
                 User Management
-              </button>
-              <button
-                onClick={() => setActiveTab('worlds')}
-                className={`px-6 py-3 rounded-xl smooth-transition ${
-                  activeTab === 'worlds'
-                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white soft-glow-purple'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                World Overview
-              </button>
-              <button
-                onClick={() => setActiveTab('timeline')}
-                className={`px-6 py-3 rounded-xl smooth-transition ${
-                  activeTab === 'timeline'
-                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white soft-glow-orange'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Timeline Overview
               </button>
               <button
                 onClick={() => setActiveTab('blogs')}
@@ -263,89 +225,7 @@ const AdminDashboard: React.FC = () => {
             </div>
           ) : (
             <motion.div variants={itemVariants}>
-              {activeTab === 'timeline' ? (
-                <div className="space-y-6">
-                  <div className="glass-card rounded-3xl p-8">
-                    <div className="text-center mb-8">
-                      <h2 className="text-subheading gradient-text-orange mb-4">
-                        Global Timeline Overview
-                      </h2>
-                      <p className="text-body text-white/60">
-                        View timeline events and scenes across all worlds
-                      </p>
-                    </div>
-                    
-                    {selectedWorldId ? (
-                      <div className="space-y-6">
-                        <div className="flex items-center justify-between">
-                          <h3 className="text-subheading text-white">
-                            Timeline for: {worlds.find(w => w.id === selectedWorldId)?.name}
-                          </h3>
-                          <button
-                            onClick={() => {
-                              setSelectedWorldId(null);
-                              // setShowTimelineModal(false);
-                            }}
-                            className="px-4 py-2 text-white/60 hover:text-white hover:glass-card rounded-xl smooth-transition"
-                          >
-                            ← Back to Worlds
-                          </button>
-                        </div>
-                        
-                        {timelineLoading ? (
-                          <div className="flex items-center justify-center py-20">
-                            <div className="animate-spin rounded-full h-12 w-12 border-2 border-white/20 border-t-white/80"></div>
-                          </div>
-                        ) : (
-                          <TimelineView
-                            events={timelineEvents}
-                            showActions={false}
-                          />
-                        )}
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {worlds.map((world) => (
-                          <motion.div
-                            key={world.id}
-                            whileHover={{ scale: 1.02, y: -4 }}
-                            className="glass-card rounded-2xl p-6 cursor-pointer hover:soft-glow smooth-transition"
-                            onClick={() => setSelectedWorldId(world.id)}
-                          >
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="flex items-center space-x-3">
-                                <div className="p-3 glass-card rounded-xl">
-                                  <Globe className="w-6 h-6 text-white/80" />
-                                </div>
-                                <div>
-                                  <h3 className="text-subheading gradient-text-orange">{world.name}</h3>
-                                  <p className="text-caption text-white/60">by {world.user_full_name || world.user_email}</p>
-                                </div>
-                              </div>
-                              <ChevronRight className="w-5 h-5 text-white/40" />
-                            </div>
-                            
-                            <div className="space-y-2">
-                              <div className="flex justify-between text-caption">
-                                <span className="text-white/60">Events:</span>
-                                <span className="text-orange-400">{world.event_count}</span>
-                              </div>
-                              <div className="flex justify-between text-caption">
-                                <span className="text-white/60">Characters:</span>
-                                <span className="text-blue-400">{world.character_count}</span>
-                              </div>
-                              <div className="flex justify-between text-caption">
-                                <span className="text-white/60">Regions:</span>
-                                <span className="text-green-400">{world.region_count}</span>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : activeTab === 'users' ? (
+              {activeTab === 'users' ? (
                 <div className="glass-card rounded-3xl overflow-hidden">
                   <div className="p-6 border-b border-white/5">
                     <h2 className="text-subheading gradient-text-blue">
@@ -359,7 +239,7 @@ const AdminDashboard: React.FC = () => {
                           <th className="text-left p-6 text-caption text-white/60 font-medium">User</th>
                           <th className="text-left p-6 text-caption text-white/60 font-medium">Email</th>
                           <th className="text-left p-6 text-caption text-white/60 font-medium">Joined</th>
-                          <th className="text-left p-6 text-caption text-white/60 font-medium">Content</th>
+                          <th className="text-left p-6 text-caption text-white/60 font-medium">Type</th>
                           <th className="text-left p-6 text-caption text-white/60 font-medium">Status</th>
                           <th className="text-left p-6 text-caption text-white/60 font-medium">Actions</th>
                         </tr>
@@ -390,31 +270,34 @@ const AdminDashboard: React.FC = () => {
                               {new Date(user.created_at).toLocaleDateString()}
                             </td>
                             <td className="p-6">
-                              <div className="flex space-x-4 text-caption text-white/60">
-                                <span>{user.world_count}W</span>
-                                <span>{user.character_count}C</span>
-                                <span>{user.region_count}R</span>
-                                <span>{user.event_count}E</span>
+                              <div className="text-caption text-white/60">
+                                <span>User</span>
                               </div>
                             </td>
                             <td className="p-6">
-                              <span className={`px-3 py-1 rounded-full text-caption font-medium ${
-                                user.is_admin 
-                                  ? 'bg-red-500/20 text-red-300' 
-                                  : 'bg-green-500/20 text-green-300'
-                              }`}>
-                                {user.is_admin ? 'Admin' : 'User'}
-                              </span>
+                              <div className="flex items-center space-x-3">
+                                <span className={`px-3 py-1 rounded-full text-caption font-medium ${
+                                  user.is_admin 
+                                    ? 'bg-red-500/20 text-red-300' 
+                                    : 'bg-green-500/20 text-green-300'
+                                }`}>
+                                  {user.is_admin ? 'Admin' : 'User'}
+                                </span>
+                                <button
+                                  onClick={() => toggleUserStatus(user.id, !user.is_admin)}
+                                  className={`px-3 py-1 rounded-lg text-caption font-medium smooth-transition ${
+                                    user.is_admin
+                                      ? 'bg-orange-500/20 text-orange-300 hover:bg-orange-500/30'
+                                      : 'bg-blue-500/20 text-blue-300 hover:bg-blue-500/30'
+                                  }`}
+                                  title={user.is_admin ? 'Remove Admin Access' : 'Grant Admin Access'}
+                                >
+                                  {user.is_admin ? 'Remove Admin' : 'Make Admin'}
+                                </button>
+                              </div>
                             </td>
                             <td className="p-6">
                               <div className="flex space-x-2">
-                                <button
-                                  onClick={() => toggleUserStatus(user.id, !user.is_admin)}
-                                  className="p-2 text-white/60 hover:text-blue-400 hover:bg-blue-500/10 rounded-lg smooth-transition"
-                                  title={user.is_admin ? 'Remove Admin' : 'Make Admin'}
-                                >
-                                  {user.is_admin ? <UserX size={16} /> : <UserCheck size={16} />}
-                                </button>
                                 <button className="p-2 text-white/60 hover:text-green-400 hover:bg-green-500/10 rounded-lg smooth-transition">
                                   <Eye size={16} />
                                 </button>
@@ -425,65 +308,6 @@ const AdminDashboard: React.FC = () => {
                       </tbody>
                     </table>
                   </div>
-                </div>
-              ) : activeTab === 'worlds' ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredWorlds.map((world, index) => (
-                    <motion.div
-                      key={world.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.02, y: -4 }}
-                      className="glass-card rounded-2xl p-6 hover:soft-glow smooth-transition"
-                    >
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex items-center space-x-3">
-                          <div className="p-3 glass-card rounded-xl">
-                            <Globe className="w-6 h-6 text-white/80" />
-                          </div>
-                          <div>
-                            <h3 className="text-subheading gradient-text-purple">{world.name}</h3>
-                            <p className="text-caption text-white/60">{world.type}</p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => {
-                            if (confirm('Are you sure you want to delete this world?')) {
-                              deleteWorld(world.id);
-                            }
-                          }}
-                          className="p-2 text-white/40 hover:text-red-400 hover:bg-red-500/10 rounded-lg smooth-transition"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                        <button
-                          onClick={() => setSelectedWorldId(world.id)}
-                          className="p-2 text-white/40 hover:text-orange-400 hover:bg-orange-500/10 rounded-lg smooth-transition"
-                          title="View Timeline"
-                        >
-                          <Film size={16} />
-                        </button>
-                      </div>
-                      
-                      <p className="text-body text-white/60 mb-4 line-clamp-2">
-                        {world.description}
-                      </p>
-                      
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between text-caption text-white/60">
-                          <span>Created by: {world.user_full_name || world.user_email}</span>
-                          <span>{new Date(world.created_at).toLocaleDateString()}</span>
-                        </div>
-                        
-                        <div className="flex justify-between text-caption">
-                          <span className="text-blue-400">{world.character_count} Characters</span>
-                          <span className="text-green-400">{world.region_count} Regions</span>
-                          <span className="text-orange-400">{world.event_count} Events</span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
                 </div>
               ) : (
                 <div className="space-y-6">

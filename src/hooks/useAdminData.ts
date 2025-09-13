@@ -9,29 +9,11 @@ export interface UserStatistics {
   full_name?: string;
   created_at: string;
   is_admin: boolean;
-  world_count: number;
-  character_count: number;
-  region_count: number;
-  event_count: number;
 }
 
-export interface WorldWithDetails {
-  id: string;
-  name: string;
-  type: string;
-  description: string;
-  created_by: string;
-  created_at: string;
-  user_email: string;
-  user_full_name?: string;
-  character_count: number;
-  region_count: number;
-  event_count: number;
-}
 
 export const useAdminData = () => {
   const [users, setUsers] = useState<UserStatistics[]>([]);
-  const [worlds, setWorlds] = useState<WorldWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const { admin } = useAdminAuth();
 
@@ -42,60 +24,81 @@ export const useAdminData = () => {
         return;
       }
 
-      // Get user roles (this should work with RLS policies for admins)
-      const { data: userRoles, error: rolesError } = await supabase
-        .from('user_roles')
-        .select('*');
+      // Get user profiles from profiles table (this should work with RLS policies for admins)
+      const { data: profiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, email, full_name, created_at');
 
-      if (rolesError) {
-        console.error('Error fetching user roles:', rolesError);
+      if (profilesError) {
+        console.error('Error fetching profiles:', profilesError);
         toast.error('Failed to load users');
         setUsers([]);
         return;
       }
 
-      // Get user statistics from content tables
-      const { data: worldStats, error: worldError } = await supabase
-        .from('worlds')
-        .select('created_by')
-        .order('created_at', { ascending: false });
+      console.log(`Found ${profiles?.length || 0} profiles`);
 
-      const { data: characterStats, error: charError } = await supabase
-        .from('characters')
-        .select('created_by');
+      // Get user roles to determine admin status
+      let { data: userRoles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('user_id, is_admin');
 
-      const { data: regionStats, error: regionError } = await supabase
-        .from('regions')
-        .select('created_by');
-
-      const { data: eventStats, error: eventError } = await supabase
-        .from('timeline_events')
-        .select('created_by');
-
-      if (worldError || charError || regionError || eventError) {
-        console.error('Error fetching statistics:', { worldError, charError, regionError, eventError });
+      if (rolesError) {
+        console.error('Error fetching user roles:', rolesError);
+        // Continue without roles - we'll handle this gracefully
       }
 
-      // Create user statistics from user_roles
-      const userStats: UserStatistics[] = userRoles.map(role => {
-        const worldCount = worldStats?.filter(w => w.created_by === role.id).length || 0;
-        const characterCount = characterStats?.filter(c => c.created_by === role.id).length || 0;
-        const regionCount = regionStats?.filter(r => r.created_by === role.id).length || 0;
-        const eventCount = eventStats?.filter(e => e.created_by === role.id).length || 0;
+      console.log(`Found ${userRoles?.length || 0} user roles`);
+
+      // Ensure all users have user_roles entries
+      const usersWithoutRoles = profiles.filter(profile => 
+        !userRoles?.find(role => role.user_id === profile.id)
+      );
+
+      if (usersWithoutRoles.length > 0) {
+        console.log(`Found ${usersWithoutRoles.length} users without roles, creating default roles...`);
+        
+        // Create default user roles for users who don't have them
+        const defaultRoles = usersWithoutRoles.map(user => ({
+          user_id: user.id,
+          is_admin: false
+        }));
+
+        // Try to insert default roles, but don't fail if we can't (RLS might prevent it)
+        const { error: insertError } = await supabase
+          .from('user_roles')
+          .insert(defaultRoles);
+
+        if (insertError) {
+          console.warn('Could not create default roles (RLS policy may prevent it):', insertError);
+          // This is expected if the current user is not an admin
+        } else {
+          console.log(`Created ${defaultRoles.length} default user roles`);
+          // Refresh user roles after creating defaults
+          const { data: updatedRoles } = await supabase
+            .from('user_roles')
+            .select('user_id, is_admin');
+          if (updatedRoles) {
+            userRoles = updatedRoles;
+          }
+        }
+      }
+
+      // Create user statistics from profiles
+      const userStats: UserStatistics[] = profiles.map(profile => {
+        const role = userRoles?.find(r => r.user_id === profile.id);
 
         return {
-          id: role.id,
-          email: `user-${role.id.slice(0, 8)}@example.com`, // Placeholder since we can't get email
-          full_name: undefined,
-          created_at: role.created_at,
-          is_admin: role.is_admin,
-          world_count: worldCount,
-          character_count: characterCount,
-          region_count: regionCount,
-          event_count: eventCount
+          id: profile.id,
+          email: profile.email || 'No email',
+          full_name: profile.full_name,
+          created_at: profile.created_at,
+          is_admin: role?.is_admin || false
         };
       });
 
+      console.log(`Fetched ${userStats.length} users from database`);
+      console.log('User data:', userStats);
       setUsers(userStats);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -104,44 +107,6 @@ export const useAdminData = () => {
     }
   };
 
-  const fetchWorlds = async () => {
-    try {
-      if (!supabase) {
-        setWorlds([]);
-        return;
-      }
-
-      // Get worlds with counts
-      const { data: worldData, error: worldError } = await supabase
-        .from('worlds')
-        .select(`
-          *,
-          characters(count),
-          regions(count),
-          timeline_events(count)
-        `)
-        .order('created_at', { ascending: false });
-
-      if (worldError) throw worldError;
-
-      const worldsWithDetails: WorldWithDetails[] = worldData?.map(world => {
-        return {
-          ...world,
-          user_email: `user-${world.created_by.slice(0, 8)}@example.com`, // Placeholder
-          user_full_name: undefined,
-          character_count: world.characters?.[0]?.count || 0,
-          region_count: world.regions?.[0]?.count || 0,
-          event_count: world.timeline_events?.[0]?.count || 0
-        };
-      }) || [];
-
-      setWorlds(worldsWithDetails);
-    } catch (error) {
-      console.error('Error fetching worlds:', error);
-      toast.error('Failed to load worlds');
-      setWorlds([]);
-    }
-  };
 
   const toggleUserStatus = async (userId: string, makeAdmin: boolean) => {
     try {
@@ -149,47 +114,56 @@ export const useAdminData = () => {
         throw new Error('Database connection not available');
       }
 
-      const { error } = await supabase
-        .from('user_roles')
-        .upsert({ 
-          user_id: userId, 
-          is_admin: makeAdmin 
-        });
+      console.log(`Toggling user ${userId} to ${makeAdmin ? 'admin' : 'user'}`);
 
-      if (error) throw error;
+      // First, let's check the current state
+      const { data: currentRole, error: currentError } = await supabase
+        .from('user_roles')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      console.log('Current role:', currentRole, 'Error:', currentError);
+
+      // Use upsert to handle both insert and update cases
+      const { data, error } = await supabase
+        .from('user_roles')
+        .upsert(
+          { 
+            user_id: userId, 
+            is_admin: makeAdmin 
+          },
+          {
+            onConflict: 'user_id'
+          }
+        )
+        .select();
+
+      if (error) {
+        console.error('Error in upsert:', error);
+        console.error('Error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
+        throw error;
+      }
+
+      console.log('Upsert result:', data);
       
       await fetchUsers(); // Refresh data
       toast.success(`User ${makeAdmin ? 'promoted to admin' : 'removed from admin'} successfully!`);
     } catch (error) {
       console.error('Error toggling user status:', error);
-      toast.error('Failed to update user status');
+      toast.error(`Failed to ${makeAdmin ? 'promote' : 'remove'} user: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
-  const deleteWorld = async (worldId: string) => {
-    try {
-      if (!supabase) {
-        throw new Error('Database connection not available');
-      }
-
-      const { error } = await supabase
-        .from('worlds')
-        .delete()
-        .eq('id', worldId);
-
-      if (error) throw error;
-      
-      await fetchWorlds(); // Refresh data
-      toast.success('World deleted successfully!');
-    } catch (error) {
-      console.error('Error deleting world:', error);
-      toast.error('Failed to delete world');
-    }
-  };
 
   useEffect(() => {
     if (admin) {
-      Promise.all([fetchUsers(), fetchWorlds()]).finally(() => {
+      fetchUsers().finally(() => {
         setLoading(false);
       });
     }
@@ -197,10 +171,8 @@ export const useAdminData = () => {
 
   return {
     users,
-    worlds,
     loading,
     toggleUserStatus,
-    deleteWorld,
-    refetch: () => Promise.all([fetchUsers(), fetchWorlds()])
+    refetch: () => fetchUsers()
   };
 };
