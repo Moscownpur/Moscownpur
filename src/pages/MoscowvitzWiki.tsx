@@ -218,9 +218,12 @@ const MoscowvitzWiki: React.FC = () => {
                 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                   <div className="space-y-6">
-                    <p className="text-lg text-white/80 leading-relaxed">
-                      Moscowvitz is the enigmatic and beloved mascot of Moscownpur, serving as both 
-                      a guide and inspiration for creators building their fictional universes. 
+                  <h2 className="text-2xl md:text-3xl font-semibold">Who is Moscowvitz?</h2>
+                      <p className="text-lg text-white/80 leading-relaxed">
+                      Long ago, a young dreamer got bored in class and made a wish to a magical portal. That wish created Moscowvitz, a guide who helps people explore their imagination and tell amazing stories.
+                      </p>
+                      <p className="text-lg text-white/80 leading-relaxed"> 
+                      Moscowvitz is the enigmatic and beloved mascot of Moscownpur, serving as both a guide and inspiration for creators building their fictional universes.
                       Born from the collective imagination of the platform's creators, Moscowvitz 
                       represents the bridge between reality and the infinite possibilities of 
                       creative storytelling.
