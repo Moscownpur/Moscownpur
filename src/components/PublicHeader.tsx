@@ -66,6 +66,15 @@ const PublicHeader: React.FC = () => {
               About
             </motion.button>
           </Link>
+          <Link to="/wiki/moscowvitz">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 text-white/80 hover:text-white smooth-transition"
+            >
+              Moscowvitz
+            </motion.button>
+          </Link>
         </div>
         <div className="flex items-center space-x-4">
           <Link to="/login">
