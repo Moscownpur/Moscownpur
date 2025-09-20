@@ -116,6 +116,16 @@ export const seoConfig: Record<string, SEOConfig> = {
     description: 'Test and experiment with AI-powered features for creative writing and universe building.',
     keywords: 'AI test, artificial intelligence, creative writing, AI features, MosCownpur',
     type: 'website'
+  },
+
+  // Wiki pages
+  '/wiki/moscowvitz': {
+    title: 'Moscowvitz - Official Mascot Wiki | Moscownpur',
+    description: 'Discover Moscowvitz, the beloved mascot of Moscownpur. Learn about the character\'s origin, appearance, personality traits, and role in the fictional universe management platform.',
+    keywords: 'Moscowvitz, Moscownpur mascot, fictional character, world building, creative writing, universe management, character lore, mascot wiki',
+    image: 'https://www.moscownpur.in/moscowvitz-hero.svg',
+    type: 'article',
+    structuredDataType: 'Article'
   }
 };
 
