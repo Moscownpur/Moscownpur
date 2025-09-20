@@ -123,7 +123,7 @@ export const seoConfig: Record<string, SEOConfig> = {
     title: 'Moscowvitz - Official Mascot Wiki | Moscownpur',
     description: 'Discover Moscowvitz, the beloved mascot of Moscownpur. Learn about the character\'s origin, appearance, personality traits, and role in the fictional universe management platform.',
     keywords: 'Moscowvitz, Moscownpur mascot, fictional character, world building, creative writing, universe management, character lore, mascot wiki',
-    image: 'https://www.moscownpur.in/moscowvitz-hero.svg',
+    image: 'https://www.moscownpur.in/Moscowvitz.png',
     type: 'article',
     structuredDataType: 'Article'
   }
