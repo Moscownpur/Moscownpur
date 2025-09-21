@@ -45,6 +45,7 @@ const PerformanceDashboard = lazy(() => import('./pages/PerformanceDashboard'));
 const DialogueDemo = lazy(() => import('./pages/DialogueDemo'));
 const DialogueManagement = lazy(() => import('./pages/DialogueManagement'));
 const MoscowvitzWiki = lazy(() => import('./pages/MoscowvitzWiki'));
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 
 // Component to handle SEO updates
 const SEOUpdater: React.FC = () => {
@@ -85,6 +86,7 @@ function App() {
                     <Route path="/performance" element={<PerformanceDashboard />} />
                     <Route path="/dialogue-demo" element={<DialogueDemo />} />
                     <Route path="/wiki/moscowvitz" element={<MoscowvitzWiki />} />
+                    <Route path="/profile/:username" element={<ProfilePage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
