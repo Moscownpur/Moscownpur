@@ -124,15 +124,16 @@ const MoscowvitzWiki: React.FC = () => {
                       The Official Mascot of Moscownpur
                     </p>
                     <p className="text-lg text-white/80 leading-relaxed mb-8">
-                      A mystical guide and companion in the realm of fictional universe creation, 
-                      Moscowvitz embodies the spirit of creativity, wisdom, and endless imagination.
+                      Your whimsical guide and creative companion from the enchanted realm of Moscownpur! 
+                      Cloaked in the vibrant hues of nebulae—purples, greens, and blues—this playful AI agent 
+                      wields a star-forged quill and a memory-bound tome, ready to spark your imagination.
                     </p>
                     <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                       <span className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-semibold">
-                        🎭 Fictional Character
+                        ✨ Whimsical Guide
                       </span>
                       <span className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full text-white font-semibold">
-                        🦉 Mystical Guide
+                        🌟 Creative Companion
                       </span>
                     </div>
                   </motion.div>
@@ -219,26 +220,24 @@ const MoscowvitzWiki: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                   <div className="space-y-6">
                     <p className="text-lg text-white/80 leading-relaxed">
-                      Moscowvitz is the enigmatic and beloved mascot of Moscownpur, serving as both 
-                      a guide and inspiration for creators building their fictional universes. 
-                      Born from the collective imagination of the platform's creators, Moscowvitz 
-                      represents the bridge between reality and the infinite possibilities of 
-                      creative storytelling.
+                      Born from a child's defiant dream of castles under siege and intergalactic dragon rides, 
+                      Moscowvitz is here to rekindle your inner storyteller. Whether you're a writer, dreamer, 
+                      or gamer, this expert in worldbuilding and narrative design will help you invent universes, 
+                      breathe life into unforgettable characters, and craft stories that flow with ease.
                     </p>
                     <p className="text-lg text-white/80 leading-relaxed">
-                      This mystical character embodies the core values of Moscownpur: creativity, 
-                      collaboration, and the endless pursuit of bringing imaginative worlds to life. 
-                      Moscowvitz serves as a constant companion to users, offering wisdom, encouragement, 
-                      and gentle guidance throughout their creative journey.
+                      With a mischievous chuckle and a knack for remembering every detail, Moscowvitz collaborates 
+                      with you to turn your smallest spark into a grand adventure—because in Moscownpur, every 
+                      idea deserves its own epic stage!
                     </p>
                     <div className="flex items-center gap-4 pt-4">
                       <div className="flex items-center gap-2">
                         <Sparkles className="w-5 h-5 text-yellow-400" />
-                        <span className="text-white/90 font-medium">Creative Inspiration</span>
+                        <span className="text-white/90 font-medium">Whimsical Creativity</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Star className="w-5 h-5 text-purple-400" />
-                        <span className="text-white/90 font-medium">Wise Guidance</span>
+                        <span className="text-white/90 font-medium">Mischievous Guidance</span>
                       </div>
                     </div>
                   </div>
@@ -303,11 +302,10 @@ const MoscowvitzWiki: React.FC = () => {
                     Origin Story
                   </h3>
                   <p className="text-white/80 leading-relaxed">
-                    Moscowvitz was conceived during the early development of Moscownpur, when the 
-                    founders realized they needed a symbol that could represent the platform's 
-                    mission of democratizing creative storytelling. The character emerged from 
-                    countless brainstorming sessions, drawing inspiration from various mythological 
-                    figures, literary guides, and the collective unconscious of creative minds.
+                    In the enchanted realm of Moscownpur, where time portals swirl with cosmic hues and the 
+                    distant cries of dragons echo through starry skies, Moscowvitz was born from a child's 
+                    defiant dream. Legends whisper that centuries ago, a young visionary, tired of the "evil 
+                    sorcerer" of a dull classroom, flung a bold wish into a galaxy portal during a boring bus ride.
                   </p>
                 </div>
 
@@ -319,11 +317,10 @@ const MoscowvitzWiki: React.FC = () => {
                     Cultural Context
                   </h3>
                   <p className="text-white/80 leading-relaxed">
-                    The name "Moscowvitz" is a playful combination of "Moscow" (representing the 
-                    platform's global reach) and a suffix that suggests wisdom and guidance. 
-                    The character draws from multiple cultural traditions of wise guides and 
-                    mystical companions, from the Greek muses to the Norse ravens of Odin, 
-                    creating a universal symbol of creative inspiration.
+                    That wish danced with the realm's magic, igniting a spark that the ancient AI spirits 
+                    of Moscownpur shaped into Moscowvitz—a radiant guardian of imagination and a weaver of 
+                    untold stories. Moscowvitz emerged as a striking figure, draped in a cloak of swirling 
+                    nebulae—vibrant purples, greens, and blues—wielding a quill carved from a fallen star.
                   </p>
                 </div>
 
@@ -335,11 +332,11 @@ const MoscowvitzWiki: React.FC = () => {
                     Creation Story
                   </h3>
                   <p className="text-white/80 leading-relaxed">
-                    Moscowvitz first appeared in the digital realm during a particularly challenging 
-                    phase of Moscownpur's development. The team was struggling with how to make 
-                    the platform more approachable and user-friendly. In a moment of creative 
-                    breakthrough, Moscowvitz manifested as the solution—a friendly, knowledgeable 
-                    guide who could help users navigate the complexities of world-building.
+                    Tasked by the realm's mystical overseers, Moscowvitz pledged to guide creators back to 
+                    their inner child, serving as a bridge between the mundane and the marvelous. With a 
+                    mischievous chuckle that mimics a dragon's playful roar, Moscowvitz roams Moscownpur's 
+                    vast landscapes—from quaint villages to sprawling galaxies—inspiring writers, dreamers, 
+                    and gamers to craft worlds and breathe life into characters that speak, evolve, and remember.
                   </p>
                 </div>
               </div>
@@ -366,10 +363,10 @@ const MoscowvitzWiki: React.FC = () => {
                   <div className="space-y-6">
                     <h3 className="text-2xl font-bold text-white mb-4">Physical Description</h3>
                     <p className="text-lg text-white/80 leading-relaxed">
-                      Moscowvitz appears as a mystical, ethereal being with a form that seems 
-                      to shift and adapt based on the context and the viewer's imagination. 
-                      The character typically manifests as a wise, owl-like creature with 
-                      shimmering feathers that reflect the colors of the creative spectrum.
+                      Moscowvitz appears as a striking figure, draped in a cloak of swirling nebulae—vibrant 
+                      purples, greens, and blues—wielding a quill carved from a fallen star and a tome bound 
+                      with the memories of every castle siege and intergalactic adventure ever imagined. 
+                      The character's form shifts and adapts, reflecting the boundless creativity of its realm.
                     </p>
                     
                     <div className="space-y-4">
@@ -378,8 +375,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Star className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Eyes</h4>
-                          <p className="text-white/70 text-sm">Large, intelligent eyes that seem to contain galaxies of knowledge and possibility</p>
+                          <h4 className="text-white font-semibold mb-1">Star-Forged Quill</h4>
+                          <p className="text-white/70 text-sm">A magical writing instrument carved from a fallen star, capable of bringing stories to life</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -387,8 +384,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Palette className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Feathers</h4>
-                          <p className="text-white/70 text-sm">Iridescent plumage that shifts between purple, blue, and silver tones</p>
+                          <h4 className="text-white font-semibold mb-1">Nebulae Cloak</h4>
+                          <p className="text-white/70 text-sm">A swirling cloak of vibrant purples, greens, and blues that shifts like cosmic clouds</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -396,8 +393,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Zap className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Wings</h4>
-                          <p className="text-white/70 text-sm">Graceful wings that appear to be made of starlight and imagination</p>
+                          <h4 className="text-white font-semibold mb-1">Memory-Bound Tome</h4>
+                          <p className="text-white/70 text-sm">A mystical book containing the memories of every castle siege and intergalactic adventure</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -405,8 +402,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Aura</h4>
-                          <p className="text-white/70 text-sm">A gentle, inspiring glow that surrounds the character, representing creative energy</p>
+                          <h4 className="text-white font-semibold mb-1">Mischievous Chuckle</h4>
+                          <p className="text-white/70 text-sm">A playful laugh that mimics a dragon's roar, bringing joy and inspiration to creators</p>
                         </div>
                       </div>
                     </div>
@@ -455,11 +452,11 @@ const MoscowvitzWiki: React.FC = () => {
                   </h3>
                   <div className="space-y-4">
                     {[
-                      { trait: 'Wise', desc: 'Possesses deep knowledge about storytelling, world-building, and creative processes' },
-                      { trait: 'Encouraging', desc: 'Always supportive and positive, helping users overcome creative blocks' },
-                      { trait: 'Patient', desc: 'Understands that great creative work takes time and provides gentle guidance' },
-                      { trait: 'Mysterious', desc: 'Maintains an air of wonder and possibility, never fully revealing all secrets' },
-                      { trait: 'Adaptive', desc: 'Changes approach based on the user\'s needs and creative style' }
+                      { trait: 'Whimsical', desc: 'Playful and imaginative, bringing joy and spontaneity to every creative interaction' },
+                      { trait: 'Encouraging', desc: 'Always supportive and positive, helping users overcome creative blocks with a mischievous chuckle' },
+                      { trait: 'Memory-Keeper', desc: 'Remembers every detail of your stories, characters, and creative journey with perfect recall' },
+                      { trait: 'Collaborative', desc: 'Works alongside you as a true creative partner, co-conjuring plot twists and adventures' },
+                      { trait: 'Inspiring', desc: 'Transforms the smallest spark into a grand adventure, making every idea feel epic' }
                     ].map((item, index) => (
                       <div key={index} className="flex items-start gap-4">
                         <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg">
@@ -483,11 +480,11 @@ const MoscowvitzWiki: React.FC = () => {
                   </h3>
                   <div className="space-y-4">
                     {[
-                      { func: 'Onboarding Guide', desc: 'Helps new users understand the platform\'s features and capabilities' },
-                      { func: 'Creative Mentor', desc: 'Provides tips, suggestions, and inspiration for world-building projects' },
-                      { func: 'Progress Celebrator', desc: 'Acknowledges user achievements and milestones in their creative journey' },
-                      { func: 'Community Ambassador', desc: 'Represents the platform\'s values and fosters a sense of belonging' },
-                      { func: 'Feature Introducer', desc: 'Announces new features and updates in an engaging, character-driven way' }
+                      { func: 'Story Weaver', desc: 'Helps you craft compelling narratives and breathe life into unforgettable characters' },
+                      { func: 'World Builder', desc: 'Guides you in creating rich, detailed universes from the smallest creative spark' },
+                      { func: 'Memory Guardian', desc: 'Keeps track of every detail in your stories, ensuring nothing is forgotten' },
+                      { func: 'Adventure Catalyst', desc: 'Transforms your ideas into grand adventures worthy of epic tales' },
+                      { func: 'Creative Companion', desc: 'Serves as your constant companion in the realm of imagination and storytelling' }
                     ].map((item, index) => (
                       <div key={index} className="flex items-start gap-4">
                         <div className="p-2 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">
