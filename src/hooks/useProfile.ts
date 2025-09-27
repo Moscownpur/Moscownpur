@@ -59,24 +59,67 @@ export const useProfile = (username: string): UseProfileResult => {
 
       setProfile(profileData);
 
+      // First get user's worlds to find characters and scenes
+      const { data: userWorlds, error: worldsError } = await supabase
+        .from('worlds')
+        .select('world_id')
+        .eq('user_id', profileData.id);
+
+      if (worldsError) {
+        console.error('Error fetching worlds:', worldsError);
+        setStats({
+          worlds_count: 0,
+          characters_count: 0,
+          scenes_count: 0,
+          events_count: 0
+        });
+        return;
+      }
+
+      const worldIds = userWorlds?.map(w => w.world_id) || [];
+
+      // Get chapters in user's worlds
+      const { data: userChapters, error: chaptersError } = worldIds.length > 0 ? await supabase
+        .from('chapters')
+        .select('chapter_id')
+        .in('world_id', worldIds) : { data: [], error: null };
+
+      if (chaptersError) {
+        console.error('Error fetching chapters:', chaptersError);
+      }
+
+      const chapterIds = userChapters?.map(c => c.chapter_id) || [];
+
+      // Get events in user's chapters
+      const { data: userEvents, error: eventsError } = chapterIds.length > 0 ? await supabase
+        .from('events')
+        .select('event_id')
+        .in('chapter_id', chapterIds) : { data: [], error: null };
+
+      if (eventsError) {
+        console.error('Error fetching events:', eventsError);
+      }
+
+      const eventIds = userEvents?.map(e => e.event_id) || [];
+
       // Fetch user statistics
       const [worldsResult, charactersResult, scenesResult, eventsResult] = await Promise.all([
         supabase
           .from('worlds')
           .select('world_id', { count: 'exact' })
           .eq('user_id', profileData.id),
-        supabase
+        worldIds.length > 0 ? supabase
           .from('characters')
           .select('character_id', { count: 'exact' })
-          .eq('created_by', profileData.id),
-        supabase
+          .in('world_id', worldIds) : Promise.resolve({ count: 0 }),
+        eventIds.length > 0 ? supabase
           .from('scenes')
           .select('scene_id', { count: 'exact' })
-          .eq('created_by', profileData.id),
+          .in('event_id', eventIds) : Promise.resolve({ count: 0 }),
         supabase
-          .from('timeline_events')
-          .select('id', { count: 'exact' })
-          .eq('created_by', profileData.id)
+          .from('events')
+          .select('event_id', { count: 'exact' })
+          .in('chapter_id', chapterIds)
       ]);
 
       setStats({
