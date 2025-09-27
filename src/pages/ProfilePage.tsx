@@ -1,13 +1,12 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { Container, Row, Col, Card, Badge, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 import { useProfile } from '../hooks/useProfile';
 import { useUserBadges } from '../hooks/useUserBadges';
 import { useInviteCode } from '../hooks/useInviteCodes';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { User, Trophy, Zap, Target, Sword, Shield, Star, Users, UserPlus, Calendar, Link, Globe } from 'lucide-react';
+import { User, Trophy, Star, Users, UserPlus, Calendar, Link, Globe } from 'lucide-react';
 
 const ProfilePage: React.FC = () => {
   const { username } = useParams<{ username: string }>();
@@ -135,13 +134,13 @@ const ProfilePage: React.FC = () => {
                       {profile.avatar_url ? (
                         <img 
                           src={profile.avatar_url} 
-                          alt={profile.display_name || profile.full_name || profile.username}
+                          alt={profile.display_name || profile.full_name || profile.username || 'User'}
                           className="w-32 h-32 rounded-full object-cover border-4 border-cyan-400/50"
                         />
                       ) : (
                         <div className="w-32 h-32 rounded-full bg-gradient-to-br from-cyan-500 to-purple-500 flex items-center justify-center border-4 border-cyan-400/50">
                           <span className="text-4xl font-bold text-white">
-                            {(profile.display_name || profile.full_name || profile.username || 'U').charAt(0).toUpperCase()}
+                            {((profile.display_name || profile.full_name || profile.username || 'U') as string).charAt(0).toUpperCase()}
                           </span>
                         </div>
                       )}
