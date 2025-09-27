@@ -59,40 +59,6 @@ export const useInviteCode = () => {
   };
 };
 
-export const useCreateInviteCode = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const createInviteCode = async (userId: string) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const { data, error: createError } = await supabase.rpc('create_invite_code', {
-        target_user_id: userId
-      });
-
-      if (createError) {
-        setError(createError.message);
-        return null;
-      }
-
-      return data;
-    } catch (err) {
-      console.error('Error creating invite code:', err);
-      setError('An unexpected error occurred');
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return {
-    createInviteCode,
-    loading,
-    error
-  };
-};
 
 export const useGetUserByInviteCode = () => {
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
