@@ -46,6 +46,7 @@ const DialogueDemo = lazy(() => import('./pages/DialogueDemo'));
 const DialogueManagement = lazy(() => import('./pages/DialogueManagement'));
 const MoscowvitzWiki = lazy(() => import('./pages/MoscowvitzWiki'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Component to handle SEO updates
 const SEOUpdater: React.FC = () => {
@@ -121,6 +122,8 @@ function App() {
                       <Route path="ai-test" element={<AITest />} />
                       <Route path="ai-integration/:worldId" element={<AIIntegration />} />
                     </Route>
+                    {/* Catch-all route for 404 pages */}
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                 </Suspense>
               </div>
