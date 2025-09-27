@@ -190,15 +190,29 @@ const ProfilePage: React.FC = () => {
                   {/* XP Score */}
                   <div className="bg-gray-800/50 rounded-xl p-6 border border-cyan-500/30 min-w-[200px]">
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-cyan-400 mb-2">{formatNumber(profile.xp_score || 0)}</div>
+                      <div className="text-3xl font-bold text-cyan-400 mb-2">{formatNumber(stats?.calculated_xp || profile.xp_score || 0)}</div>
                       <div className="text-sm text-gray-400 mb-4">Total XP Score</div>
                       <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden mb-2">
                         <div 
                           className="h-full bg-gradient-to-r from-cyan-400 to-purple-400 rounded-full animate-pulse shadow-lg shadow-cyan-400/50" 
-                          style={{ width: `${Math.min((profile.xp_score || 0) / 100, 100)}%` }}
+                          style={{ width: `${Math.min(((stats?.calculated_xp || profile.xp_score || 0) / 100), 100)}%` }}
                         ></div>
                       </div>
-                      <div className="text-xs text-gray-400">Neural Operative LV {Math.floor((profile.xp_score || 0) / 100)}</div>
+                      <div className="text-xs text-gray-400">Neural Operative LV {Math.floor((stats?.calculated_xp || profile.xp_score || 0) / 100)}</div>
+                      
+                      {/* XP Breakdown */}
+                      {stats && (
+                        <div className="mt-4 text-xs text-gray-500 space-y-1">
+                          <div>Badge XP: +{formatNumber(stats.badge_xp_rewards)}</div>
+                          <div>Worlds: +{formatNumber(stats.worlds_count * 100)}</div>
+                          <div>Characters: +{formatNumber(stats.characters_count * 200)}</div>
+                          <div>Scenes: +{formatNumber(stats.scenes_count * 50)}</div>
+                          <div>Events: +{formatNumber(stats.events_count * 25)}</div>
+                          <div>Invites: +{formatNumber((profile.invite_count || 0) * 500)}</div>
+                          <div>Dialogues: +{formatNumber(stats.dialogues_count * 10)}</div>
+                          <div>Base: +1,000</div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -268,6 +282,13 @@ const ProfilePage: React.FC = () => {
                       <div className="text-gray-400">Events Created</div>
                       <div className="mt-2 w-full bg-gray-700 rounded-full h-2">
                         <div className="h-full bg-gradient-to-r from-purple-400 to-pink-400 rounded-full" style={{ width: '84%' }}></div>
+                      </div>
+                    </div>
+                    <div className="text-center bg-gray-800/50 rounded-xl p-6 border border-cyan-500/20">
+                      <div className="text-4xl font-bold text-cyan-400 mb-2">{stats.dialogues_count}</div>
+                      <div className="text-gray-400">Dialogues Written</div>
+                      <div className="mt-2 w-full bg-gray-700 rounded-full h-2">
+                        <div className="h-full bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full" style={{ width: '72%' }}></div>
                       </div>
                     </div>
                   </div>

@@ -9,6 +9,9 @@ interface UserStats {
   characters_count: number;
   scenes_count: number;
   events_count: number;
+  dialogues_count: number;
+  badge_xp_rewards: number;
+  calculated_xp: number;
 }
 
 interface UseProfileResult {
@@ -103,7 +106,7 @@ export const useProfile = (username: string): UseProfileResult => {
       const eventIds = userEvents?.map(e => e.event_id) || [];
 
       // Fetch user statistics
-      const [worldsResult, charactersResult, scenesResult, eventsResult] = await Promise.all([
+      const [worldsResult, charactersResult, scenesResult, eventsResult, dialoguesResult] = await Promise.all([
         supabase
           .from('worlds')
           .select('world_id', { count: 'exact' })
@@ -119,14 +122,59 @@ export const useProfile = (username: string): UseProfileResult => {
         supabase
           .from('events')
           .select('event_id', { count: 'exact' })
-          .in('chapter_id', chapterIds)
+          .in('chapter_id', chapterIds),
+        eventIds.length > 0 ? supabase
+          .from('dialogues')
+          .select('dialogue_id', { count: 'exact' })
+          .in('scene_id', eventIds) : Promise.resolve({ count: 0 })
       ]);
 
+      // Fetch user's badges to get XP rewards
+      const { data: userBadges, error: badgesError } = await supabase
+        .from('user_badges')
+        .select(`
+          badge_catalog!inner(
+            xp_reward
+          )
+        `)
+        .eq('user_id', profileData.id);
+
+      if (badgesError) {
+        console.error('Error fetching user badges:', badgesError);
+      }
+
+      // Calculate total badge XP rewards
+      const badgeXPRewards = userBadges?.reduce((total, userBadge) => {
+        return total + (userBadge.badge_catalog?.xp_reward || 0);
+      }, 0) || 0;
+
+      // Calculate XP using weighted formula
+      const worldsCount = worldsResult.count || 0;
+      const charactersCount = charactersResult.count || 0;
+      const scenesCount = scenesResult.count || 0;
+      const eventsCount = eventsResult.count || 0;
+      const dialoguesCount = dialoguesResult.count || 0;
+      const inviteCount = profileData.invite_count || 0;
+      
+      // XP Formula: Badge XP Rewards + 100*Worlds + 200*Characters + 50*Scenes + 25*Events + 500*Invites + 10*Dialogues + 1000 (default)
+      const calculatedXP = 
+        badgeXPRewards + // Badge XP rewards from earned badges
+        (worldsCount * 100) +
+        (charactersCount * 200) +
+        (scenesCount * 50) +
+        (eventsCount * 25) +
+        (inviteCount * 500) +
+        (dialoguesCount * 10) +
+        1000; // Default XP
+
       setStats({
-        worlds_count: worldsResult.count || 0,
-        characters_count: charactersResult.count || 0,
-        scenes_count: scenesResult.count || 0,
-        events_count: eventsResult.count || 0
+        worlds_count: worldsCount,
+        characters_count: charactersCount,
+        scenes_count: scenesCount,
+        events_count: eventsCount,
+        dialogues_count: dialoguesCount,
+        badge_xp_rewards: badgeXPRewards,
+        calculated_xp: calculatedXP
       });
 
     } catch (err) {
