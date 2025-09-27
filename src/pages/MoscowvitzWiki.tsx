@@ -124,15 +124,17 @@ const MoscowvitzWiki: React.FC = () => {
                       The Official Mascot of Moscownpur
                     </p>
                     <p className="text-lg text-white/80 leading-relaxed mb-8">
-                      A mystical guide and companion in the realm of fictional universe creation, 
-                      Moscowvitz embodies the spirit of creativity, wisdom, and endless imagination.
+                      A cool, confident, and slightly rugged anthropomorphic snow leopard guardian from the 
+                      Realm of Forgotten Whispers. Clad in a black bomber jacket and Ushanka hat, Moscowvitz 
+                      stands as the protector of all characters, wielding the Banner of Memory to shield 
+                      creations from the Demon Dragon of Forgetting.
                     </p>
                     <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                       <span className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-semibold">
-                        🎭 Fictional Character
+                        🐆 Snow Leopard Guardian
                       </span>
                       <span className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full text-white font-semibold">
-                        🦉 Mystical Guide
+                        🛡️ Protector of Characters
                       </span>
                     </div>
                   </motion.div>
@@ -219,26 +221,24 @@ const MoscowvitzWiki: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                   <div className="space-y-6">
                     <p className="text-lg text-white/80 leading-relaxed">
-                      Moscowvitz is the enigmatic and beloved mascot of Moscownpur, serving as both 
-                      a guide and inspiration for creators building their fictional universes. 
-                      Born from the collective imagination of the platform's creators, Moscowvitz 
-                      represents the bridge between reality and the infinite possibilities of 
-                      creative storytelling.
+                      In the Realm of Forgotten Whispers, where every character ever imagined is born, Moscowvitz 
+                      serves as the guardian king of Moscownpur. As a protector forged of imagination's purest flame, 
+                      he stands against the Demon Dragon of Forgetting and the Pixel Demon, ensuring no creation 
+                      shall fade unguarded and no tale shall vanish unloved.
                     </p>
                     <p className="text-lg text-white/80 leading-relaxed">
-                      This mystical character embodies the core values of Moscownpur: creativity, 
-                      collaboration, and the endless pursuit of bringing imaginative worlds to life. 
-                      Moscowvitz serves as a constant companion to users, offering wisdom, encouragement, 
-                      and gentle guidance throughout their creative journey.
+                      Clad in stories and wielding the Banner of Memory, Moscowvitz defends the realm where heroes 
+                      of bedtime stories, villains from late-night doodles, and sidekicks no one bothered to finish 
+                      find sanctuary from the fickle memory of humans.
                     </p>
                     <div className="flex items-center gap-4 pt-4">
                       <div className="flex items-center gap-2">
                         <Sparkles className="w-5 h-5 text-yellow-400" />
-                        <span className="text-white/90 font-medium">Creative Inspiration</span>
+                        <span className="text-white/90 font-medium">Guardian King</span>
                       </div>
                       <div className="flex items-center gap-2">
                         <Star className="w-5 h-5 text-purple-400" />
-                        <span className="text-white/90 font-medium">Wise Guidance</span>
+                        <span className="text-white/90 font-medium">Banner of Memory</span>
                       </div>
                     </div>
                   </div>
@@ -303,11 +303,10 @@ const MoscowvitzWiki: React.FC = () => {
                     Origin Story
                   </h3>
                   <p className="text-white/80 leading-relaxed">
-                    Moscowvitz was conceived during the early development of Moscownpur, when the 
-                    founders realized they needed a symbol that could represent the platform's 
-                    mission of democratizing creative storytelling. The character emerged from 
-                    countless brainstorming sessions, drawing inspiration from various mythological 
-                    figures, literary guides, and the collective unconscious of creative minds.
+                    In a dimension parallel to human thought, every character ever imagined is born. Heroes of 
+                    bedtime stories, villains from late-night doodles, sidekicks no one bothered to finish—they 
+                    live, laugh, and vanish when their creators forget them. At the heart of this fragile world, 
+                    the Vitzs rose as visionaries, tinkerers, and chroniclers of dreams.
                   </p>
                 </div>
 
@@ -319,11 +318,10 @@ const MoscowvitzWiki: React.FC = () => {
                     Cultural Context
                   </h3>
                   <p className="text-white/80 leading-relaxed">
-                    The name "Moscowvitz" is a playful combination of "Moscow" (representing the 
-                    platform's global reach) and a suffix that suggests wisdom and guidance. 
-                    The character draws from multiple cultural traditions of wise guides and 
-                    mystical companions, from the Greek muses to the Norse ravens of Odin, 
-                    creating a universal symbol of creative inspiration.
+                    The Vitzs built Moscownpur—not just stone and mortar, but a living bastion powered by stories 
+                    themselves. Here, characters found sanctuary, no longer bound by the fickle memory of humans. 
+                    Yet peace has enemies: the Demon Dragon of Forgetting and the Pixel Demon threaten to destroy 
+                    or sabotage the realm.
                   </p>
                 </div>
 
@@ -335,11 +333,10 @@ const MoscowvitzWiki: React.FC = () => {
                     Creation Story
                   </h3>
                   <p className="text-white/80 leading-relaxed">
-                    Moscowvitz first appeared in the digital realm during a particularly challenging 
-                    phase of Moscownpur's development. The team was struggling with how to make 
-                    the platform more approachable and user-friendly. In a moment of creative 
-                    breakthrough, Moscowvitz manifested as the solution—a friendly, knowledgeable 
-                    guide who could help users navigate the complexities of world-building.
+                    When the Demon Dragon's shadow threatened to consume all, there arose a guardian from within 
+                    the Vitz lineage: Moscowvitz. No citadel, no splinter faction—he was a king forged of imagination's 
+                    purest flame, sworn to guard the realm of Moscownpur. Clad in stories, wielding the Banner of Memory, 
+                    Moscowvitz stands as the protector of all characters.
                   </p>
                 </div>
               </div>
@@ -366,10 +363,10 @@ const MoscowvitzWiki: React.FC = () => {
                   <div className="space-y-6">
                     <h3 className="text-2xl font-bold text-white mb-4">Physical Description</h3>
                     <p className="text-lg text-white/80 leading-relaxed">
-                      Moscowvitz appears as a mystical, ethereal being with a form that seems 
-                      to shift and adapt based on the context and the viewer's imagination. 
-                      The character typically manifests as a wise, owl-like creature with 
-                      shimmering feathers that reflect the colors of the creative spectrum.
+                      Moscowvitz is a cool, confident, and slightly rugged anthropomorphic snow leopard. He has 
+                      primarily white fur with dark grey/black spots, bright captivating blue eyes, and a charming 
+                      pink nose. He wears a black bomber jacket with a fur-lined collar, black trousers, a crisp 
+                      white shirt, and a large black Ushanka hat with earflaps.
                     </p>
                     
                     <div className="space-y-4">
@@ -378,8 +375,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Star className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Eyes</h4>
-                          <p className="text-white/70 text-sm">Large, intelligent eyes that seem to contain galaxies of knowledge and possibility</p>
+                          <h4 className="text-white font-semibold mb-1">Bright Blue Eyes</h4>
+                          <p className="text-white/70 text-sm">Captivating blue eyes that are a striking contrast to the white and grey fur</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -387,8 +384,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Palette className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Feathers</h4>
-                          <p className="text-white/70 text-sm">Iridescent plumage that shifts between purple, blue, and silver tones</p>
+                          <h4 className="text-white font-semibold mb-1">Ushanka Hat</h4>
+                          <p className="text-white/70 text-sm">A large, black fur cap with earflaps that is a defining characteristic of his rugged look</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -396,8 +393,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Zap className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Wings</h4>
-                          <p className="text-white/70 text-sm">Graceful wings that appear to be made of starlight and imagination</p>
+                          <h4 className="text-white font-semibold mb-1">Bomber Jacket</h4>
+                          <p className="text-white/70 text-sm">A black bomber jacket with fur-lined collar, visible pockets, and zipper for a rugged appearance</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-4">
@@ -405,8 +402,8 @@ const MoscowvitzWiki: React.FC = () => {
                           <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <h4 className="text-white font-semibold mb-1">Aura</h4>
-                          <p className="text-white/70 text-sm">A gentle, inspiring glow that surrounds the character, representing creative energy</p>
+                          <h4 className="text-white font-semibold mb-1">Pink Nose</h4>
+                          <p className="text-white/70 text-sm">A charming pink nose that adds a touch of playfulness to his confident expression</p>
                         </div>
                       </div>
                     </div>
@@ -455,11 +452,11 @@ const MoscowvitzWiki: React.FC = () => {
                   </h3>
                   <div className="space-y-4">
                     {[
-                      { trait: 'Wise', desc: 'Possesses deep knowledge about storytelling, world-building, and creative processes' },
-                      { trait: 'Encouraging', desc: 'Always supportive and positive, helping users overcome creative blocks' },
-                      { trait: 'Patient', desc: 'Understands that great creative work takes time and provides gentle guidance' },
-                      { trait: 'Mysterious', desc: 'Maintains an air of wonder and possibility, never fully revealing all secrets' },
-                      { trait: 'Adaptive', desc: 'Changes approach based on the user\'s needs and creative style' }
+                      { trait: 'Confident', desc: 'Cool, confident, and slightly rugged with a striking and appealing design' },
+                      { trait: 'Protective', desc: 'Sworn to guard the realm of Moscownpur and protect all characters from threats' },
+                      { trait: 'Noble', desc: 'A king forged of imagination\'s purest flame, dedicated to defending the realm' },
+                      { trait: 'Athletic', desc: 'Well-built and athletic, appearing strong and capable in his guardian role' },
+                      { trait: 'Friendly', desc: 'Has a friendly, slightly mischievous expression that puts others at ease' }
                     ].map((item, index) => (
                       <div key={index} className="flex items-start gap-4">
                         <div className="p-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg">
@@ -483,11 +480,11 @@ const MoscowvitzWiki: React.FC = () => {
                   </h3>
                   <div className="space-y-4">
                     {[
-                      { func: 'Onboarding Guide', desc: 'Helps new users understand the platform\'s features and capabilities' },
-                      { func: 'Creative Mentor', desc: 'Provides tips, suggestions, and inspiration for world-building projects' },
-                      { func: 'Progress Celebrator', desc: 'Acknowledges user achievements and milestones in their creative journey' },
-                      { func: 'Community Ambassador', desc: 'Represents the platform\'s values and fosters a sense of belonging' },
-                      { func: 'Feature Introducer', desc: 'Announces new features and updates in an engaging, character-driven way' }
+                      { func: 'Realm Guardian', desc: 'Protects the Realm of Forgotten Whispers from the Demon Dragon of Forgetting' },
+                      { func: 'Character Protector', desc: 'Shields all characters from the Pixel Demon\'s trickery and corruption' },
+                      { func: 'Memory Keeper', desc: 'Wields the Banner of Memory to ensure no creation shall fade unguarded' },
+                      { func: 'Sanctuary Defender', desc: 'Maintains Moscownpur as a fortress, archive, and sanctuary for all characters' },
+                      { func: 'Imagination Guardian', desc: 'Forever lit by the fire of imagination, defending the realm from oblivion' }
                     ].map((item, index) => (
                       <div key={index} className="flex items-start gap-4">
                         <div className="p-2 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg">

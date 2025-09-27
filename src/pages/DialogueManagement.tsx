@@ -178,7 +178,19 @@ const DialogueManagement: React.FC = () => {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error adding dialogue:', error);
+        
+        if (error.code === '23503') {
+          toast.error('Invalid reference. The scene or character does not exist.');
+        } else if (error.code === '23514') {
+          toast.error('Validation error. Please check the data being added.');
+        } else {
+          toast.error(`Failed to add dialogue: ${error.message || 'Unknown error'}`);
+        }
+        
+        throw error;
+      }
 
       if (data) {
         // Enrich the new dialogue with context
@@ -239,81 +251,6 @@ const DialogueManagement: React.FC = () => {
         return;
       }
 
-      console.log('Validated update data:', updateData);
-
-      console.log('Updating dialogue with data:', updateData);
-      console.log('Dialogue ID:', dialogue.dialogue_id);
-
-      // First, verify the dialogue exists and check permissions
-      const { data: existingDialogue, error: checkError } = await supabase
-        .from('dialogues')
-        .select(`
-          dialogue_id,
-          scene_id,
-          character_id
-        `)
-        .eq('dialogue_id', dialogue.dialogue_id)
-        .single();
-
-      if (checkError) {
-        console.error('Dialogue not found:', checkError);
-        toast.error('Dialogue not found');
-        return;
-      }
-
-      if (!existingDialogue) {
-        toast.error('Dialogue not found');
-        return;
-      }
-
-      console.log('Existing dialogue:', existingDialogue);
-
-      // Check if the scene belongs to a world owned by the current user
-      const { data: sceneCheck, error: sceneError } = await supabase
-        .from('scenes')
-        .select(`
-          scene_id,
-          event_id,
-          events!inner(
-            chapter_id,
-            chapters!inner(
-              world_id,
-              worlds!inner(user_id)
-            )
-          )
-        `)
-        .eq('scene_id', dialogue.scene_id)
-        .single();
-
-      if (sceneError) {
-        console.error('Scene check error:', sceneError);
-        toast.error('Cannot verify scene ownership');
-        return;
-      }
-
-      console.log('Scene ownership check:', sceneCheck);
-
-      // Check if the character belongs to a world owned by the current user (if character is specified)
-      if (dialogue.character_id) {
-        const { data: characterCheck, error: characterError } = await supabase
-          .from('characters')
-          .select(`
-            character_id,
-            world_id,
-            worlds!inner(user_id)
-          `)
-          .eq('character_id', dialogue.character_id)
-          .single();
-
-        if (characterError) {
-          console.error('Character check error:', characterError);
-          toast.error('Cannot verify character ownership');
-          return;
-        }
-
-        console.log('Character ownership check:', characterCheck);
-      }
-
       // Perform the update
       const { data, error } = await supabase
         .from('dialogues')
@@ -323,27 +260,14 @@ const DialogueManagement: React.FC = () => {
         .single();
 
       if (error) {
-        console.error('Supabase update error:', error);
-        console.error('Error details:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code
-        });
+        console.error('Error updating dialogue:', error);
         
-        // Check if it's a permission error
-        if (error && typeof error === 'object' && 'code' in error && 'message' in error) {
-          if (error.code === '42501' || (typeof error.message === 'string' && error.message.includes('permission')) || (typeof error.message === 'string' && error.message.includes('policy'))) {
-            toast.error('Permission denied. You can only update dialogues in your own worlds.');
-          } else if (error.code === '23503') {
-            toast.error('Invalid reference. The scene or character does not exist.');
-          } else if (error.code === '23514') {
-            toast.error('Validation error. Please check the data being updated.');
-          } else {
-            toast.error(`Update failed: ${typeof error.message === 'string' ? error.message : 'Unknown error'}`);
-          }
+        if (error.code === '23503') {
+          toast.error('Invalid reference. The scene or character does not exist.');
+        } else if (error.code === '23514') {
+          toast.error('Validation error. Please check the data being updated.');
         } else {
-          toast.error('Update failed: Unknown error');
+          toast.error(`Update failed: ${error.message || 'Unknown error'}`);
         }
         
         throw error;
@@ -359,62 +283,7 @@ const DialogueManagement: React.FC = () => {
       }
     } catch (error) {
       console.error('Error updating dialogue:', error);
-      
-      // If it's a permission error, try a different approach
-      if (error && typeof error === 'object' && 'message' in error && 
-          typeof error.message === 'string' && 
-          (error.message.includes('permission') || error.message.includes('policy'))) {
-        console.log('Permission error detected, trying alternative approach...');
-        
-        try {
-          // Try to delete and recreate the dialogue
-          const { error: deleteError } = await supabase
-            .from('dialogues')
-            .delete()
-            .eq('dialogue_id', dialogue.dialogue_id);
-          
-          if (deleteError) {
-            console.error('Delete error:', deleteError);
-            toast.error('Cannot update dialogue due to permission restrictions');
-            return;
-          }
-          
-          // Create new dialogue with updated data
-          const { data: newDialogue, error: createError } = await supabase
-            .from('dialogues')
-            .insert([{
-              scene_id: dialogue.scene_id,
-              character_id: dialogue.character_id || null,
-              content: dialogue.content,
-              delivery_type: dialogue.delivery_type,
-              sequence: dialogue.sequence,
-              sentiment_score: dialogue.sentiment_score || null
-            }])
-            .select()
-            .single();
-          
-          if (createError) {
-            console.error('Create error:', createError);
-            toast.error('Failed to recreate dialogue');
-            return;
-          }
-          
-          if (newDialogue) {
-            // Update the local state
-            setDialogues(prev => prev.map(d => 
-              d.dialogue_id === dialogue.dialogue_id 
-                ? { ...d, ...newDialogue, dialogue_id: newDialogue.dialogue_id }
-                : d
-            ));
-            toast.success('Dialogue updated successfully (recreated)');
-          }
-        } catch (fallbackError) {
-          console.error('Fallback approach failed:', fallbackError);
-          toast.error('Failed to update dialogue');
-        }
-      } else {
-        toast.error('Failed to update dialogue');
-      }
+      toast.error('Failed to update dialogue');
     }
   };
 
