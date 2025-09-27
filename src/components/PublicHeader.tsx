@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe } from 'lucide-react';
+import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe, Flame, Monitor, Key } from 'lucide-react';
 import logoImage from '/logo.jpg';
+import { useResponsive } from '../hooks/useResponsive';
 
 const PublicHeader: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isDesktop } = useResponsive(1200);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
@@ -18,6 +20,13 @@ const PublicHeader: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Close mobile menu when switching to desktop
+  useEffect(() => {
+    if (isDesktop) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [isDesktop]);
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -41,6 +50,9 @@ const PublicHeader: React.FC = () => {
     { name: 'Blog', href: '/blog', icon: PenSquare },
     { name: 'About', href: '/about', icon: Info },
     { name: 'Moscowvitz', href: '/wiki/moscowvitz', icon: Globe },
+    { name: 'Sign In', href: '/login', icon: Key },
+    { name: 'Get Started', href: '/signup', icon: Flame },
+    { name: 'Admin', href: '/admin/login', icon: Monitor },
   ];
 
   return (
@@ -61,50 +73,35 @@ const PublicHeader: React.FC = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-6">
-          {navigationLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.href}
-              onClick={closeMobileMenu}
-              className={location.pathname === link.href ? 'active' : ''}
-            >
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-4 py-2 text-white/80 hover:text-blue-400 smooth-transition"
+        <div className={`${isDesktop ? 'flex' : 'hidden'} items-center space-x-6`}>
+          {navigationLinks.map((link) => {
+            // Different styling for action buttons
+            const isActionButton = ['Sign In', 'Get Started', 'Admin'].includes(link.name);
+            const buttonClass = isActionButton 
+              ? link.name === 'Get Started' 
+                ? 'px-4 py-2 text-green-500 smooth-transition'
+                : link.name === 'Admin'
+                ? 'px-4 py-2 text-red-400 smooth-transition'
+                : 'px-4 py-2 text-blue-400  smooth-transition'
+              : 'px-4 py-2 text-white/80 smooth-transition';
+
+            return (
+              <Link
+                key={link.name}
+                to={link.href}
+                onClick={closeMobileMenu}
+                className={location.pathname === link.href ? 'active' : ''}
               >
-                {link.name}
-              </motion.button>
-            </Link>
-          ))}
-          <Link to="/login" className={location.pathname === '/login' ? 'active' : ''}>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 text-white/80 hover:text-blue-400 smooth-transition"
-            >
-              Sign In
-            </motion.button>
-          </Link>
-          <Link to="/signup" className={location.pathname === '/signup' ? 'active' : ''}>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 text-purple-500 hover:text-blue-400 smooth-transition"
-            >
-              Get Started
-            </motion.button>
-          </Link>
-          <Link to="/admin/login" className={location.pathname === '/admin/login' ? 'active' : ''}>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 text-red-400 hover:text-blue-400 smooth-transition"
-            >
-              Admin
-            </motion.button>
-          </Link>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={buttonClass}
+                >
+                  {link.name}
+                </motion.button>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -112,7 +109,7 @@ const PublicHeader: React.FC = () => {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2 rounded-xl bg-black/40 text-white font-medium shadow-lg hover:shadow-xl hover:shadow-white/10 smooth-transition"
+          className={`${!isDesktop ? 'block' : 'hidden'} p-2 rounded-xl bg-black/40 text-white font-medium shadow-lg hover:shadow-xl hover:shadow-white/10 smooth-transition`}
           aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
           <motion.div
@@ -126,14 +123,14 @@ const PublicHeader: React.FC = () => {
 
       {/* Mobile Menu Sidebar */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {!isDesktop && isMobileMenuOpen && (
           <motion.div
             ref={mobileMenuRef}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="md:hidden fixed top-0 right-0 h-screen w-64 bg-black/95 backdrop-blur-xl p-6 z-60 shadow-2xl shadow-black/50"
+            className="fixed top-0 right-0 h-screen w-64 bg-black/95 backdrop-blur-xl p-6 z-60 shadow-2xl shadow-black/50"
           >
             <button
               onClick={closeMobileMenu}
@@ -143,52 +140,36 @@ const PublicHeader: React.FC = () => {
               <X size={24} />
             </button>
             <div className="mt-12 space-y-2">
-              {navigationLinks.map((link, index) => (
-                <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.4 }}
-                >
-                  <Link to={link.href} onClick={closeMobileMenu} className={location.pathname === link.href ? 'active' : ''}>
-                    <motion.button
-                      whileHover={{ scale: 1.05, y: -2 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl bg-black/70 hover:bg-white/20 hover:text-blue-400 hover:shadow-lg hover:shadow-white/30 smooth-transition text-white font-bold"
-                    >
-                      <link.icon size={18} className="text-white/80" />
-                      <span className="text-base font-bold">{link.name}</span>
-                    </motion.button>
-                  </Link>
-                </motion.div>
-              ))}
-              <Link to="/login" onClick={closeMobileMenu} className={location.pathname === '/login' ? 'active' : ''}>
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full flex items-center justify-start p-2.5 rounded-xl bg-black/50 hover:bg-white/20 hover:text-blue-400 hover:shadow-lg hover:shadow-white/20 smooth-transition text-white font-semibold"
-                >
-                  <span className="text-base font-semibold">Sign In</span>
-                </motion.button>
-              </Link>
-              <Link to="/signup" onClick={closeMobileMenu} className={location.pathname === '/signup' ? 'active' : ''}>
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full flex items-center justify-start p-2.5 rounded-xl hover:bg-purple-500/20 hover:text-blue-400 hover:shadow-lg hover:shadow-purple-500/30 smooth-transition text-purple-500 font-bold"
-                >
-                  <span className="text-base font-bold">Get Started</span>
-                </motion.button>
-              </Link>
-              <Link to="/admin/login" onClick={closeMobileMenu} className={location.pathname === '/admin/login' ? 'active' : ''}>
-                <motion.button
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full flex items-center justify-start p-2.5 rounded-xl hover:bg-red-500/20 hover:text-blue-400 hover:shadow-lg hover:shadow-red-500/30 smooth-transition text-red-400 font-semibold"
-                >
-                  <span className="text-base font-semibold">Admin</span>
-                </motion.button>
-              </Link>
+              {navigationLinks.map((link, index) => {
+                const isActionButton = ['Sign In', 'Get Started', 'Admin'].includes(link.name);
+                const buttonClass = isActionButton 
+                  ? link.name === 'Get Started' 
+                    ? 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-green-500 font-bold'
+                    : link.name === 'Admin'
+                    ? 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-red-400 font-semibold'
+                    : 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-blue-400 font-semibold'
+                  : 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl bg-black/70 text-white font-bold';
+
+                return (
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1, duration: 0.4 }}
+                  >
+                    <Link to={link.href} onClick={closeMobileMenu} className={location.pathname === link.href ? 'active' : ''}>
+                      <motion.button
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        className={buttonClass}
+                      >
+                        {link.icon && <link.icon size={18} className="text-white/80" />}
+                        <span className="text-base font-bold">{link.name}</span>
+                      </motion.button>
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}

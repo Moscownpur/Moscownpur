@@ -1,40 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from './Navbar';
+import { Menu, X, Home } from 'lucide-react';
 import Sidebar from './Sidebar';
+import { useResponsive } from '../hooks/useResponsive';
+import logoImage from '/logo.jpg';
 
 const Layout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isDesktop } = useResponsive(1200);
 
-  // Close sidebar on desktop
+  // Close sidebar when switching to desktop
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsSidebarOpen(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    if (isDesktop) {
+      setIsSidebarOpen(false);
+    }
+  }, [isDesktop]);
 
   return (
     <div className="flex h-screen bg-black overflow-hidden">
       {/* Desktop Sidebar */}
-      <div className="hidden md:block">
-        <Sidebar />
-      </div>
+      {isDesktop && (
+        <div>
+          <Sidebar />
+        </div>
+      )}
 
       {/* Mobile Sidebar Overlay */}
       <AnimatePresence>
-        {isSidebarOpen && (
+        {!isDesktop && isSidebarOpen && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              className="fixed inset-0 bg-black/50 z-40"
               onClick={() => setIsSidebarOpen(false)}
             />
             <motion.div
@@ -42,7 +42,7 @@ const Layout: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: -300 }}
               transition={{ type: 'tween', duration: 0.3 }}
-              className="fixed left-0 top-0 h-full w-72 z-50 md:hidden"
+              className="fixed left-0 top-0 h-full w-72 z-50"
             >
               <Sidebar />
             </motion.div>
@@ -51,8 +51,52 @@ const Layout: React.FC = () => {
       </AnimatePresence>
 
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Navbar onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
-        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+        {/* Minimal Header */}
+        <motion.header 
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="glass-navbar px-4 md:px-8 py-4 flex items-center justify-between"
+        >
+          <Link to="/" className="flex items-center space-x-2">
+            <img src={logoImage} alt="Moscownpur Logo" className="w-12 h-12 rounded-lg shadow-lg" />
+            <h1 className="text-lg font-bold gradient-text-cosmic text-white">
+              Moscownpur
+            </h1>
+          </Link>
+
+          <div className="flex items-center space-x-4">
+            {/* Home Button */}
+            <Link to="/">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center space-x-2 px-4 py-2 rounded-xl glass-card hover:soft-glow smooth-transition"
+              >
+                <Home size={20} className="gradient-text-cosmic" />
+                <span className="gradient-text-cosmic font-medium">Home</span>
+              </motion.button>
+            </Link>
+
+            {/* Mobile Hamburger Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className={`${!isDesktop ? 'block' : 'hidden'} p-2 rounded-xl bg-black/40 text-white font-medium shadow-lg hover:shadow-xl hover:shadow-white/10 smooth-transition`}
+              aria-label={isSidebarOpen ? 'Close menu' : 'Open menu'}
+            >
+              <motion.div
+                animate={{ rotate: isSidebarOpen ? 45 : 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+              >
+                {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+              </motion.div>
+            </motion.button>
+          </div>
+        </motion.header>
+
+        <main className="flex-1 overflow-y-auto p-4" style={{ paddingRight: isDesktop ? '2rem' : '1rem', paddingLeft: isDesktop ? '2rem' : '1rem' }}>
           <Outlet />
         </main>
       </div>

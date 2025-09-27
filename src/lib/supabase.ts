@@ -289,6 +289,77 @@ export type Database = {
         Insert: Omit<Database['public']['Tables']['context_templates']['Row'], 'id' | 'created_at' | 'updated_at'>;
         Update: Partial<Database['public']['Tables']['context_templates']['Insert']>;
       };
+      profiles: {
+        Row: {
+          id: string;
+          email: string | null;
+          full_name: string | null;
+          username: string | null;
+          avatar_url: string | null;
+          tagline: string | null;
+          bio: string | null;
+          display_name: string | null;
+          xp_score: number;
+          followers_count: number;
+          following_count: number;
+          invite_code: string | null;
+          invite_count: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['profiles']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['profiles']['Insert']>;
+      };
+      badge_catalog: {
+        Row: {
+          id: string;
+          category: string;
+          rarity: string | null;
+          name: string;
+          description: string;
+          points: number;
+          xp_reward: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['badge_catalog']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['badge_catalog']['Insert']>;
+      };
+      user_badges: {
+        Row: {
+          id: string;
+          user_id: string;
+          badge_id: string;
+          earned_at: string;
+          created_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['user_badges']['Row'], 'id' | 'created_at'>;
+        Update: Partial<Database['public']['Tables']['user_badges']['Insert']>;
+      };
+      invite_connections: {
+        Row: {
+          id: string;
+          inviter_user_id: string;
+          invitee_user_id: string;
+          status: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['invite_connections']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['invite_connections']['Insert']>;
+      };
+      invite_codes: {
+        Row: {
+          id: string;
+          user_id: string;
+          code: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Omit<Database['public']['Tables']['invite_codes']['Row'], 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Database['public']['Tables']['invite_codes']['Insert']>;
+      };
     };
   };
 };
