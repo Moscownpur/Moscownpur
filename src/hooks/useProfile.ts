@@ -63,15 +63,15 @@ export const useProfile = (username: string): UseProfileResult => {
       const [worldsResult, charactersResult, scenesResult, eventsResult] = await Promise.all([
         supabase
           .from('worlds')
-          .select('id', { count: 'exact' })
-          .eq('created_by', profileData.id),
+          .select('world_id', { count: 'exact' })
+          .eq('user_id', profileData.id),
         supabase
           .from('characters')
-          .select('id', { count: 'exact' })
+          .select('character_id', { count: 'exact' })
           .eq('created_by', profileData.id),
         supabase
           .from('scenes')
-          .select('id', { count: 'exact' })
+          .select('scene_id', { count: 'exact' })
           .eq('created_by', profileData.id),
         supabase
           .from('timeline_events')
