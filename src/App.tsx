@@ -46,6 +46,7 @@ const DialogueDemo = lazy(() => import('./pages/DialogueDemo'));
 const DialogueManagement = lazy(() => import('./pages/DialogueManagement'));
 const MoscowvitzWiki = lazy(() => import('./pages/MoscowvitzWiki'));
 const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const ShadCNTest = lazy(() => import('./pages/ShadCNTest'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Component to handle SEO updates
@@ -88,6 +89,7 @@ function App() {
                     <Route path="/dialogue-demo" element={<DialogueDemo />} />
                     <Route path="/wiki/moscowvitz" element={<MoscowvitzWiki />} />
                     <Route path="/profile/:username" element={<ProfilePage />} />
+                    <Route path="/shadcn-test" element={<ShadCNTest />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
