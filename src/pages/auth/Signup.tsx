@@ -166,7 +166,7 @@ const Signup: React.FC = () => {
           </p>
           
           <div className="p-3 glass-card rounded-xl">
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-white">
               After signing up, you'll receive a confirmation email. Please check your inbox and confirm your account before signing in.
             </p>
           </div>
