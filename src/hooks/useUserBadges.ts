@@ -58,6 +58,11 @@ export const useUserBadges = (userId?: string) => {
   };
 
   useEffect(() => {
+    // Reset state when target user ID changes
+    setBadges([]);
+    setError(null);
+    setLoading(true);
+    
     if (targetUserId) {
       fetchUserBadges();
     }

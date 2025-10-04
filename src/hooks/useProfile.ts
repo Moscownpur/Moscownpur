@@ -186,6 +186,12 @@ export const useProfile = (username: string): UseProfileResult => {
   };
 
   useEffect(() => {
+    // Reset state when username changes
+    setProfile(null);
+    setStats(null);
+    setError(null);
+    setLoading(true);
+    
     fetchProfile();
   }, [username]);
 
