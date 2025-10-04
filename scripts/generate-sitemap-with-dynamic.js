@@ -79,7 +79,7 @@ async function fetchDynamicRoutes() {
   try {
     // Initialize Supabase client
     const supabaseUrl = process.env.VITE_SUPABASE_URL;
-    const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+    const supabaseKey = process.env.VITE_SUPABASE_PUBLISHABLE_DEFAULT_KEY || process.env.VITE_SUPABASE_ANON_KEY;
     
     if (!supabaseUrl || !supabaseKey) {
       console.log('⚠️  Supabase credentials not found. Skipping database routes.');
