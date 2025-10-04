@@ -108,7 +108,7 @@ const Pricing: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/pricing" />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-background text-foreground dark">
         <PublicHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Hero Section */}
@@ -116,7 +116,7 @@ const Pricing: React.FC = () => {
             <h1 className="text-display mb-6">
               <span className="gradient-text-cosmic">Free for Early Birds</span>
             </h1>
-            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-subheading text-muted-foreground mb-8 max-w-3xl mx-auto">
               Join us as an early bird and get unlimited access to all premium features completely free. 
               This is our way of thanking early adopters who believe in our vision.
             </p>
