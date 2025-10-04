@@ -1,12 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 
 const ShadCNTest: React.FC = () => {
+  const [isDark, setIsDark] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    if (!isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-4">
+          <div className="flex justify-between items-center">
+            <div></div>
+            <Button 
+              onClick={toggleTheme}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              {isDark ? '☀️' : '🌙'} {isDark ? 'Light Mode' : 'Dark Mode'}
+            </Button>
+          </div>
           <h1 className="text-4xl font-bold text-foreground">ShadCN UI Test Page</h1>
           <p className="text-muted-foreground text-lg">
             Testing ShadCN components with CSS variables and oklch colors
@@ -121,14 +142,14 @@ const ShadCNTest: React.FC = () => {
           </div>
         </section>
 
-        {/* Dark Mode Test */}
+        {/* Theme Test */}
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold text-foreground">Theme Test</h2>
           <Card>
             <CardHeader>
-              <CardTitle>Theme Variables</CardTitle>
+              <CardTitle>Current Theme Variables</CardTitle>
               <CardDescription>
-                This section tests the CSS variables and theme switching.
+                These colors change dynamically when you toggle the theme. Current mode: <span className="font-semibold text-primary">{isDark ? 'Dark' : 'Light'}</span>
               </CardDescription>
             </CardHeader>
             <CardContent>
