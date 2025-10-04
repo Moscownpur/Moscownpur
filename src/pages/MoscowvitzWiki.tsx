@@ -117,7 +117,7 @@ const MoscowvitzWiki: React.FC = () => {
                     className="mb-8"
                   >
                     <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
-                      <span className="gradient-text-cosmic">Moscowvitz</span>
+                      <span className="gradient-text-cosmic">Hemraj Moscowvitz 'Miraj'</span>
                     </h1>
                     <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed mb-6">
                       The Official Mascot of Moscownpur
@@ -149,7 +149,7 @@ const MoscowvitzWiki: React.FC = () => {
                     <div className="glass-card rounded-3xl p-8 shadow-2xl">
                       <img 
                         src="/Moscowvitz.png" 
-                        alt="Moscowvitz - The mystical mascot of Moscownpur, a wise owl-like creature with shimmering feathers and an inspiring aura"
+                        alt="Miraj - The mystical mascot of Moscownpur, a wise owl-like creature with shimmering feathers and an inspiring aura"
                         className="w-full max-w-md mx-auto"
                       />
                     </div>
@@ -171,7 +171,7 @@ const MoscowvitzWiki: React.FC = () => {
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
-                  Discover Moscowvitz
+                  Discover Miraj
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                   Explore the comprehensive details about our beloved mascot and learn 
@@ -220,13 +220,13 @@ const MoscowvitzWiki: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                   <div className="space-y-6">
                     <p className="text-lg text-white/80 leading-relaxed">
-                      In the Realm of Forgotten Whispers, where every character ever imagined is born, Moscowvitz 
+                      In the Realm of Forgotten Whispers, where every character ever imagined is born, Hemraj Moscowvitz 
                       serves as the guardian king of Moscownpur. As a protector forged of imagination's purest flame, 
                       he stands against the Demon Dragon of Forgetting and the Pixel Demon, ensuring no creation 
                       shall fade unguarded and no tale shall vanish unloved.
                     </p>
                     <p className="text-lg text-white/80 leading-relaxed">
-                      Clad in stories and wielding the Banner of Memory, Moscowvitz defends the realm where heroes 
+                      Clad in stories and wielding the Banner of Memory, Miraj defends the realm where heroes 
                       of bedtime stories, villains from late-night doodles, and sidekicks no one bothered to finish 
                       find sanctuary from the fickle memory of humans.
                     </p>
@@ -289,7 +289,7 @@ const MoscowvitzWiki: React.FC = () => {
                   Lore & History
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                  The fascinating origin story and cultural context behind Moscowvitz's creation
+                  The fascinating origin story and cultural context behind Miraj's creation
                 </p>
               </div>
 
@@ -333,9 +333,9 @@ const MoscowvitzWiki: React.FC = () => {
                   </h3>
                   <p className="text-white/80 leading-relaxed">
                     When the Demon Dragon's shadow threatened to consume all, there arose a guardian from within 
-                    the Vitz lineage: Moscowvitz. No citadel, no splinter faction—he was a king forged of imagination's 
+                    the Vitz lineage: Miraj. No citadel, no splinter faction—he was a king forged of imagination's 
                     purest flame, sworn to guard the realm of Moscownpur. Clad in stories, wielding the Banner of Memory, 
-                    Moscowvitz stands as the protector of all characters.
+                    Miraj stands as the protector of all characters.
                   </p>
                 </div>
               </div>
@@ -362,7 +362,7 @@ const MoscowvitzWiki: React.FC = () => {
                   <div className="space-y-6">
                     <h3 className="text-2xl font-bold text-white mb-4">Physical Description</h3>
                     <p className="text-lg text-white/80 leading-relaxed">
-                      Moscowvitz is a cool, confident, and slightly rugged anthropomorphic snow leopard. He has 
+                      Miraj is a cool, confident, and slightly rugged anthropomorphic snow leopard. He has 
                       primarily white fur with dark grey/black spots, bright captivating blue eyes, and a charming 
                       pink nose. He wears a black bomber jacket with a fur-lined collar, black trousers, a crisp 
                       white shirt, and a large black Ushanka hat with earflaps.
@@ -412,7 +412,7 @@ const MoscowvitzWiki: React.FC = () => {
                     <div className="glass-card rounded-2xl p-8">
                       <img 
                         src="/Moscowvitz.png" 
-                        alt="Moscowvitz character design showing distinctive appearance and mystical aura"
+                        alt="Miraj character design showing distinctive appearance and mystical aura"
                         className="w-full max-w-sm mx-auto mb-4"
                       />
                       <p className="text-white/60 text-sm">
@@ -628,7 +628,7 @@ const MoscowvitzWiki: React.FC = () => {
                   Meet Moscowvitz in Action
                 </h2>
                 <p className="text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-                  Experience Moscowvitz as your creative companion. Start building your 
+                  Experience Miraj as your creative companion. Start building your 
                   fictional universe today and let our mystical guide help you along the way.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
