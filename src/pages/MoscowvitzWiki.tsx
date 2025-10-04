@@ -87,7 +87,7 @@ const MoscowvitzWiki: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/wiki/moscowvitz" />
       </Helmet>
 
-      <div className="min-h-screen bg-background text-foreground overflow-hidden">
+      <div className="min-h-screen bg-background text-foreground overflow-hidden dark">
         {/* Background Effects */}
         <div className="fixed inset-0 bg-background" />
         
@@ -173,7 +173,7 @@ const MoscowvitzWiki: React.FC = () => {
                 <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
                   Discover Moscowvitz
                 </h2>
-                <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                   Explore the comprehensive details about our beloved mascot and learn 
                   about the character that guides creators in their universe-building journey.
                 </p>
@@ -192,10 +192,10 @@ const MoscowvitzWiki: React.FC = () => {
                     <div className={`p-4 rounded-2xl bg-gradient-to-r ${feature.gradient} mb-6 w-fit`}>
                       <feature.icon className="w-8 h-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-bold text-white mb-4">
+                    <h3 className="text-xl font-bold text-foreground mb-4">
                       {feature.title}
                     </h3>
-                    <p className="text-white/70 leading-relaxed">
+                    <p className="text-muted-foreground leading-relaxed">
                       {feature.description}
                     </p>
                   </motion.div>
@@ -288,7 +288,7 @@ const MoscowvitzWiki: React.FC = () => {
                 <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
                   Lore & History
                 </h2>
-                <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                   The fascinating origin story and cultural context behind Moscowvitz's creation
                 </p>
               </div>
@@ -353,7 +353,7 @@ const MoscowvitzWiki: React.FC = () => {
                   <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
                     Appearance & Design
                   </h2>
-                  <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                  <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                     Discover the mystical design and distinctive features that make Moscowvitz unique
                   </p>
                 </div>
@@ -436,7 +436,7 @@ const MoscowvitzWiki: React.FC = () => {
                 <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
                   Traits & Role
                 </h2>
-                <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                   Understanding the personality traits and platform functions that define Moscowvitz
                 </p>
               </div>
@@ -511,7 +511,7 @@ const MoscowvitzWiki: React.FC = () => {
                 <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
                   Media Gallery
                 </h2>
-                <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                   Visual representations and artwork featuring Moscowvitz
                 </p>
               </div>
@@ -560,7 +560,7 @@ const MoscowvitzWiki: React.FC = () => {
                   <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-6">
                     Trivia & Fun Facts
                   </h2>
-                  <p className="text-xl text-white/70 max-w-2xl mx-auto">
+                  <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                     Discover the hidden details and development quirks behind Moscowvitz
                   </p>
                 </div>
