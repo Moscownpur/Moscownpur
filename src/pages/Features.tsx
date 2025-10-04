@@ -112,7 +112,7 @@ const Features: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/features" />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-background text-foreground dark">
         <PublicHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Hero Section */}
@@ -120,7 +120,7 @@ const Features: React.FC = () => {
             <h1 className="text-display mb-6">
               Powerful Features for <span className="gradient-text-cosmic">Universe Creation</span>
             </h1>
-            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-subheading text-muted-foreground mb-8 max-w-3xl mx-auto">
               Everything you need to build, manage, and explore fictional universes. 
               From world building to character development, our comprehensive platform 
               empowers creators to bring their stories to life.
@@ -153,7 +153,7 @@ const Features: React.FC = () => {
                     </span>
                   </div>
                 </div>
-                <p className="text-body text-gray-400">{feature.description}</p>
+                <p className="text-body text-muted-foreground">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -168,7 +168,7 @@ const Features: React.FC = () => {
                     {benefit.icon}
                   </div>
                   <h5 className="text-subheading mb-3">{benefit.title}</h5>
-                  <p className="text-body text-gray-400">{benefit.description}</p>
+                  <p className="text-body text-muted-foreground">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -178,14 +178,14 @@ const Features: React.FC = () => {
           <div className="text-center">
             <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic">
               <h3 className="text-heading mb-6">Ready to Start Building Your Universe?</h3>
-              <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
+              <p className="text-subheading text-foreground mb-8 max-w-2xl mx-auto">
                 Join thousands of creators who trust MosCownpur for their world building needs.
               </p>
               <div className="flex justify-center gap-4 flex-wrap">
-                <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                <a href="/signup" className="glass-card text-foreground px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
                   Get Started Free
                 </a>
-                <a href="/" className="glass-card border border-white text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
+                <a href="/" className="glass-card border border-border text-foreground px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
                   Learn More
                 </a>
               </div>

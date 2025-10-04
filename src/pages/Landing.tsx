@@ -62,10 +62,9 @@ const Landing: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white overflow-hidden">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20" />
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
+        <div className="min-h-screen bg-background text-foreground overflow-hidden dark">
+          {/* Background Effects */}
+          <div className="fixed inset-0 bg-background" />
       
       <motion.div 
         variants={containerVariants}
@@ -119,9 +118,9 @@ const Landing: React.FC = () => {
               <h2 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
                 <span className="gradient-text-cosmic">Create Your Own</span>
                 <br />
-                <span className="text-white">Fictional Cinematic Universe</span>
+                <span className="text-foreground">Fictional Cinematic Universe</span>
               </h2>
-              <p className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
                 The ultimate platform for worldbuilders, storytellers, and creators. 
                 Design universes, craft characters, and chronicle epic tales.
               </p>
@@ -148,7 +147,7 @@ const Landing: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-10 py-5 glass-card text-white/90 hover:text-white text-lg font-semibold rounded-2xl hover:soft-glow smooth-transition"
+                  className="px-10 py-5 glass-card text-foreground/90 hover:text-foreground text-lg font-semibold rounded-2xl hover:soft-glow smooth-transition"
                 >
                   Sign In
                 </motion.button>
@@ -173,11 +172,11 @@ const Landing: React.FC = () => {
                   whileHover={{ scale: 1.05, y: -4 }}
                   className="glass-card rounded-2xl p-6 text-center hover:soft-glow smooth-transition"
                 >
-                  <stat.icon className="w-8 h-8 text-white/80 mx-auto mb-3" />
+                  <stat.icon className="w-8 h-8 text-foreground/80 mx-auto mb-3" />
                   <div className="text-2xl font-bold gradient-text-cosmic mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-white/60 text-sm">
+                  <div className="text-muted-foreground text-sm">
                     {stat.label}
                   </div>
                 </motion.div>
@@ -472,7 +471,7 @@ const Landing: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-10 py-5 glass-card text-white/90 hover:text-white text-lg font-semibold rounded-2xl hover:soft-glow smooth-transition"
+                    className="px-10 py-5 glass-card text-foreground/90 hover:text-foreground text-lg font-semibold rounded-2xl hover:soft-glow smooth-transition"
                   >
                     Sign In
                   </motion.button>

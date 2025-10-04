@@ -7,8 +7,10 @@ import { useResponsive } from '../hooks/useResponsive';
 
 const PublicHeader: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const { isDesktop } = useResponsive(1200);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -38,6 +40,23 @@ const PublicHeader: React.FC = () => {
     return () => document.removeEventListener('keydown', handleEscKey);
   }, [isMobileMenuOpen]);
 
+  // Sticky header effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (headerRef.current) {
+        const sticky = headerRef.current.offsetTop;
+        if (window.pageYOffset > sticky) {
+          setIsSticky(true);
+        } else {
+          setIsSticky(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
@@ -57,10 +76,15 @@ const PublicHeader: React.FC = () => {
 
   return (
     <motion.header 
+      ref={headerRef}
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="glass-navbar px-4 md:px-8 py-4 fixed top-0 left-0 right-0 z-50"
+      className={`glass-navbar px-4 md:px-8 py-4 z-50 transition-all duration-300 ${
+        isSticky 
+          ? 'fixed top-0 left-0 right-0' 
+          : 'relative'
+      }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">

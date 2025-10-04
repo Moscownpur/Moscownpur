@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
+import path from "path"
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -73,5 +74,10 @@ export default defineConfig({
   },
   esbuild: {
     drop: ['console', 'debugger'], // Remove console and debugger in production
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
 });

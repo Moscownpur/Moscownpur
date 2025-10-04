@@ -84,7 +84,7 @@ const Blog: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/blog" />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-background text-foreground dark">
         <PublicHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Hero Section */}
@@ -92,7 +92,7 @@ const Blog: React.FC = () => {
             <h1 className="text-display mb-6">
               Creative Writing <span className="gradient-text-cosmic">Blog</span>
             </h1>
-            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-subheading text-muted-foreground mb-8 max-w-3xl mx-auto">
               Expert tips, tutorials, and resources for world building, character development, 
               and creative writing. Learn from professional authors and enhance your storytelling skills.
             </p>
