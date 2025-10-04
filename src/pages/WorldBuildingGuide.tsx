@@ -135,7 +135,7 @@ const WorldBuildingGuide: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/world-building-guide" />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white">
+      <div className="min-h-screen bg-background text-foreground dark">
         <PublicHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Hero Section */}
@@ -143,7 +143,7 @@ const WorldBuildingGuide: React.FC = () => {
             <h1 className="text-display mb-6">
               Complete <span className="gradient-text-cosmic">World Building Guide</span>
             </h1>
-            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-subheading text-muted-foreground mb-8 max-w-3xl mx-auto">
               Master the art of creating immersive fictional universes. This comprehensive guide 
               will teach you everything you need to know about world building, from basic concepts 
               to advanced techniques used by professional authors and game designers.
