@@ -75,7 +75,7 @@
     --tracking-normal: 0em;
   }
   .dark {
-    --background: oklch(0.2244 0.0074 67.4370);
+    --background: oklch(0 0 0);
     --foreground: oklch(0.9288 0.0126 255.5078);
     --card: oklch(0.2801 0.0080 59.3379);
     --card-foreground: oklch(0.9288 0.0126 255.5078);
