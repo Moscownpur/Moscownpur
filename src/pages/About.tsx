@@ -74,7 +74,7 @@ const About: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/about" />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white">
+          <div className="min-h-screen bg-background text-foreground dark">
         <PublicHeader />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           {/* Hero Section */}
@@ -82,7 +82,7 @@ const About: React.FC = () => {
             <h1 className="text-display mb-6">
               About <span className="gradient-text-cosmic">MosCownpur</span>
             </h1>
-            <p className="text-subheading text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-subheading text-muted-foreground mb-8 max-w-3xl mx-auto">
               We're a team of passionate creators, developers, and storytellers dedicated to 
               building the world's most powerful platform for fictional universe creation and management.
             </p>
@@ -100,12 +100,12 @@ const About: React.FC = () => {
               <div className="grid lg:grid-cols-3 gap-8 items-center">
                 <div className="lg:col-span-2">
                   <h2 className="text-heading mb-6 gradient-text-blue">Our Mission</h2>
-                  <p className="text-subheading text-gray-300 mb-6">
+                  <p className="text-subheading text-muted-foreground mb-6">
                     To empower creators worldwide with the most comprehensive and intuitive tools 
                     for building, managing, and exploring fictional universes. We believe that every 
                     story deserves a rich, detailed world to call home.
                   </p>
-                  <p className="text-body text-gray-400 mb-8">
+                  <p className="text-body text-muted-foreground mb-8">
                     Whether you're writing a novel, creating a game, or developing a screenplay, 
                     MosCownpur provides the foundation you need to bring your creative vision to life. 
                     Our platform combines cutting-edge technology with deep understanding of the 

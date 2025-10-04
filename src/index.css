@@ -9,15 +9,15 @@
   }
 
   body {
-    background: #000000;
-    color: #ffffff;
+    background: var(--background);
+    color: var(--foreground);
     font-weight: 400;
     line-height: 1.6;
     letter-spacing: var(--tracking-normal);
   }
 
   html {
-    background: #000000;
+    background: var(--background);
   }
   :root {
     --radius: 0.9rem;

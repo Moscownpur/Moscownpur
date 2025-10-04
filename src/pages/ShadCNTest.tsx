@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 
 const ShadCNTest: React.FC = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
 
   const toggleTheme = () => {
     setIsDark(!isDark);
-    if (!isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
+    if (isDark) {
       document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
     }
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-8">
+        <div className="min-h-screen bg-background text-foreground p-8 dark">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-4">
           <div className="flex justify-between items-center">

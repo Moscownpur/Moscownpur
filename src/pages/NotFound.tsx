@@ -4,7 +4,7 @@ import { Home, ArrowLeft, Search } from 'lucide-react';
 
 const NotFound: React.FC = () => {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+        <div className="min-h-screen bg-background flex items-center justify-center px-4 dark">
       <div className="max-w-md w-full text-center">
         {/* 404 Animation */}
         <div className="mb-8">
@@ -16,10 +16,10 @@ const NotFound: React.FC = () => {
 
         {/* Error Message */}
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-4">
+          <h1 className="text-2xl font-bold text-foreground mb-4">
             Page Not Found
           </h1>
-          <p className="text-gray-400 text-lg leading-relaxed">
+          <p className="text-muted-foreground text-lg leading-relaxed">
             Oops! The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
           </p>
         </div>
@@ -28,7 +28,7 @@ const NotFound: React.FC = () => {
         <div className="space-y-4">
           <Link
             to="/"
-            className="inline-flex items-center justify-center w-full px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="inline-flex items-center justify-center w-full px-6 py-3 bg-primary text-primary-foreground font-semibold rounded-lg hover:bg-primary/90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             <Home className="w-5 h-5 mr-2" />
             Go Home
@@ -36,7 +36,7 @@ const NotFound: React.FC = () => {
           
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center justify-center w-full px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-700 transition-all duration-300 border border-gray-700 hover:border-gray-600"
+            className="inline-flex items-center justify-center w-full px-6 py-3 bg-secondary text-secondary-foreground font-semibold rounded-lg hover:bg-secondary/80 transition-all duration-300 border border-border"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Go Back
@@ -45,29 +45,29 @@ const NotFound: React.FC = () => {
 
         {/* Helpful Links */}
         <div className="mt-12">
-          <p className="text-gray-500 text-sm mb-4">Or try one of these popular pages:</p>
+          <p className="text-muted-foreground text-sm mb-4">Or try one of these popular pages:</p>
           <div className="grid grid-cols-2 gap-3">
             <Link
               to="/features"
-              className="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors duration-200 text-sm"
+              className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 hover:text-foreground transition-colors duration-200 text-sm"
             >
               Features
             </Link>
             <Link
               to="/pricing"
-              className="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors duration-200 text-sm"
+              className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 hover:text-foreground transition-colors duration-200 text-sm"
             >
               Pricing
             </Link>
             <Link
               to="/blog"
-              className="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors duration-200 text-sm"
+              className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 hover:text-foreground transition-colors duration-200 text-sm"
             >
               Blog
             </Link>
             <Link
               to="/about"
-              className="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg hover:bg-gray-700 hover:text-white transition-colors duration-200 text-sm"
+              className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 hover:text-foreground transition-colors duration-200 text-sm"
             >
               About
             </Link>
@@ -75,12 +75,12 @@ const NotFound: React.FC = () => {
         </div>
 
         {/* Search Suggestion */}
-        <div className="mt-8 p-4 bg-gray-900 rounded-lg border border-gray-800">
-          <div className="flex items-center text-gray-400 text-sm mb-2">
+        <div className="mt-8 p-4 bg-card rounded-lg border border-border">
+          <div className="flex items-center text-muted-foreground text-sm mb-2">
             <Search className="w-4 h-4 mr-2" />
             Can't find what you're looking for?
           </div>
-          <p className="text-gray-500 text-xs">
+          <p className="text-muted-foreground text-xs">
             Try using the search function or contact our support team for assistance.
           </p>
         </div>

@@ -87,10 +87,9 @@ const MoscowvitzWiki: React.FC = () => {
         <link rel="canonical" href="https://www.moscownpur.in/wiki/moscowvitz" />
       </Helmet>
 
-      <div className="min-h-screen bg-black text-white overflow-hidden">
+      <div className="min-h-screen bg-background text-foreground overflow-hidden">
         {/* Background Effects */}
-        <div className="fixed inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20" />
-        <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]" />
+        <div className="fixed inset-0 bg-background" />
         
         <motion.div 
           variants={containerVariants}
@@ -120,10 +119,10 @@ const MoscowvitzWiki: React.FC = () => {
                     <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
                       <span className="gradient-text-cosmic">Moscowvitz</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-white/70 max-w-3xl leading-relaxed mb-6">
+                    <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed mb-6">
                       The Official Mascot of Moscownpur
                     </p>
-                    <p className="text-lg text-white/80 leading-relaxed mb-8">
+                    <p className="text-lg text-foreground leading-relaxed mb-8">
                       A cool, confident, and slightly rugged anthropomorphic snow leopard guardian from the 
                       Realm of Forgotten Whispers. Clad in a black bomber jacket and Ushanka hat, Moscowvitz 
                       stands as the protector of all characters, wielding the Banner of Memory to shield 
