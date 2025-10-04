@@ -37,9 +37,9 @@ export const useInviteCode = (profileUserId?: string) => {
         return;
       }
 
-      // Handle case where user might not have an invite code yet
-      if (data && data.length > 0) {
-        setInviteCode(data[0].code);
+      // The function returns a single UUID directly, not an array
+      if (data) {
+        setInviteCode(data);
       } else {
         setInviteCode(null);
         setError('No invite code found.');
