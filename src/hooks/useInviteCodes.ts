@@ -54,6 +54,11 @@ export const useInviteCode = (profileUserId?: string) => {
   };
 
   useEffect(() => {
+    // Reset state when profile user ID changes
+    setInviteCode(null);
+    setError(null);
+    setLoading(true);
+    
     if (profileUserId) {
       fetchInviteCode(profileUserId);
     }
