@@ -7,7 +7,7 @@ const ShadCNTest: React.FC = () => {
     <div className="min-h-screen bg-background text-foreground p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">ShadCN UI Test Page</h1>
+          <h1 className="text-4xl font-bold text-foreground">ShadCN UI Test Page</h1>
           <p className="text-muted-foreground text-lg">
             Testing ShadCN components with CSS variables and oklch colors
           </p>
@@ -15,7 +15,7 @@ const ShadCNTest: React.FC = () => {
 
         {/* Button Tests */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Button Components</h2>
+          <h2 className="text-2xl font-semibold text-foreground">Button Components</h2>
           <div className="flex flex-wrap gap-4">
             <Button>Default Button</Button>
             <Button variant="secondary">Secondary</Button>
@@ -34,7 +34,7 @@ const ShadCNTest: React.FC = () => {
 
         {/* Card Tests */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Card Components</h2>
+          <h2 className="text-2xl font-semibold text-foreground">Card Components</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card>
               <CardHeader>
@@ -92,7 +92,7 @@ const ShadCNTest: React.FC = () => {
 
         {/* Color Palette Test */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Color Palette Test</h2>
+          <h2 className="text-2xl font-semibold text-foreground">Color Palette Test</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2">
               <div className="h-16 bg-background border border-border rounded-lg flex items-center justify-center">
@@ -123,7 +123,7 @@ const ShadCNTest: React.FC = () => {
 
         {/* Dark Mode Test */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Theme Test</h2>
+          <h2 className="text-2xl font-semibold text-foreground">Theme Test</h2>
           <Card>
             <CardHeader>
               <CardTitle>Theme Variables</CardTitle>
@@ -133,11 +133,13 @@ const ShadCNTest: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-2 text-sm">
-                <p><strong>Background:</strong> <span className="text-muted-foreground">var(--background)</span></p>
-                <p><strong>Foreground:</strong> <span className="text-muted-foreground">var(--foreground)</span></p>
-                <p><strong>Primary:</strong> <span className="text-muted-foreground">var(--primary)</span></p>
-                <p><strong>Border:</strong> <span className="text-muted-foreground">var(--border)</span></p>
-                <p><strong>Ring:</strong> <span className="text-muted-foreground">var(--ring)</span></p>
+                <p className="text-foreground"><strong>Background:</strong> <span className="text-muted-foreground">var(--background)</span></p>
+                <p className="text-foreground"><strong>Foreground:</strong> <span className="text-muted-foreground">var(--foreground)</span></p>
+                <p className="text-foreground"><strong>Primary:</strong> <span className="text-muted-foreground">var(--primary)</span></p>
+                <p className="text-foreground"><strong>Border:</strong> <span className="text-muted-foreground">var(--border)</span></p>
+                <p className="text-foreground"><strong>Ring:</strong> <span className="text-muted-foreground">var(--ring)</span></p>
+                <p className="text-foreground"><strong>Accent:</strong> <span className="text-muted-foreground">var(--accent)</span></p>
+                <p className="text-foreground"><strong>Muted:</strong> <span className="text-muted-foreground">var(--muted)</span></p>
               </div>
             </CardContent>
           </Card>
@@ -148,13 +150,18 @@ const ShadCNTest: React.FC = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold text-green-600">✅ ShadCN Setup Complete</h3>
+                <h3 className="text-lg font-semibold text-primary">ShadCN Setup Complete</h3>
                 <p className="text-muted-foreground">
                   All components are working with CSS variables and oklch color format.
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Your existing pages should continue to work normally.
                 </p>
+                <div className="mt-4 p-4 bg-accent rounded-lg">
+                  <p className="text-accent-foreground text-sm">
+                    <strong>Note:</strong> https://tweakcn.com/themes/cmgbs9vf8000g04jm4b0uge5z.
+                  </p>
+                </div>
               </div>
             </CardContent>
           </Card>
