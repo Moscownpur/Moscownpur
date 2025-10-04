@@ -14,7 +14,7 @@ const ProfilePage: React.FC = () => {
   const { user } = useAuth();
   const { profile, stats, loading, error } = useProfile(username || '');
   const { badges: userBadges } = useUserBadges(profile?.id);
-  const { inviteCode } = useInviteCode();
+  const { inviteCode } = useInviteCode(profile?.id);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -217,15 +217,17 @@ const ProfilePage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Invite Link Section */}
-                {inviteCode && (
+                {/* Invite Link Section - Only show for own profile */}
+                {isOwnProfile && (
                   <div className="bg-gray-800/30 rounded-xl p-4 border border-pink-500/30">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
                         <Link size={20} className="text-pink-400" />
                         <div>
-                          <div className="text-pink-400 font-semibold">Invite Code</div>
-                          <div className="text-gray-300 font-mono text-sm">{inviteCode}</div>
+                          <div className="text-pink-400 font-semibold">Your Invite Code</div>
+                          <div className="text-gray-300 font-mono text-sm">
+                            {inviteCode || 'Loading...'}
+                          </div>
                         </div>
                       </div>
                       <div className="flex items-center gap-4">
@@ -233,8 +235,17 @@ const ProfilePage: React.FC = () => {
                           <div className="text-2xl font-bold text-pink-400">{profile.invite_count || 0}</div>
                           <div className="text-xs text-gray-400">Invites Sent</div>
                         </div>
-                        <button className="bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/50 px-4 py-2 rounded-lg transition-all duration-300 text-pink-400 hover:text-pink-300">
-                          Copy Code
+                        <button 
+                          className="bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/50 px-4 py-2 rounded-lg transition-all duration-300 text-pink-400 hover:text-pink-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={!inviteCode}
+                          onClick={() => {
+                            if (inviteCode) {
+                              navigator.clipboard.writeText(inviteCode);
+                              // You could add a toast notification here
+                            }
+                          }}
+                        >
+                          {inviteCode ? 'Copy Code' : 'Loading...'}
                         </button>
                       </div>
                     </div>

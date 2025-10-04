@@ -10,15 +10,15 @@ interface UserProfile {
   avatar_url: string;
 }
 
-export const useInviteCode = () => {
+export const useInviteCode = (profileUserId?: string) => {
   const { user } = useAuth();
   const [inviteCode, setInviteCode] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchInviteCode = async () => {
-    if (!user?.id) {
-      setError('User not authenticated');
+  const fetchInviteCode = async (targetUserId: string) => {
+    if (!targetUserId) {
+      setError('User ID is required');
       setLoading(false);
       return;
     }
@@ -28,28 +28,36 @@ export const useInviteCode = () => {
       setError(null);
 
       const { data, error: fetchError } = await supabase.rpc('get_user_invite_code', {
-        target_user_id: user.id
+        target_user_id: targetUserId
       });
 
       if (fetchError) {
         setError(fetchError.message);
+        setInviteCode(null);
         return;
       }
 
-      setInviteCode(data);
+      // Handle case where user might not have an invite code yet
+      if (data && data.length > 0) {
+        setInviteCode(data[0].code);
+      } else {
+        setInviteCode(null);
+        setError('No invite code found.');
+      }
     } catch (err) {
       console.error('Error fetching invite code:', err);
       setError('An unexpected error occurred');
+      setInviteCode(null);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (user?.id) {
-      fetchInviteCode();
+    if (profileUserId) {
+      fetchInviteCode(profileUserId);
     }
-  }, [user?.id]);
+  }, [profileUserId]);
 
   return {
     inviteCode,
