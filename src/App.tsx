@@ -42,7 +42,6 @@ const AITest = lazy(() => import('./components/AITest'));
 const AIIntegration = lazy(() => import('./pages/authenticated_pages/AIIntegration'));
 const SupabaseTest = lazy(() => import('./pages/public_pages/SupabaseTest'));
 const PerformanceDashboard = lazy(() => import('./pages/public_pages/PerformanceDashboard'));
-const DialogueDemo = lazy(() => import('./pages/authenticated_pages/DialogueDemo'));
 const DialogueManagement = lazy(() => import('./pages/authenticated_pages/DialogueManagement'));
 const MoscowvitzWiki = lazy(() => import('./pages/public_pages/MoscowvitzWiki'));
 const ProfilePage = lazy(() => import('./pages/public_pages/ProfilePage'));
@@ -86,7 +85,6 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/supabase-test" element={<SupabaseTest />} />
                     <Route path="/performance" element={<PerformanceDashboard />} />
-                    <Route path="/dialogue-demo" element={<DialogueDemo />} />
                     <Route path="/wiki/moscowvitz" element={<MoscowvitzWiki />} />
                     <Route path="/profile/:username" element={<ProfilePage />} />
                     <Route path="/shadcn-test" element={<ShadCNTest />} />
