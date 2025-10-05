@@ -23,9 +23,9 @@ vercel --prod
 ```
 
 **Live URLs:**
-- **Frontend + API:** https://moscownpur-rn4zbftvb-asthanaji05s-projects.vercel.app
-- **API Health:** https://moscownpur-rn4zbftvb-asthanaji05s-projects.vercel.app/api/health
-- **API Docs:** https://moscownpur-rn4zbftvb-asthanaji05s-projects.vercel.app/api/
+- **Frontend + API:** https://www.moscownpur.in
+- **API Health:** https://www.moscownpur.in/api/health
+- **API Docs:** https://www.moscownpur.in/api/
 
 ## 📋 API Endpoints
 
@@ -41,16 +41,12 @@ vercel --prod
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `GET` | `/api/user/dashboard-data` | Optimized dashboard data with worlds, chapters, characters |
-| `GET` | `/api/user/worlds` | User's worlds |
-| `POST` | `/api/user/worlds` | Create new world |
-| `GET` | `/api/user/worlds/:id/complete` | Complete world data with all relations |
 
-### Admin Endpoints (Require Admin Role)
+### Test Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/api/admin/users` | All users |
-| `GET` | `/api/admin/analytics` | System analytics |
+| `GET` | `/api/test` | Basic test endpoint for API functionality |
 
 ## 🔐 Authentication
 
@@ -103,11 +99,11 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 ### Production Testing
 ```bash
 # Test live API
-curl https://moscownpur-rn4zbftvb-asthanaji05s-projects.vercel.app/api/health
+curl https://www.moscownpur.in/api/health
 
 # Test with authentication
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-     https://moscownpur-rn4zbftvb-asthanaji05s-projects.vercel.app/api/user/dashboard-data
+     https://www.moscownpur.in/api/user/dashboard-data
 ```
 
 ## 📊 Example Responses
@@ -159,14 +155,11 @@ api/
 ├── _utils/
 │   └── supabase.ts          # Shared Supabase client & auth utilities
 ├── user/
-│   ├── dashboard-data.ts    # GET /api/user/dashboard-data
-│   └── worlds.ts           # GET/POST /api/user/worlds
-├── admin/
-│   ├── users.ts            # GET /api/admin/users
-│   └── analytics.ts        # GET /api/admin/analytics
+│   └── dashboard-data.ts    # GET /api/user/dashboard-data
 ├── health.ts               # GET /api/health
 ├── test.ts                 # GET /api/test (for testing)
-└── index.ts                # GET /api/ (API documentation)
+├── index.ts                # GET /api/ (API documentation)
+└── README.md               # This documentation
 ```
 
 ## 🚀 Performance Benefits
@@ -247,3 +240,4 @@ For issues or questions:
 ---
 
 **Built with ❤️ for Moscowvitz**
+
