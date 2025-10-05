@@ -27,3 +27,4 @@ dist-ssr
 *.config.json
 .env.local
 *.supabase.json
+.vercel

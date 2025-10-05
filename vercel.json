@@ -1,6 +1,22 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/" }
-    ]
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node"
+    }
+  },
+  "rewrites": [
+    { 
+      "source": "/api/(.*)", 
+      "destination": "/api/$1" 
+    },
+    { 
+      "source": "/(.*)", 
+      "destination": "/" 
+    }
+  ],
+  "env": {
+    "SUPABASE_URL": "@supabase_url",
+    "SUPABASE_ANON_KEY": "@supabase_anon_key"
   }
+}
   
