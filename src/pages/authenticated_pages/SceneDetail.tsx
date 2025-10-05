@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Film, Users, MapPin, Clock, MessageSquare, Edit2, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
-import { Scene, Character, SceneWithDialogue } from '../types';
-import DialogueList from '../components/DialogueList';
-import Modal from '../components/Modal';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../contexts/AuthContext';
+import { Scene, Character, SceneWithDialogue } from '../../types';
+import DialogueList from '../../components/DialogueList';
+import Modal from '../../components/Modal';
 import toast from 'react-hot-toast';
-import { useDialogues } from '../hooks/useDialogues';
+import { useDialogues } from '../../hooks/useDialogues';
 
 const SceneDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();

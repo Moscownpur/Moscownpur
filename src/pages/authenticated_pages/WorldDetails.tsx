@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Globe, Users, MapPin, Clock, BookOpen, ArrowLeft } from 'lucide-react';
-import { useWorlds } from '../hooks/useWorlds';
-import { useChapters } from '../hooks/useChapters';
-import { useCharacters } from '../hooks/useCharacters';
-import { useTimeline } from '../hooks/useTimeline';
-import { World } from '../types';
+import { useWorlds } from '../../hooks/useWorlds';
+import { useChapters } from '../../hooks/useChapters';
+import { useCharacters } from '../../hooks/useCharacters';
+import { useTimeline } from '../../hooks/useTimeline';
+import { World } from '../../types';
 
 const WorldDetails: React.FC = () => {
   const { id } = useParams();

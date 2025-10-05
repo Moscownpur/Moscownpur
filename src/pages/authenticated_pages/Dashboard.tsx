@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Globe, Users, MapPin, Clock, BookOpen, Plus, Sparkles, Zap, Heart, Film, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
-import GlowCard from '../components/ui/GlowCard';
-import NeonButton from '../components/ui/NeonButton';
-import FloatingEmoji from '../components/ui/FloatingEmoji';
-import { useWorlds } from '../hooks/useWorlds';
-import { useChapters } from '../hooks/useChapters';
-import { useCharacters } from '../hooks/useCharacters';
-import { useTimeline } from '../hooks/useTimeline';
-import { useDialogues } from '../hooks/useDialogues';
-import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
+import GlowCard from '../../components/ui/GlowCard';
+import NeonButton from '../../components/ui/NeonButton';
+import FloatingEmoji from '../../components/ui/FloatingEmoji';
+import { useWorlds } from '../../hooks/useWorlds';
+import { useChapters } from '../../hooks/useChapters';
+import { useCharacters } from '../../hooks/useCharacters';
+import { useTimeline } from '../../hooks/useTimeline';
+import { useDialogues } from '../../hooks/useDialogues';
+import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();

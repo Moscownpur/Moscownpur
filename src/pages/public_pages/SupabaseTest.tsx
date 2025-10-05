@@ -1,5 +1,5 @@
 import React from 'react';
-import SupabaseExample from '../components/SupabaseExample';
+import SupabaseExample from '../../components/SupabaseExample';
 
 const SupabaseTest: React.FC = () => {
   return (

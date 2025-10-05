@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MessageSquare, Plus, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import DialogueList from '../components/DialogueList';
-import { Dialogue } from '../types/dialogue';
+import DialogueList from '../../components/DialogueList';
+import { Dialogue } from '../../types/dialogue';
 
 // Sample data for demo
 const sampleCharacters = [

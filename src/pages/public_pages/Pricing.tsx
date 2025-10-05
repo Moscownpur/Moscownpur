@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import PublicHeader from '../components/PublicHeader';
+import PublicHeader from '../../components/PublicHeader';
 import { Check, Star, Zap, Crown, Shield, Cloud, Users, Globe, Brain, Infinity } from 'lucide-react';
 
 const Pricing: React.FC = () => {

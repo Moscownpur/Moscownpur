@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Plus, Users, Edit, Trash2, Search, Sparkles, Zap, Globe, Heart, Calendar, Eye, Star } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CharacterForm from '../components/CharacterForm';
-import Modal from '../components/Modal';
-import { useCharacters } from '../hooks/useCharacters';
-import { useWorlds } from '../hooks/useWorlds';
-import { Character } from '../types';
+import CharacterForm from '../../components/CharacterForm';
+import Modal from '../../components/Modal';
+import { useCharacters } from '../../hooks/useCharacters';
+import { useWorlds } from '../../hooks/useWorlds';
+import { Character } from '../../types';
 import toast from 'react-hot-toast';
 
 const CharacterManagement: React.FC = () => {

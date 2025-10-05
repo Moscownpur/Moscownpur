@@ -1,11 +1,11 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useProfile } from '../hooks/useProfile';
 import { useUserBadges } from '../hooks/useUserBadges';
 import { useInviteCode } from '../hooks/useInviteCodes';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { User, Trophy, Star, Users, UserPlus, Calendar, Link, Globe } from 'lucide-react';
 
 const ProfilePage: React.FC = () => {

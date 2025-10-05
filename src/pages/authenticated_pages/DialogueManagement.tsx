@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Plus, Search, Filter, SortAsc, SortDesc, Globe, BookOpen, Film } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
-import { Dialogue, DeliveryType } from '../types/dialogue';
-import DialogueComponent from '../components/DialogueComponent';
-import DialogueForm from '../components/DialogueForm';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../contexts/AuthContext';
+import { Dialogue, DeliveryType } from '../../types/dialogue';
+import DialogueComponent from '../../components/DialogueComponent';
+import DialogueForm from '../../components/DialogueForm';
 import toast from 'react-hot-toast';
 
 interface Character {

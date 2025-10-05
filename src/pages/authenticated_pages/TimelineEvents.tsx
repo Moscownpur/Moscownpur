@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Clock, Search, Filter, Calendar, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
-import TimelineView from '../components/TimelineView';
-import Modal from '../components/Modal';
-import { useTimeline } from '../hooks/useTimeline';
-import { useWorlds } from '../hooks/useWorlds';
-import { useChapters } from '../hooks/useChapters';
-import { TimelineEventWithChapters, Chapter } from '../types';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import TimelineView from '../../components/TimelineView';
+import Modal from '../../components/Modal';
+import { useTimeline } from '../../hooks/useTimeline';
+import { useWorlds } from '../../hooks/useWorlds';
+import { useChapters } from '../../hooks/useChapters';
+import { TimelineEventWithChapters, Chapter } from '../../types';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 const TimelineEvents: React.FC = () => {

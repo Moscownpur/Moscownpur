@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Plus, Clock, Edit, Trash2, Search, Calendar, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useEvents } from '../hooks/useEvents';
-import { useChapters } from '../hooks/useChapters';
-import { TimelineEvent, Chapter } from '../types';
-import Modal from '../components/Modal';
+import { useEvents } from '../../hooks/useEvents';
+import { useChapters } from '../../hooks/useChapters';
+import { TimelineEvent, Chapter } from '../../types';
+import Modal from '../../components/Modal';
 import toast from 'react-hot-toast';
 
 const EventManagement: React.FC = () => {

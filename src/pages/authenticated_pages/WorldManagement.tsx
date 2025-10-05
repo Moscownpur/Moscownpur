@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Plus, Globe, Edit, Trash2, Search, Sparkles, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
-import GlowCard from '../components/ui/GlowCard';
-import NeonButton from '../components/ui/NeonButton';
-import FloatingEmoji from '../components/ui/FloatingEmoji';
-import WorldForm from '../components/WorldForm';
-import Modal from '../components/Modal';
-import { useWorlds } from '../hooks/useWorlds';
-import { World } from '../types';
+import GlowCard from '../../components/ui/GlowCard';
+import NeonButton from '../../components/ui/NeonButton';
+import FloatingEmoji from '../../components/ui/FloatingEmoji';
+import WorldForm from '../../components/WorldForm';
+import Modal from '../../components/Modal';
+import { useWorlds } from '../../hooks/useWorlds';
+import { World } from '../../types';
 
 const WorldManagement: React.FC = () => {
   const { worlds, loading, createWorld, updateWorld, deleteWorld } = useWorlds();

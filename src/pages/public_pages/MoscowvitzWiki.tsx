@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Sparkles, Users, Clock, BookOpen, Star, Zap, Globe, MessageSquare, Info, Scroll, Palette, UserCircle, Images, Lightbulb } from 'lucide-react';
-import PublicHeader from '../components/PublicHeader';
-import Footer from '../components/Footer';
+import PublicHeader from '../../components/PublicHeader';
+import Footer from '../../components/Footer';
 
 /**
  * Moscowvitz Wiki Page Component

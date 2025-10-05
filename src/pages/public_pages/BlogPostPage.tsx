@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import BlogPost from '../components/BlogPost';
-import { supabaseClient } from '../lib/supabaseClient';
+import BlogPost from '../../components/BlogPost';
+import { supabaseClient } from '../../lib/supabaseClient';
 
 const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();

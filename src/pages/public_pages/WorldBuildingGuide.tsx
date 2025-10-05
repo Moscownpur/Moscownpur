@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import PublicHeader from '../components/PublicHeader';
+import PublicHeader from '../../components/PublicHeader';
 import { Book, Lightbulb, CheckCircle, Info, Star, Globe, Users, Map, Clock, PenTool } from 'lucide-react';
 
 const WorldBuildingGuide: React.FC = () => {

@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, Users, MapPin, Clock, BookOpen, ArrowRight, Star, Zap, Globe, MessageSquare } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Footer from '../components/Footer';
-import PublicHeader from '../components/PublicHeader';
+import Footer from '../../components/Footer';
+import PublicHeader from '../../components/PublicHeader';
 import logoImage from '/logo.jpg';
 
 // Custom Logo component for features

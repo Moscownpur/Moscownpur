@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Search, Calendar, User, ArrowRight, Book, Clock, Eye } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import PublicHeader from '../components/PublicHeader';
-import Footer from '../components/Footer';
-import { supabaseClient } from '../lib/supabaseClient';
+import PublicHeader from '../../components/PublicHeader';
+import Footer from '../../components/Footer';
+import { supabaseClient } from '../../lib/supabaseClient';
 import logoImage from '/logo.jpg';
 
 const Blog: React.FC = () => {

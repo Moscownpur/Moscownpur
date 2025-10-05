@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, BookOpen, Edit2, Trash2, Search, Globe, GripVertical, Users, Calendar } from 'lucide-react';
 import { motion, Reorder } from 'framer-motion';
-import { useChapters } from '../hooks/useChapters';
-import { useWorlds } from '../hooks/useWorlds';
-import { Chapter } from '../types';
-import Modal from '../components/Modal';
+import { useChapters } from '../../hooks/useChapters';
+import { useWorlds } from '../../hooks/useWorlds';
+import { Chapter } from '../../types';
+import Modal from '../../components/Modal';
 import toast from 'react-hot-toast';
 
 const ChapterManagement: React.FC = () => {

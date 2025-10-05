@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Film, Edit, Trash2, Search, Users, MapPin, Clock, Globe, Calendar, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useScenes } from '../hooks/useScenes';
-import { useEvents } from '../hooks/useEvents';
-import { useChapters } from '../hooks/useChapters';
-import Modal from '../components/Modal';
-import { Scene, TimelineEvent } from '../types';
-import { supabase } from '../lib/supabase';
-import { useAuth } from '../contexts/AuthContext';
+import { useScenes } from '../../hooks/useScenes';
+import { useEvents } from '../../hooks/useEvents';
+import { useChapters } from '../../hooks/useChapters';
+import Modal from '../../components/Modal';
+import { Scene, TimelineEvent } from '../../types';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 const SceneManagement: React.FC = () => {

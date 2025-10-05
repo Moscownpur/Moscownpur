@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import PublicHeader from '../components/PublicHeader';
+import PublicHeader from '../../components/PublicHeader';
 import { Heart, Lightbulb, Users, Award, Globe, Book, Star, Zap, Shield, Target } from 'lucide-react';
 
 const About: React.FC = () => {

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { World, Character, Scene } from '../types';
-import { aiMemoryEngine } from '../lib/aiMemoryEngine';
-import MemoryManager from '../components/ai/MemoryManager';
-import CharacterChatSimulator from '../components/ai/CharacterChatSimulator';
-import { supabase } from '../lib/supabase';
+import { World, Character, Scene } from '../../types';
+import { aiMemoryEngine } from '../../lib/aiMemoryEngine';
+import MemoryManager from '../../components/ai/MemoryManager';
+import CharacterChatSimulator from '../../components/ai/CharacterChatSimulator';
+import { supabase } from '../../lib/supabase';
 import toast from 'react-hot-toast';
 
 const AIIntegration: React.FC = () => {
