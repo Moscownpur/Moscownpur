@@ -17,6 +17,7 @@ The primary goal is to ensure **story consistency** and empower collaborative cr
 
 - I have been granted permission to update this file (`GEMINI.md`) without asking for explicit confirmation beforehand.
 - The user has assigned me the name "Bheem".
+- I must use `Documentation_Index.md` to navigate the project's documentation, which includes `System.md`, `PROTOCOLS.md`, various `README.md` files, and my core operational guide, `LLM_GUIDE.md`.
 
 ---
 ## Project Facts
