@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe, Flame, Monitor, Key } from 'lucide-react';
-import logoImage from '/logo.jpg';
+import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe, Flame, Monitor, Key, Sun, Moon } from 'lucide-react';
+import logoImage from '/logo-v2.png';
 import { useResponsive } from '../hooks/useResponsive';
+import { useTheme } from '../contexts/ThemeContext';
 
 const PublicHeader: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,6 +13,7 @@ const PublicHeader: React.FC = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -75,23 +77,23 @@ const PublicHeader: React.FC = () => {
   ];
 
   return (
-    <motion.header 
+    <motion.header
+      id="public-header"
       ref={headerRef}
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className={`glass-navbar px-4 md:px-8 py-4 z-50 transition-all duration-300 ${
-        isSticky 
-          ? 'fixed top-0 left-0 right-0' 
-          : 'relative'
-      }`}
+      className={`glass-navbar px-4 md:px-8 py-4 z-50 transition-all duration-300 ${isSticky
+        ? 'fixed top-0 left-0 right-0'
+        : 'relative'
+        }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="">
-            <img src={logoImage} alt="Moscownpur Logo" className="w-12 h-12 rounded-lg shadow-lg" />
+            <img src={logoImage} alt="Moscownpur Logo" className="w-25 h-25 rounded-lg shadow-lg" />
           </div>
-          <h1 className="text-lg font-bold gradient-text-cosmic text-white">
+          <h1 className="text-lg font-bold gradient-text-cosmic">
             Moscownpur
           </h1>
         </Link>
@@ -99,15 +101,11 @@ const PublicHeader: React.FC = () => {
         {/* Desktop Navigation */}
         <div className={`${isDesktop ? 'flex' : 'hidden'} items-center space-x-6`}>
           {navigationLinks.map((link) => {
-            // Different styling for action buttons
+            // Standardized styling for all buttons
             const isActionButton = ['Sign In', 'Get Started', 'Admin'].includes(link.name);
-            const buttonClass = isActionButton 
-              ? link.name === 'Get Started' 
-                ? 'px-4 py-2 text-green-500 smooth-transition'
-                : link.name === 'Admin'
-                ? 'px-4 py-2 text-red-400 smooth-transition'
-                : 'px-4 py-2 text-blue-400  smooth-transition'
-              : 'px-4 py-2 text-white/80 smooth-transition';
+            const buttonClass = isActionButton
+              ? 'px-4 py-2 text-foreground hover:text-primary smooth-transition font-medium'
+              : 'px-4 py-2 text-foreground/80 hover:text-foreground smooth-transition font-medium';
 
             return (
               <Link
@@ -126,23 +124,43 @@ const PublicHeader: React.FC = () => {
               </Link>
             );
           })}
+
+          {/* Theme Toggle */}
+          <motion.button
+            whileHover={{ scale: 1.1, rotate: 15 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className="p-2 rounded-full hover:bg-white/10 text-foreground/80 hover:text-foreground transition-colors"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </motion.button>
         </div>
 
         {/* Mobile Hamburger Button */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className={`${!isDesktop ? 'block' : 'hidden'} p-2 rounded-xl bg-black/40 text-white font-medium shadow-lg hover:shadow-xl hover:shadow-white/10 smooth-transition`}
-          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-        >
-          <motion.div
-            animate={{ rotate: isMobileMenuOpen ? 45 : 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+        <div className={`${!isDesktop ? 'flex' : 'hidden'} items-center gap-4`}>
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={toggleTheme}
+            className="p-2 rounded-full hover:bg-white/10 text-foreground/80"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.div>
-        </motion.button>
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 rounded-xl bg-black/5 text-foreground font-medium shadow-sm hover:shadow-md smooth-transition dark:bg-white/10 dark:text-white"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+          >
+            <motion.div
+              animate={{ rotate: isMobileMenuOpen ? 45 : 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.div>
+          </motion.button>
+        </div>
       </div>
 
       {/* Mobile Menu Sidebar */}
@@ -154,11 +172,11 @@ const PublicHeader: React.FC = () => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 h-screen w-64 bg-black/95 backdrop-blur-xl p-6 z-60 shadow-2xl shadow-black/50"
+            className="fixed top-0 right-0 h-screen w-64 bg-background/95 backdrop-blur-xl p-6 z-60 shadow-2xl border-l border-border"
           >
             <button
               onClick={closeMobileMenu}
-              className="absolute top-4 right-4 text-white hover:text-gray-300"
+              className="absolute top-4 right-4 text-foreground/60 hover:text-foreground"
               aria-label="Close menu"
             >
               <X size={24} />
@@ -166,13 +184,9 @@ const PublicHeader: React.FC = () => {
             <div className="mt-12 space-y-2">
               {navigationLinks.map((link, index) => {
                 const isActionButton = ['Sign In', 'Get Started', 'Admin'].includes(link.name);
-                const buttonClass = isActionButton 
-                  ? link.name === 'Get Started' 
-                    ? 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-green-500 font-bold'
-                    : link.name === 'Admin'
-                    ? 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-red-400 font-semibold'
-                    : 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-blue-400 font-semibold'
-                  : 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl bg-black/70 text-white font-bold';
+                const buttonClass = isActionButton
+                  ? 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-foreground hover:bg-accent font-bold'
+                  : 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-foreground/80 hover:bg-accent hover:text-foreground font-bold';
 
                 return (
                   <motion.div
@@ -187,7 +201,7 @@ const PublicHeader: React.FC = () => {
                         whileTap={{ scale: 0.95 }}
                         className={buttonClass}
                       >
-                        {link.icon && <link.icon size={18} className="text-white/80" />}
+                        {link.icon && <link.icon size={18} className="text-foreground/60" />}
                         <span className="text-base font-bold">{link.name}</span>
                       </motion.button>
                     </Link>
@@ -203,7 +217,7 @@ const PublicHeader: React.FC = () => {
       <style>
         {`
           .active button {
-            color: #ff8c42 !important; /* Orange color for active tab */
+            color: #818cf8 !important; /* Primary color for active tab */
           }
         `}
       </style>
