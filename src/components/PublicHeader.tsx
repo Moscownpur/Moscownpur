@@ -90,10 +90,7 @@ const PublicHeader: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="">
-            <img src={logoImage} alt="Moscownpur Logo" className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-25 lg:h-25 rounded-lg shadow-lg" />
-          </div>
-          <h1 className="text-base sm:text-lg md:text-xl font-bold gradient-text-cosmic">
+          <h1 className="nerko-one-regular text-base sm:text-lg md:text-xl font-bold gradient-text-cosmic">
             Moscownpur
           </h1>
         </Link>
