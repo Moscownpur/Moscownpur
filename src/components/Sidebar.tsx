@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  Home, 
-  Globe, 
-  MapPin, 
-  Users, 
-  Clock, 
+import {
+  Home,
+  Globe,
+  MapPin,
+  Users,
+  Clock,
   BookOpen,
   Film,
   FileText,
@@ -17,7 +17,8 @@ import {
   Sun,
   User,
   LogOut,
-  Settings
+  Settings,
+  Layers
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -29,6 +30,7 @@ const navigation = [
   { name: 'Characters', href: '/dashboard/characters', icon: Users },
   { name: 'Events', href: '/dashboard/events', icon: Clock },
   { name: 'Scenes', href: '/dashboard/scenes', icon: Film },
+  { name: 'Story Editor', href: '/dashboard/story-editor', icon: Layers },
   { name: 'Dialogues', href: '/dashboard/dialogues', icon: MessageSquare },
   { name: 'Timeline', href: '/dashboard/timeline', icon: Calendar },
 ];
@@ -42,14 +44,14 @@ const Sidebar: React.FC = () => {
       {/* Top Bar Items */}
       <div className="p-6 border-b border-white/10">
         <div className="flex items-center justify-between mb-4">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="text-heading gradient-text-cosmic"
           >
             Moscownpur
           </motion.h1>
-          
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -59,9 +61,9 @@ const Sidebar: React.FC = () => {
             {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
           </motion.button>
         </div>
-        
+
         {/* User Info */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           className="flex items-center justify-between"
@@ -77,7 +79,7 @@ const Sidebar: React.FC = () => {
               </span>
             </div>
           </div>
-          
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -97,10 +99,9 @@ const Sidebar: React.FC = () => {
               key={item.name}
               to={item.href}
               className={({ isActive }) =>
-                `flex items-center space-x-4 px-5 py-4 rounded-xl smooth-transition group ${
-                  isActive
-                    ? 'glass-card soft-glow text-white'
-                    : 'text-white/60 hover:text-white hover:glass-card'
+                `flex items-center space-x-4 px-5 py-4 rounded-xl smooth-transition group ${isActive
+                  ? 'glass-card soft-glow text-white'
+                  : 'text-white/60 hover:text-white hover:glass-card'
                 }`
               }
             >

@@ -43,6 +43,7 @@ const AIIntegration = lazy(() => import('./pages/authenticated_pages/AIIntegrati
 const SupabaseTest = lazy(() => import('./pages/public_pages/SupabaseTest'));
 const PerformanceDashboard = lazy(() => import('./pages/public_pages/PerformanceDashboard'));
 const DialogueManagement = lazy(() => import('./pages/authenticated_pages/DialogueManagement'));
+const StoryEditor = lazy(() => import('./pages/authenticated_pages/StoryEditor'));
 const MoscowvitzWiki = lazy(() => import('./pages/public_pages/MoscowvitzWiki'));
 const ProfilePage = lazy(() => import('./pages/public_pages/ProfilePage'));
 const ShadCNTest = lazy(() => import('./pages/public_pages/ShadCNTest'));
@@ -92,16 +93,16 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/forgot-password" element={<ForgotPassword />} />
                     <Route path="/admin/login" element={<AdminLogin />} />
-                    <Route 
-                      path="/admin/dashboard" 
+                    <Route
+                      path="/admin/dashboard"
                       element={
                         <AdminProtectedRoute>
                           <AdminDashboard />
                         </AdminProtectedRoute>
-                      } 
+                      }
                     />
-                    <Route 
-                      path="/dashboard" 
+                    <Route
+                      path="/dashboard"
                       element={
                         <ProtectedRoute>
                           <Layout />
@@ -117,6 +118,7 @@ function App() {
                       <Route path="scenes" element={<SceneManagement />} />
                       <Route path="scenes/:id" element={<SceneDetail />} />
                       <Route path="dialogues" element={<DialogueManagement />} />
+                      <Route path="story-editor" element={<StoryEditor />} />
                       <Route path="timeline" element={<TimelineEvents />} />
                       <Route path="stories" element={<StoryScenes />} />
                       <Route path="ai-test" element={<AITest />} />
@@ -127,7 +129,7 @@ function App() {
                   </Routes>
                 </Suspense>
               </div>
-              <Toaster 
+              <Toaster
                 position="top-right"
                 toastOptions={{
                   duration: 4000,
@@ -135,19 +137,19 @@ function App() {
                     background: 'rgba(0, 0, 0, 0.8)',
                     backdropFilter: 'blur(20px)',
                     color: '#fff',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '16px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                },
-              }}
-            />
-            <Analytics />
-            <SpeedInsights />
-          </Router>
-        </AdminAuthProvider>
-      </AuthProvider>
-    </ThemeProvider>
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '16px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                  },
+                }}
+              />
+              <Analytics />
+              <SpeedInsights />
+            </Router>
+          </AdminAuthProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </HelmetProvider>
   );
 }
