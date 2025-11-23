@@ -40,7 +40,7 @@ const MoscowvitzWiki: React.FC = () => {
   const features = [
     {
       icon: Info,
-      title: 'Introduction & Summary',
+      title: 'Introduction',
       description: 'Learn about Moscowvitz\'s role as the mystical guide and companion in the realm of fictional universe creation.',
       gradient: 'from-purple-500 to-pink-500'
     },
@@ -116,10 +116,10 @@ const MoscowvitzWiki: React.FC = () => {
                     transition={{ delay: 0.2, duration: 0.8 }}
                     className="mb-8"
                   >
-                    <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight borel-regular">
-                      <span className="gradient-text-cosmic">Hemraj Moscowvitz 'Miraj'</span>
+                    <h1 className="text-6xl md:text-8xl font-bold mb-6 borel-regular" style={{ lineHeight: '1.2' }}>
+                      <span className="gradient-text-cosmic borel-regular">Hemraj Moscowvitz 'Miraj'</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed mb-6">
+                    <p className="nerko-one-regular text-xl md:text-2xl text-muted-foreground max-w-3xl leading-relaxed mb-6">
                       The Official Mascot of Moscownpur
                     </p>
                     <p className="text-lg text-foreground leading-relaxed mb-8">
@@ -170,7 +170,7 @@ const MoscowvitzWiki: React.FC = () => {
           >
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-8 mt-12 borel-regular">
+                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic p-12 borel-regular">
                   Discover Miraj
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -211,9 +211,9 @@ const MoscowvitzWiki: React.FC = () => {
           >
             <div className="max-w-7xl mx-auto">
               <div className="glass-card rounded-3xl p-12 md:p-16">
-                <div className="text-center mb-12">
-                  <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-8 mt-4 borel-regular">
-                    Introduction & Summary
+                <div className="text-center pb-12 pt-8">
+                  <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic p-12 borel-regular">
+                    Introduction
                   </h2>
                 </div>
 
@@ -285,7 +285,7 @@ const MoscowvitzWiki: React.FC = () => {
           >
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-8 mt-12 borel-regular">
+                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic p-12 borel-regular">
                   Lore & History
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -433,7 +433,7 @@ const MoscowvitzWiki: React.FC = () => {
           >
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-8 mt-12 borel-regular">
+                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic pb-12 borel-regular">
                   Traits & Role
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -508,7 +508,7 @@ const MoscowvitzWiki: React.FC = () => {
           >
             <div className="max-w-7xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic mb-8 mt-12 borel-regular">
+                <h2 className="text-4xl md:text-5xl font-bold gradient-text-cosmic p-12 borel-regular">
                   Media Gallery
                 </h2>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">

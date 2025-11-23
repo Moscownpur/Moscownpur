@@ -91,9 +91,9 @@ const PublicHeader: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="">
-            <img src={logoImage} alt="Moscownpur Logo" className="w-25 h-25 rounded-lg shadow-lg" />
+            <img src={logoImage} alt="Moscownpur Logo" className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-25 lg:h-25 rounded-lg shadow-lg" />
           </div>
-          <h1 className="text-lg font-bold gradient-text-cosmic">
+          <h1 className="text-base sm:text-lg md:text-xl font-bold gradient-text-cosmic">
             Moscownpur
           </h1>
         </Link>
@@ -166,50 +166,64 @@ const PublicHeader: React.FC = () => {
       {/* Mobile Menu Sidebar */}
       <AnimatePresence>
         {!isDesktop && isMobileMenuOpen && (
-          <motion.div
-            ref={mobileMenuRef}
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 h-screen w-64 bg-background/95 backdrop-blur-xl p-6 z-60 shadow-2xl border-l border-border"
-          >
-            <button
+          <>
+            {/* Backdrop with blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
               onClick={closeMobileMenu}
-              className="absolute top-4 right-4 text-foreground/60 hover:text-foreground"
-              aria-label="Close menu"
-            >
-              <X size={24} />
-            </button>
-            <div className="mt-12 space-y-2">
-              {navigationLinks.map((link, index) => {
-                const isActionButton = ['Sign In', 'Get Started', 'Admin'].includes(link.name);
-                const buttonClass = isActionButton
-                  ? 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-foreground hover:bg-accent font-bold'
-                  : 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-foreground/80 hover:bg-accent hover:text-foreground font-bold';
+            />
 
-                return (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.4 }}
-                  >
-                    <Link to={link.href} onClick={closeMobileMenu} className={location.pathname === link.href ? 'active' : ''}>
-                      <motion.button
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={buttonClass}
-                      >
-                        {link.icon && <link.icon size={18} className="text-foreground/60" />}
-                        <span className="text-base font-bold">{link.name}</span>
-                      </motion.button>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
+            {/* Sidebar */}
+            <motion.div
+              ref={mobileMenuRef}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              className="fixed top-0 right-0 h-screen w-72 bg-background backdrop-blur-2xl p-6 z-[110] shadow-2xl border-l border-border"
+              style={{ backgroundColor: 'var(--background)' }}
+            >
+              <button
+                onClick={closeMobileMenu}
+                className="absolute top-4 right-4 text-foreground/60 hover:text-foreground transition-colors"
+                aria-label="Close menu"
+              >
+                <X size={24} />
+              </button>
+              <div className="mt-12 space-y-2">
+                {navigationLinks.map((link, index) => {
+                  const isActionButton = ['Sign In', 'Get Started', 'Admin'].includes(link.name);
+                  const buttonClass = isActionButton
+                    ? 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-foreground hover:bg-accent font-bold'
+                    : 'w-full flex items-center justify-start space-x-3 p-2.5 rounded-xl text-foreground/80 hover:bg-accent hover:text-foreground font-bold';
+
+                  return (
+                    <motion.div
+                      key={link.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1, duration: 0.4 }}
+                    >
+                      <Link to={link.href} onClick={closeMobileMenu} className={location.pathname === link.href ? 'active' : ''}>
+                        <motion.button
+                          whileHover={{ scale: 1.05, y: -2 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={buttonClass}
+                        >
+                          {link.icon && <link.icon size={18} className="text-foreground/60" />}
+                          <span className="text-base font-bold">{link.name}</span>
+                        </motion.button>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
