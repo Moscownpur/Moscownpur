@@ -1,6 +1,9 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { motion } from 'framer-motion';
 import PublicHeader from '../../components/PublicHeader';
+import PublicPageBackground from '../../components/PublicPageBackground';
+import Footer from '../../components/Footer';
 import { Heart, Lightbulb, Users, Award, Globe, Book, Star, Zap, Shield, Target } from 'lucide-react';
 
 const About: React.FC = () => {
@@ -66,168 +69,246 @@ const About: React.FC = () => {
       <Helmet>
         <title>About Us - World Building Platform & Creative Writing Tools | MosCownpur</title>
         <meta name="description" content="Learn about MosCownpur's mission to empower creators with the best world building and universe management tools. Meet our team of passionate creators and innovators." />
-        <meta name="keywords" content="about MosCownpur, world building platform, creative writing tools company, universe management software, team behind MosCownpur, creative writing technology" />
-        <meta property="og:title" content="About Us - World Building Platform & Creative Writing Tools | MosCownpur" />
-        <meta property="og:description" content="Learn about MosCownpur's mission to empower creators with the best world building and universe management tools. Meet our team of passionate creators and innovators." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.moscownpur.in/about" />
-        <link rel="canonical" href="https://www.moscownpur.in/about" />
       </Helmet>
 
-          <div className="min-h-screen bg-background text-foreground dark">
+      <div className="min-h-screen bg-background text-foreground overflow-hidden transition-colors duration-500">
+        <PublicPageBackground />
         <PublicHeader />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative z-10">
           {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-display mb-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-20"
+          >
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 borel-regular">
               About <span className="gradient-text-cosmic">MosCownpur</span>
             </h1>
-            <p className="text-subheading text-muted-foreground mb-8 max-w-3xl mx-auto">
-              We're a team of passionate creators, developers, and storytellers dedicated to 
+            <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed">
+              We're a team of passionate creators, developers, and storytellers dedicated to
               building the world's most powerful platform for fictional universe creation and management.
             </p>
-            <div className="flex justify-center gap-4 flex-wrap">
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-blue smooth-transition">World Building</span>
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-green smooth-transition">Creative Tools</span>
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-orange smooth-transition">AI Technology</span>
-              <span className="glass-card px-6 py-3 rounded-full text-sm font-medium soft-glow-purple smooth-transition">Community</span>
+            <div className="flex justify-center gap-3 flex-wrap">
+              {["World Building", "Creative Tools", "AI Technology", "Community"].map((tag, i) => (
+                <motion.span
+                  key={tag}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass-card px-5 py-2 rounded-full text-sm font-medium hover:bg-primary/10 transition-colors cursor-default"
+                >
+                  {tag}
+                </motion.span>
+              ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Mission Section */}
-          <div className="mb-16">
-            <div className="glass-card rounded-2xl p-8 md:p-12 soft-glow-cosmic">
-              <div className="grid lg:grid-cols-3 gap-8 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-24"
+          >
+            <div className="glass-card rounded-3xl p-10 md:p-12 border-l-4 border-l-blue-500">
+              <div className="grid lg:grid-cols-3 gap-10 items-center">
                 <div className="lg:col-span-2">
-                  <h2 className="text-heading mb-6 gradient-text-blue">Our Mission</h2>
-                  <p className="text-subheading text-muted-foreground mb-6">
-                    To empower creators worldwide with the most comprehensive and intuitive tools 
-                    for building, managing, and exploring fictional universes. We believe that every 
+                  <h2 className="text-3xl font-bold mb-6 borel-regular">Our Mission</h2>
+                  <p className="text-xl text-foreground/90 mb-6 leading-relaxed">
+                    To empower creators worldwide with the most comprehensive and intuitive tools
+                    for building, managing, and exploring fictional universes. We believe that every
                     story deserves a rich, detailed world to call home.
                   </p>
-                  <p className="text-body text-muted-foreground mb-8">
-                    Whether you're writing a novel, creating a game, or developing a screenplay, 
-                    MosCownpur provides the foundation you need to bring your creative vision to life. 
-                    Our platform combines cutting-edge technology with deep understanding of the 
+                  <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                    Whether you're writing a novel, creating a game, or developing a screenplay,
+                    MosCownpur provides the foundation you need to bring your creative vision to life.
+                    Our platform combines cutting-edge technology with deep understanding of the
                     creative process to deliver tools that truly serve creators.
                   </p>
                   <div className="flex gap-4 flex-wrap">
-                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-blue smooth-transition">
+                    <span className="px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 bg-blue-500/10 text-blue-500 border border-blue-500/20">
                       <Target size={16} />
                       Creator-First Design
                     </span>
-                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-green smooth-transition">
+                    <span className="px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 bg-green-500/10 text-green-500 border border-green-500/20">
                       <Zap size={16} />
                       Innovation Driven
                     </span>
-                    <span className="glass-card px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 soft-glow-orange smooth-transition">
+                    <span className="px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2 bg-orange-500/10 text-orange-500 border border-orange-500/20">
                       <Globe size={16} />
                       Global Community
                     </span>
                   </div>
                 </div>
                 <div className="text-center">
-                  <Globe size={120} className="gradient-text-cosmic mx-auto mb-4" />
-                  <h4 className="text-subheading">Building Worlds Together</h4>
+                  <div className="w-40 h-40 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center animate-pulse-slow">
+                    <Globe size={80} className="text-blue-500" />
+                  </div>
+                  <h4 className="text-xl font-bold nerko-one-regular">Building Worlds Together</h4>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Stats Section */}
-          <div className="mb-16">
-            <h2 className="text-heading text-center mb-12 gradient-text-purple">Our Impact</h2>
+          <div className="mb-24">
+            <motion.h2
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-4xl font-bold text-center mb-16 borel-regular"
+            >
+              Our <span className="gradient-text-cosmic">Impact</span>
+            </motion.h2>
+
             <div className="text-center">
               {stats.map((stat, index) => (
-                <div key={index} className="glass-card rounded-xl p-8 max-w-2xl mx-auto">
-                  <div className="text-display gradient-text-cosmic mb-4">{stat.number}</div>
-                  <p className="text-subheading text-gray-300">{stat.label}</p>
-                </div>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="glass-card rounded-2xl p-10 max-w-3xl mx-auto border border-primary/20 bg-primary/5"
+                >
+                  <div className="text-5xl md:text-6xl font-bold gradient-text-cosmic mb-6 nerko-one-regular">{stat.number}</div>
+                  <p className="text-xl text-muted-foreground">{stat.label}</p>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* Values Section */}
-          <div className="mb-16">
-            <h2 className="text-heading text-center mb-12 gradient-text-green">Our Values</h2>
+          <div className="mb-24">
+            <motion.h2
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-4xl font-bold text-center mb-16 borel-regular"
+            >
+              Our <span className="text-green-500">Values</span>
+            </motion.h2>
+
             <div className="grid lg:grid-cols-2 gap-8">
               {values.map((value, index) => (
-                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
-                  <div className="flex items-center mb-4">
-                    <div className="mr-4">
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="glass-card rounded-2xl p-8 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="flex items-center mb-6">
+                    <div className="mr-6 p-3 bg-secondary/30 rounded-xl">
                       {value.icon}
                     </div>
-                    <h4 className="text-subheading">{value.title}</h4>
+                    <h4 className="text-2xl font-bold nerko-one-regular">{value.title}</h4>
                   </div>
-                  <p className="text-body text-gray-400">{value.description}</p>
-                </div>
+                  <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* Team Section */}
-          <div className="mb-16">
-            <h2 className="text-heading text-center mb-12 gradient-text-orange">Meet Our Team</h2>
+          <div className="mb-24">
+            <motion.h2
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-4xl font-bold text-center mb-16 borel-regular"
+            >
+              Meet Our <span className="text-orange-500">Team</span>
+            </motion.h2>
+
             <div className="grid lg:grid-cols-2 gap-8">
               {teamMembers.map((member, index) => (
-                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
-                  <div className="flex items-start mb-4">
-                    <div className="gradient-text-cosmic bg-black rounded-full w-16 h-16 flex items-center justify-center mr-4 soft-glow-cosmic">
-                      <span className="font-bold text-white text-lg">{member.avatar}</span>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="glass-card rounded-2xl p-8 hover:border-primary/30 transition-all duration-300 group"
+                >
+                  <div className="flex items-start mb-6">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mr-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <span className="font-bold text-white text-2xl">{member.avatar}</span>
                     </div>
                     <div>
-                      <h5 className="text-subheading mb-1">{member.name}</h5>
-                      <p className="gradient-text-blue mb-2">{member.role}</p>
-                      <p className="text-caption text-gray-400">{member.bio}</p>
+                      <h5 className="text-2xl font-bold mb-1 nerko-one-regular">{member.name}</h5>
+                      <p className="text-primary font-medium mb-2">{member.role}</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
                     </div>
                   </div>
-                  <div className="flex gap-2 flex-wrap">
+                  <div className="flex gap-2 flex-wrap ml-26 pl-26">
                     {member.expertise.map((skill, idx) => (
-                      <span key={idx} className="glass-card text-gray-300 px-3 py-1 rounded-full text-xs smooth-transition">
+                      <span key={idx} className="px-3 py-1 rounded-full text-xs font-medium bg-secondary/50 text-secondary-foreground">
                         {skill}
                       </span>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* Milestones Section */}
-          <div className="mb-16">
-            <h2 className="text-heading text-center mb-12 gradient-text-pink">Our Journey</h2>
+          <div className="mb-24">
+            <motion.h2
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              className="text-4xl font-bold text-center mb-16 borel-regular"
+            >
+              Our <span className="text-pink-500">Journey</span>
+            </motion.h2>
+
             <div className="grid lg:grid-cols-2 gap-8">
               {milestones.map((milestone, index) => (
-                <div key={index} className="glass-card rounded-xl p-6 smooth-transition hover:soft-glow-cosmic">
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="glass-card rounded-2xl p-8 hover:border-primary/30 transition-all"
+                >
                   <div className="flex items-center mb-4">
-                    <span className="gradient-text-cosmic bg-black px-4 py-2 rounded-full text-sm font-medium mr-4 soft-glow-cosmic">{milestone.year}</span>
-                    <h5 className="text-subheading">{milestone.title}</h5>
+                    <span className="px-4 py-2 rounded-full text-sm font-bold bg-pink-500/10 text-pink-500 mr-4 border border-pink-500/20">{milestone.year}</span>
+                    <h5 className="text-xl font-bold nerko-one-regular">{milestone.title}</h5>
                   </div>
-                  <p className="text-body text-gray-400">{milestone.description}</p>
-                </div>
+                  <p className="text-muted-foreground">{milestone.description}</p>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* CTA Section */}
-          <div className="text-center">
-            <div className="glass-card-cosmic rounded-2xl p-8 md:p-12 soft-glow-cosmic">
-              <h3 className="text-heading mb-6">Join Our Creative Community</h3>
-              <p className="text-subheading text-gray-200 mb-8 max-w-2xl mx-auto">
-                Be part of a global community of creators who are building amazing worlds 
-                and telling incredible stories with MosCownpur.
-              </p>
-              <div className="flex justify-center gap-4 flex-wrap">
-                <a href="/signup" className="glass-card text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
-                  Start Creating Free
-                </a>
-                <a href="/blog" className="glass-card border border-white text-white px-8 py-3 rounded-full font-semibold hover:soft-glow-cosmic smooth-transition">
-                  Read Our Blog
-                </a>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <div className="glass-card rounded-3xl p-12 md:p-16 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-transparent to-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative z-10">
+                <h3 className="text-3xl md:text-4xl font-bold mb-6 borel-regular">Join Our Creative Community</h3>
+                <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto">
+                  Be part of a global community of creators who are building amazing worlds
+                  and telling incredible stories with MosCownpur.
+                </p>
+                <div className="flex justify-center gap-6 flex-wrap">
+                  <a href="/signup" className="px-8 py-4 bg-primary text-primary-foreground font-bold rounded-xl shadow-lg hover:shadow-primary/25 transition-all hover:-translate-y-1">
+                    Start Creating Free
+                  </a>
+                  <a href="/blog" className="px-8 py-4 glass-card font-bold rounded-xl hover:bg-secondary/50 transition-all hover:-translate-y-1">
+                    Read Our Blog
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
+
+        <Footer />
       </div>
     </>
   );

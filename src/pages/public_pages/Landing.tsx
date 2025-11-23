@@ -116,9 +116,9 @@ const Landing: React.FC = () => {
               </motion.div>
 
               <h2 className="text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight tracking-tight borel-regular">
-                <span className="gradient-text-cosmic">Create Your Own</span>
+                <span className="gradient-text-cosmic borel-regular">Create Your Own</span>
                 <br />
-                <span className="text-foreground">Cinematic Universe</span>
+                <span className="text-foreground nerko-one-regular">Cinematic Universe</span>
               </h2>
             </motion.div>
 
@@ -190,7 +190,7 @@ const Landing: React.FC = () => {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-primary font-semibold tracking-wider uppercase text-sm"
+                className="text-primary font-semibold borel-regular tracking-wider uppercase text-sm"
               >
                 Powerful Tools
               </motion.span>
@@ -199,7 +199,7 @@ const Landing: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="text-4xl md:text-5xl font-bold mt-3 mb-6"
+                className="borel-regular text-4xl md:text-5xl font-bold mt-3 mb-6"
               >
                 Everything You Need
               </motion.h2>
@@ -208,7 +208,7 @@ const Landing: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className="text-xl text-muted-foreground max-w-2xl mx-auto"
+                className="nerko-one-regular text-xl text-muted-foreground max-w-2xl mx-auto"
               >
                 Comprehensive tools designed for creators who want to build immersive,
                 detailed fictional universes.
@@ -229,10 +229,10 @@ const Landing: React.FC = () => {
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <feature.icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="borel-regular text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
                     {feature.title}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p className="nerko-one-regular text-muted-foreground leading-relaxed">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -252,9 +252,9 @@ const Landing: React.FC = () => {
                   <div>
                     <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
                       Reimagine <br />
-                      <span className="gradient-text-cosmic">Storytelling</span>
+                      <span className="gradient-text-cosmic borel-regular">Storytelling</span>
                     </h2>
-                    <p className="text-lg text-muted-foreground leading-relaxed">
+                    <p className="nerko-one-regular text-lg text-muted-foreground leading-relaxed">
                       Moscownpur was born from the frustration of scattered notes and inconsistent lore.
                       We provide a centralized workspace where your imagination can run wild without losing track of the details.
                     </p>
