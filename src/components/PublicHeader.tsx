@@ -68,10 +68,8 @@ const PublicHeader: React.FC = () => {
     { name: 'Pricing', href: '/pricing', icon: CreditCard },
     { name: 'Blog', href: '/blog', icon: PenSquare },
     { name: 'About', href: '/about', icon: Info },
-    { name: 'Moscowvitz', href: '/wiki/moscowvitz', icon: Globe },
-    { name: 'Sign In', href: '/login', icon: Key },
-    { name: 'Get Started', href: '/signup', icon: Flame },
-    { name: 'Admin', href: '/admin/login', icon: Monitor },
+    { name: 'Login', href: '/login', icon: Key },
+    { name: 'Sign Up', href: '/signup', icon: Flame },
   ];
 
   return (
@@ -83,7 +81,7 @@ const PublicHeader: React.FC = () => {
       <nav
         className={`fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out box-border
             ${scrolled
-            ? "top-4 w-[95%] md:w-[90%] max-w-6xl rounded-full bg-black/80 backdrop-blur-xl shadow-[0_0_30px_-5px_var(--primary)]"
+            ? "top-4 w-full max-w-6xl rounded-full bg-black/80 backdrop-blur-xl shadow-[0_0_30px_-5px_var(--primary)]"
             : "top-0 w-full max-w-[100vw] backdrop-blur-xl border-b border-transparent py-2"
           }
         `}
@@ -91,11 +89,11 @@ const PublicHeader: React.FC = () => {
         {/* Glowing Gradient Border */}
         {scrolled && (
           <div className="absolute inset-0 rounded-full p-[1px] -z-10 bg-gradient-to-r from-white/20 via-[var(--primary)] to-white/20">
-            <div className="w-full h-full bg-black/90 rounded-full backdrop-blur-xl"></div>
+            <div className="w-full h-full bg-black/80 rounded-full backdrop-blur-xl"></div>
           </div>
         )}
 
-        <div className={`px-6 ${scrolled ? "py-3" : "py-4"} flex justify-between items-center transition-all duration-500 relative`}>
+        <div className={`px-8 py-3 flex justify-between items-center transition-all duration-500 relative`}>
 
           {/* --- BRAND (updated with logo animation) --- */}
           <Link to="/" className="flex items-center gap-3 group">
