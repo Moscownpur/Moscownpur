@@ -6,7 +6,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
-import { AdminAuthProvider } from './contexts/AdminAuthContext';
+import { AdminAuthContextProvider } from './contexts/AdminAuthContext';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
@@ -70,7 +70,7 @@ function App() {
     <HelmetProvider>
       <ThemeProvider>
         <AuthProvider>
-          <AdminAuthProvider>
+          <AdminAuthContextProvider>
             <Router>
               <SEOUpdater />
               <StructuredDataUpdater />
@@ -147,7 +147,7 @@ function App() {
               <Analytics />
               <SpeedInsights />
             </Router>
-          </AdminAuthProvider>
+          </AdminAuthContextProvider>
         </AuthProvider>
       </ThemeProvider>
     </HelmetProvider>
