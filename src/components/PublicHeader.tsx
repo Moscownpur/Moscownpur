@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe, Flame, Monitor, Key, Sun, Moon } from 'lucide-react';
+import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe, Flame, Monitor, Key } from 'lucide-react';
 import logoImage from '/logo-v2.png';
 import { useResponsive } from '../hooks/useResponsive';
-import { useTheme } from '../contexts/ThemeContext';
+import ThemeSwitcher from './ThemeSwitcher';
 
 const PublicHeader: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,7 +13,6 @@ const PublicHeader: React.FC = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const location = useLocation();
-  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -121,27 +120,13 @@ const PublicHeader: React.FC = () => {
               </Link>
             );
           })}
-
-          {/* Theme Toggle */}
-          <motion.button
-            whileHover={{ scale: 1.1, rotate: 15 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-white/10 text-foreground/80 hover:text-foreground transition-colors"
-          >
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </motion.button>
+          <ThemeSwitcher />
         </div>
+
 
         {/* Mobile Hamburger Button */}
         <div className={`${!isDesktop ? 'flex' : 'hidden'} items-center gap-4`}>
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-white/10 text-foreground/80"
-          >
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </motion.button>
+          <ThemeSwitcher />
 
           <motion.button
             whileHover={{ scale: 1.05 }}
