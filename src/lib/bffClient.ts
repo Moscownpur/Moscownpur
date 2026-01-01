@@ -77,8 +77,8 @@ class BFFClient {
     return response;
   }
 
-  async signup(email: string, password: string, full_name?: string): Promise<ApiResponse<SignupResult>> {
-    return this.request<SignupResult>('/auth/signup', {
+  async signup(email: string, password: string, full_name?: string): Promise<ApiResponse<User>> {
+    return this.request<User>('/auth/signup', {
       method: 'POST',
       body: JSON.stringify({ email, password, full_name }),
     });
@@ -101,6 +101,19 @@ class BFFClient {
     const response = await this.request<LoginResponseData>('/auth/refresh', {
       method: 'POST',
       body: JSON.stringify({ token: this.token }),
+    });
+    
+    if (response.success && response.data?.token) {
+      this.setToken(response.data.token);
+    }
+    
+    return response;
+  }
+
+  async exchangeSupabaseToken(supabaseToken: string, userId: string): Promise<ApiResponse<LoginResponseData>> {
+    const response = await this.request<LoginResponseData>('/auth/exchange-supabase', {
+      method: 'POST',
+      body: JSON.stringify({ supabase_token: supabaseToken, user_id: userId }),
     });
     
     if (response.success && response.data?.token) {

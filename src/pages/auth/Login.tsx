@@ -21,16 +21,23 @@ const Login: React.FC = () => {
       if (hashParams.get('access_token') || searchParams.get('code')) {
         setLoading(true);
         try {
+          // Wait a moment for Supabase to process the session
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
           // Get the session from Supabase
           const { data: { session }, error } = await supabase.auth.getSession();
 
           if (error) throw error;
 
           if (session) {
-            // Session exists, user is authenticated
-            // The AuthContext will pick this up and redirect
+            // Session exists, let AuthContext handle the token exchange
+            // The onAuthStateChange listener in AuthContext will trigger
             toast.success('Successfully signed in!');
-            navigate('/dashboard');
+            
+            // Navigate after a short delay to allow token exchange
+            setTimeout(() => {
+              navigate('/dashboard');
+            }, 1500);
           }
         } catch (error) {
           console.error('OAuth callback error:', error);

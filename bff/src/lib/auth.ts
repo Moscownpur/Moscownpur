@@ -198,6 +198,36 @@ class AuthService {
       return null;
     }
   }
+
+  async createUser(userData: { id: string; email: string; full_name?: string }): Promise<AuthUser> {
+    if (!supabase) {
+      throw new Error('Database connection not available');
+    }
+
+    try {
+      // Create user role entry
+      const { error: roleError } = await supabase
+        .from('user_roles')
+        .insert({ user_id: userData.id, is_admin: false });
+
+      if (roleError) {
+        console.warn('Could not create user role:', roleError);
+      }
+
+      const authUser: AuthUser = {
+        id: userData.id,
+        email: userData.email,
+        full_name: userData.full_name,
+        created_at: new Date().toISOString(),
+        is_admin: false
+      };
+
+      return authUser;
+    } catch (error) {
+      console.error('Create user error:', error);
+      throw error;
+    }
+  }
 }
 
 export const authService = new AuthService();

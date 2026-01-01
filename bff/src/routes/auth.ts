@@ -125,5 +125,68 @@ router.post('/logout', async (req: Request, res: Response) => {
   }
 });
 
+// Exchange Supabase token for BFF JWT
+router.post('/exchange-supabase', async (req: Request, res: Response) => {
+  try {
+    const { supabase_token, user_id } = req.body;
+
+    if (!supabase_token || !user_id) {
+      throw new AppError('Supabase token and user ID are required', 400, 'MISSING_SUPABASE_DATA');
+    }
+
+    // Verify Supabase token and get user info
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabase = createClient(
+      serverConfig.supabaseUrl!,
+      serverConfig.supabaseAnonKey!
+    );
+
+    const { data: { user }, error } = await supabase.auth.getUser(supabase_token);
+    
+    if (error || !user || user.id !== user_id) {
+      throw new AppError('Invalid Supabase token', 401, 'INVALID_SUPABASE_TOKEN');
+    }
+
+    // Get or create user in BFF database
+    let bffUser = await authService.getUserById(user.id);
+    
+    if (!bffUser) {
+      // Create user if doesn't exist
+      bffUser = await authService.createUser({
+        id: user.id,
+        email: user.email || '',
+        full_name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User'
+      });
+    }
+
+    // Generate BFF JWT token
+    const jwt = await import('jsonwebtoken');
+    const token = jwt.default.sign(
+      { userId: bffUser.id, email: bffUser.email },
+      serverConfig.jwtSecret!,
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      success: true,
+      data: {
+        user: {
+          id: bffUser.id,
+          email: bffUser.email,
+          full_name: bffUser.full_name,
+          is_admin: bffUser.is_admin,
+          created_at: bffUser.created_at
+        },
+        token
+      }
+    });
+  } catch (error: any) {
+    if (error instanceof AppError) {
+      throw error;
+    }
+    throw new AppError('Token exchange failed', 401, 'TOKEN_EXCHANGE_FAILED');
+  }
+});
+
 export { authRoutes as authRouter };
 export const authRoutes = router;

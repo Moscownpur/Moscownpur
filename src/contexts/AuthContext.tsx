@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { bffClient, User, SignupResult } from '../lib/bffClient';
+import { bffClient, User } from '../lib/bffClient';
+import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
 interface LoginCredentials {
@@ -11,6 +12,12 @@ interface SignupCredentials {
   email: string;
   password: string;
   full_name?: string;
+}
+
+interface SignupResult {
+  success: boolean;
+  message: string;
+  requiresConfirmation?: boolean;
 }
 
 interface AuthContextType {
@@ -46,6 +53,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       bffClient.setToken(token);
     }
     setInitialized(true);
+
+    // Set up Supabase auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          try {
+            // Exchange Supabase token for BFF token
+            const response = await bffClient.exchangeSupabaseToken(
+              session.access_token,
+              session.user.id
+            );
+            
+            if (response.success && response.data) {
+              setUser(response.data.user);
+              toast.success(`Welcome, ${response.data.user.full_name || response.data.user.email}!`);
+            }
+          } catch (error) {
+            console.error('Token exchange failed:', error);
+          }
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          localStorage.removeItem('auth_token');
+          bffClient.setToken(null);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<void> => {
@@ -77,9 +112,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (response.success) {
         toast.success('Please check your email to confirm your account.');
+        return {
+          success: true,
+          message: 'Please check your email to confirm your account.',
+          requiresConfirmation: true
+        };
       }
       
-      return response.data;
+      return {
+        success: false,
+        message: 'Signup failed'
+      };
     } catch (error: any) {
       const message = error.response?.data?.error || error.message || 'Signup failed';
       toast.error(message);
