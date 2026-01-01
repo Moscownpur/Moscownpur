@@ -115,10 +115,10 @@ const Landing: React.FC = () => {
                 <Globe size={120} />
               </motion.div>
 
-              <h2 className="text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight tracking-tight borel-regular">
-                <span className="gradient-text-cosmic borel-regular">Create Your Own</span>
+              <h2 className="text-5xl md:text-7xl lg:text-8xl mb-6 leading-tight tracking-tight font-bungee">
+                <span className="gradient-text-cosmic font-bungee">Create Your Own</span>
                 <br />
-                <span className="text-foreground nerko-one-regular">Cinematic Universe</span>
+                <span className="text-foreground font-bungee">Cinematic Universe</span>
               </h2>
             </motion.div>
 
@@ -199,7 +199,7 @@ const Landing: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className="borel-regular text-4xl md:text-5xl font-bold mt-3 mb-6"
+                className="font-bungee text-4xl md:text-5xl font-bold mt-3 mb-6"
               >
                 Everything You Need
               </motion.h2>
@@ -229,7 +229,7 @@ const Landing: React.FC = () => {
                   <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                     <feature.icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="borel-regular text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="font-bungee text-xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors">
                     {feature.title}
                   </h3>
                   <p className="nerko-one-regular text-muted-foreground leading-relaxed">
@@ -250,9 +250,9 @@ const Landing: React.FC = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="space-y-8">
                   <div>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                    <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight font-bungee">
                       Reimagine <br />
-                      <span className="gradient-text-cosmic borel-regular">Storytelling</span>
+                      <span className="gradient-text-cosmic font-bungee">Storytelling</span>
                     </h2>
                     <p className="nerko-one-regular text-lg text-muted-foreground leading-relaxed">
                       Moscownpur was born from the frustration of scattered notes and inconsistent lore.
@@ -327,7 +327,7 @@ const Landing: React.FC = () => {
                 <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full mb-8">
                   <Feather className="w-6 h-6 text-primary" />
                 </div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">Experience the Magic</h2>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 font-bungee">Experience the Magic</h2>
                 <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
                   Try our advanced dialogue system firsthand. See how we handle character speech,
                   narration, and internal thoughts in a seamless interface.
@@ -352,8 +352,8 @@ const Landing: React.FC = () => {
         {/* Final CTA */}
         <section className="px-6 pb-32">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">
-              Ready to build your <span className="gradient-text-cosmic">Masterpiece?</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8 font-bungee">
+              Ready to build your <span className="gradient-text-cosmic font-bungee">Masterpiece?</span>
             </h2>
             <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
               Join thousands of creators who are already bringing their fictional universes to life.
