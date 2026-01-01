@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe, Flame, Monitor, Key } from 'lucide-react';
 import { useResponsive } from '../hooks/useResponsive';
 import ThemeSwitcher from './ThemeSwitcher';
-import DarkModeToggle from './DarkModeToggle';
+// import DarkModeToggle from './DarkModeToggle';
 import DynamicLogo from './DynamicLogo';
 
 const PublicHeader: React.FC = () => {
@@ -119,13 +119,13 @@ const PublicHeader: React.FC = () => {
           {/* --- ACTIONS --- */}
           <div className="hidden md:flex items-center gap-4">
             <ThemeSwitcher />
-            <DarkModeToggle />
+            {/* <DarkModeToggle /> */}
           </div>
 
           {/* --- MOBILE TOGGLE --- */}
           <div className="md:hidden flex items-center gap-4">
             <ThemeSwitcher />
-            <DarkModeToggle />
+            {/* <DarkModeToggle /> */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -201,7 +201,7 @@ const PublicHeader: React.FC = () => {
                   <span className="text-gray-400 text-sm">Theme</span>
                   <div className="flex items-center gap-4">
                     <ThemeSwitcher />
-                    <DarkModeToggle />
+                    {/* <DarkModeToggle /> */}
                   </div>
                 </div>
               </motion.div>
