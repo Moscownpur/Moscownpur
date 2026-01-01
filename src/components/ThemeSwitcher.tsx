@@ -21,7 +21,7 @@ const colorMap: { [key: string]: string } = {
 };
 
 const ThemeSwitcher = () => {
-  const { primaryColor, setPrimaryColor } = useTheme();
+  const { primaryColor, setPrimaryColor, theme } = useTheme();
 
   return (
     <div className="flex items-center">
@@ -31,7 +31,7 @@ const ThemeSwitcher = () => {
             <PopoverButton
               className={`
                 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300
-                ${open ? "bg-white text-black rotate-90" : "bg-white/10 text-white hover:bg-white/20"}
+                ${open ? "bg-white text-black rotate-90" : "bg-white/10 text-foreground hover:bg-white/20"}
                 focus:outline-none
               `}
             >
