@@ -35,9 +35,9 @@ class BFFClient {
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`;
     
-    const headers: HeadersInit = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     };
 
     if (this.token) {
@@ -64,8 +64,8 @@ class BFFClient {
   }
 
   // Authentication endpoints
-  async login(email: string, password: string) {
-    const response = await this.request('/auth/login', {
+  async login(email: string, password: string): Promise<ApiResponse<LoginResponseData>> {
+    const response = await this.request<LoginResponseData>('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
@@ -77,8 +77,8 @@ class BFFClient {
     return response;
   }
 
-  async signup(email: string, password: string, full_name?: string) {
-    return this.request('/auth/signup', {
+  async signup(email: string, password: string, full_name?: string): Promise<ApiResponse<SignupResult>> {
+    return this.request<SignupResult>('/auth/signup', {
       method: 'POST',
       body: JSON.stringify({ email, password, full_name }),
     });
@@ -93,12 +93,12 @@ class BFFClient {
     return response;
   }
 
-  async getCurrentUser() {
-    return this.request('/auth/me');
+  async getCurrentUser(): Promise<ApiResponse<User>> {
+    return this.request<User>('/auth/me');
   }
 
-  async refreshToken() {
-    const response = await this.request('/auth/refresh', {
+  async refreshToken(): Promise<ApiResponse<LoginResponseData>> {
+    const response = await this.request<LoginResponseData>('/auth/refresh', {
       method: 'POST',
       body: JSON.stringify({ token: this.token }),
     });
@@ -139,6 +139,126 @@ class BFFClient {
     });
   }
 
+  // Character endpoints
+  async getCharacters(worldId?: string) {
+    const endpoint = worldId ? `/characters?world_id=${worldId}` : '/characters';
+    return this.request<Character[]>(endpoint);
+  }
+
+  async getCharacter(id: string) {
+    return this.request<Character>(`/characters/${id}`);
+  }
+
+  async createCharacter(characterData: Omit<Character, 'id' | 'created_at' | 'updated_at' | 'user_id'>) {
+    return this.request<Character>('/characters', {
+      method: 'POST',
+      body: JSON.stringify(characterData),
+    });
+  }
+
+  async updateCharacter(id: string, characterData: Partial<Character>) {
+    return this.request<Character>(`/characters/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(characterData),
+    });
+  }
+
+  async deleteCharacter(id: string) {
+    return this.request(`/characters/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Chapter endpoints
+  async getChapters(worldId?: string) {
+    const endpoint = worldId ? `/chapters?world_id=${worldId}` : '/chapters';
+    return this.request<Chapter[]>(endpoint);
+  }
+
+  async getChapter(id: string) {
+    return this.request<Chapter>(`/chapters/${id}`);
+  }
+
+  async createChapter(chapterData: Omit<Chapter, 'id' | 'created_at' | 'updated_at' | 'user_id'>) {
+    return this.request<Chapter>('/chapters', {
+      method: 'POST',
+      body: JSON.stringify(chapterData),
+    });
+  }
+
+  async updateChapter(id: string, chapterData: Partial<Chapter>) {
+    return this.request<Chapter>(`/chapters/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(chapterData),
+    });
+  }
+
+  async deleteChapter(id: string) {
+    return this.request(`/chapters/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Scene endpoints
+  async getScenes(chapterId?: string) {
+    const endpoint = chapterId ? `/scenes?chapter_id=${chapterId}` : '/scenes';
+    return this.request<Scene[]>(endpoint);
+  }
+
+  async getScene(id: string) {
+    return this.request<Scene>(`/scenes/${id}`);
+  }
+
+  async createScene(sceneData: Omit<Scene, 'id' | 'created_at' | 'updated_at' | 'user_id'>) {
+    return this.request<Scene>('/scenes', {
+      method: 'POST',
+      body: JSON.stringify(sceneData),
+    });
+  }
+
+  async updateScene(id: string, sceneData: Partial<Scene>) {
+    return this.request<Scene>(`/scenes/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(sceneData),
+    });
+  }
+
+  async deleteScene(id: string) {
+    return this.request(`/scenes/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Dialogue endpoints
+  async getDialogues(sceneId?: string) {
+    const endpoint = sceneId ? `/dialogues?scene_id=${sceneId}` : '/dialogues';
+    return this.request<Dialogue[]>(endpoint);
+  }
+
+  async getDialogue(id: string) {
+    return this.request<Dialogue>(`/dialogues/${id}`);
+  }
+
+  async createDialogue(dialogueData: Omit<Dialogue, 'id' | 'created_at' | 'updated_at' | 'user_id'>) {
+    return this.request<Dialogue>('/dialogues', {
+      method: 'POST',
+      body: JSON.stringify(dialogueData),
+    });
+  }
+
+  async updateDialogue(id: string, dialogueData: Partial<Dialogue>) {
+    return this.request<Dialogue>(`/dialogues/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(dialogueData),
+    });
+  }
+
+  async deleteDialogue(id: string) {
+    return this.request(`/dialogues/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // Health check
   async getHealth() {
     return this.request('/api/health');
@@ -152,6 +272,59 @@ export interface World {
   user_id: string;
   created_at: string;
   updated_at?: string;
+}
+
+export interface Character {
+  id: string;
+  name: string;
+  description?: string;
+  world_id: string;
+  user_id: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface Chapter {
+  id: string;
+  name: string;
+  description?: string;
+  world_id: string;
+  user_id: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface Scene {
+  id: string;
+  name: string;
+  description?: string;
+  chapter_id: string;
+  user_id: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface Dialogue {
+  id: string;
+  content: string;
+  character_id: string;
+  scene_id: string;
+  user_id: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  full_name?: string;
+  is_admin?: boolean;
+  created_at: string;
+}
+
+export interface LoginResponseData {
+  user: User;
+  token: string;
 }
 
 export const bffClient = new BFFClient();

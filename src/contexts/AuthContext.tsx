@@ -1,12 +1,24 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService, AuthUser, LoginCredentials, SignupCredentials, SignupResult } from '../lib/auth';
+import { bffClient, User, SignupResult } from '../lib/bffClient';
 import toast from 'react-hot-toast';
 
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface SignupCredentials {
+  email: string;
+  password: string;
+  full_name?: string;
+}
+
 interface AuthContextType {
-  user: AuthUser | null;
+  user: User | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   signup: (credentials: SignupCredentials) => Promise<SignupResult>;
   logout: () => Promise<void>;
+  validateToken: () => Promise<boolean>;
   isAuthenticated: boolean;
   isAdmin: boolean;
   loading: boolean;
@@ -23,48 +35,33 @@ export const useAuth = () => {
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    // Check for existing session on mount
-    const checkAuth = async () => {
-      try {
-        const currentUser = await authService.getCurrentUser();
-        setUser(currentUser);
-      } catch (error) {
-        console.error('Auth check error:', error);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-
-    // Set up auth state change listener
-    const unsubscribe = authService.onAuthStateChange((user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe.data.subscription.unsubscribe();
-      }
-    };
+    // Only set up the token if it exists, but don't validate immediately
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      bffClient.setToken(token);
+    }
+    setInitialized(true);
   }, []);
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials: LoginCredentials): Promise<void> => {
     try {
       setLoading(true);
-      const user = await authService.login(credentials);
-      setUser(user);
-      toast.success(`Welcome back, ${user.full_name || user.email}! ✨`);
-      // Redirect to dashboard after successful login
-      window.location.href = '/dashboard';
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Login failed';
+      
+      const response = await bffClient.login(credentials.email, credentials.password);
+      
+      if (response.success && response.data?.token) {
+        bffClient.setToken(response.data.token);
+        setUser(response.data.user);
+        localStorage.setItem('auth_token', response.data.token);
+        toast.success(`Welcome back, ${response.data.user.full_name || response.data.user.email}!`);
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.error || error.message || 'Login failed';
       toast.error(message);
       throw error;
     } finally {
@@ -75,17 +72,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signup = async (credentials: SignupCredentials): Promise<SignupResult> => {
     try {
       setLoading(true);
-      const result = await authService.signup(credentials);
       
-      // Show confirmation message for new signups
-      toast.success(result.message);
+      const response = await bffClient.signup(credentials.email, credentials.password, credentials.full_name);
       
-      // Always redirect to login page after signup
-      window.location.href = '/login';
+      if (response.success) {
+        toast.success('Please check your email to confirm your account.');
+      }
       
-      return result;
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Signup failed';
+      return response.data;
+    } catch (error: any) {
+      const message = error.response?.data?.error || error.message || 'Signup failed';
       toast.error(message);
       throw error;
     } finally {
@@ -93,15 +89,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const logout = async () => {
+  const validateToken = async (): Promise<boolean> => {
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      return false;
+    }
+
     try {
       setLoading(true);
-      await authService.logout();
-      setUser(null);
-      toast.success('Logged out successfully');
-      // Redirect to landing page after logout
-      window.location.href = '/';
+      const response = await bffClient.getCurrentUser();
+      if (response.success && response.data) {
+        setUser(response.data);
+        return true;
+      } else {
+        localStorage.removeItem('auth_token');
+        bffClient.setToken(null);
+        setUser(null);
+        return false;
+      }
     } catch (error) {
+      console.error('Token validation error:', error);
+      localStorage.removeItem('auth_token');
+      bffClient.setToken(null);
+      setUser(null);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      
+      await bffClient.logout();
+      setUser(null);
+      localStorage.removeItem('auth_token');
+      bffClient.setToken(null);
+      
+      toast.success('Logged out successfully');
+    } catch (error: any) {
       console.error('Logout error:', error);
       toast.error('Logout failed');
     } finally {
@@ -109,16 +136,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const value: AuthContextType = {
+    user,
+    login,
+    signup,
+    logout,
+    validateToken,
+    isAuthenticated: !!user,
+    isAdmin: user?.is_admin || false,
+    loading: loading || !initialized
+  };
+
   return (
-    <AuthContext.Provider value={{
-      user,
-      login,
-      signup,
-      logout,
-      isAuthenticated: !!user,
-      isAdmin: user?.is_admin || false,
-      loading
-    }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

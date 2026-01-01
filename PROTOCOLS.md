@@ -228,6 +228,27 @@ POST   /api/worlds/:id/characters    # Create character
 GET    /api/characters/:id           # Get character
 PUT    /api/characters/:id           # Update character
 DELETE /api/characters/:id           # Delete character
+
+# Chapter Endpoints
+GET    /api/chapters              # List chapters
+POST   /api/chapters              # Create chapter
+GET    /api/chapters/:id          # Get chapter
+PUT    /api/chapters/:id          # Update chapter
+DELETE /api/chapters/:id          # Delete chapter
+
+# Scene Endpoints
+GET    /api/scenes              # List scenes
+POST   /api/scenes              # Create scene
+GET    /api/scenes/:id          # Get scene
+PUT    /api/scenes/:id          # Update scene
+DELETE /api/scenes/:id          # Delete scene
+
+# Dialogue Endpoints
+GET    /api/dialogues              # List dialogues
+POST   /api/dialogues              # Create dialogue
+GET    /api/dialogues/:id          # Get dialogue
+PUT    /api/dialogues/:id          # Update dialogue
+DELETE /api/dialogues/:id          # Delete dialogue
 ```
 
 ### Query Parameters

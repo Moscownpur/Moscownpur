@@ -5,10 +5,15 @@ import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { authMiddleware } from './middleware/authMiddleware';
+import { adminAuthMiddleware } from './middleware/adminAuthMiddleware';
 import { errorHandler } from './middleware/errorHandler';
 import { requestLogger } from './middleware/requestLogger';
 import { authRouter as authRoutes } from './routes/auth';
 import { worldRouter as worldRoutes } from './routes/worlds';
+import { characterRouter as characterRoutes } from './routes/characters';
+import { chapterRouter as chapterRoutes } from './routes/chapters';
+import { sceneRouter as sceneRoutes } from './routes/scenes';
+import { dialogueRouter as dialogueRoutes } from './routes/dialogues';
 import { healthRouter as healthRoutes } from './routes/health';
 
 // Load environment variables
@@ -61,7 +66,11 @@ class BFFServer {
     this.app.use('/api/auth', authRoutes);
 
     // Protected routes (require authentication)
-    this.app.use('/api/worlds', authMiddleware, worldRoutes);
+    this.app.use('/api/worlds', authMiddleware, adminAuthMiddleware, worldRoutes);
+    this.app.use('/api/characters', authMiddleware, characterRoutes);
+    this.app.use('/api/chapters', authMiddleware, chapterRoutes);
+    this.app.use('/api/scenes', authMiddleware, sceneRoutes);
+    this.app.use('/api/dialogues', authMiddleware, dialogueRoutes);
 
     // 404 handler
     this.app.use('*', (req: Request, res: Response) => {

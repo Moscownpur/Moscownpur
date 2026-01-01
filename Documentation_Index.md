@@ -12,11 +12,13 @@ It defines the purpose, scope, and interlinking of each `.md` file for developer
 - [System.md](./System.md) - Core architecture and data flow
 - [PROTOCOLS.md](./PROTOCOLS.md) - Communication standards and API patterns
 - [SECURITY.md](./SECURITY.md) - Authentication and security policies
+- [BFF README.md](./bff/README.md) - BFF architecture, setup, and API endpoints
 
 ### 🚀 Development & Operations
 - [DEPLOYMENT.md](./DEPLOYMENT.md) - Deployment and environment setup
 - [CONTRIBUTING.md](./CONTRIBUTING.md) - Development guidelines and conventions
 - [ERRORS.md](./ERRORS.md) - Error handling and debugging
+- [API_INTEGRATION_GUIDE.md](./API_INTEGRATION_GUIDE.md) - Guide for integrating with the BFF API
 
 ### 📈 Planning & AI Integration
 - [ROADMAP.md](./ROADMAP.md) - Project roadmap and milestones
@@ -31,6 +33,8 @@ It defines the purpose, scope, and interlinking of each `.md` file for developer
 |----------|--------------|----------|-------|
 | **[System.md](./System.md)** | Explains overall architecture, data flow, and dependencies between modules. | 🔥 High | [Read](./System.md) |
 | **[PROTOCOLS.md](./PROTOCOLS.md)** | Contains internal/external communication standards, API patterns, and versioning rules. | 🔥 High | [Read](./PROTOCOLS.md) |
+| **[BFF README.md](./bff/README.md)** | Comprehensive guide to the BFF service, including architecture, setup, and API endpoints. | 🔥 High | [Read](./bff/README.md) |
+| **[API_INTEGRATION_GUIDE.md](./API_INTEGRATION_GUIDE.md)** | Detailed instructions and best practices for integrating frontend applications with the BFF API. | 🔥 High | [Read](./API_INTEGRATION_GUIDE.md) |
 | **[SECURITY.md](./SECURITY.md)** | Details authentication, authorization, and sensitive data handling policies. | ⚠️ Medium | [Read](./SECURITY.md) |
 | **[DEPLOYMENT.md](./DEPLOYMENT.md)** | Outlines deployment steps, environment setup, and CI/CD configuration. | ⚙️ Medium | [Read](./DEPLOYMENT.md) |
 | **[ROADMAP.md](./ROADMAP.md)** | Lists upcoming features, milestones, and project phases. | 🧭 Low | [Read](./ROADMAP.md) |

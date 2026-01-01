@@ -4,12 +4,20 @@ import { app } from '../../src/app';
 import { testWorlds, jwtPayload } from '../fixtures/data';
 import jwt from 'jsonwebtoken';
 import { serverConfig } from '../../src/config/env';
+import { AuthenticatedRequest } from '../../src/middleware/authMiddleware';
 
 describe('Worlds Endpoints', () => {
   let authToken: string;
 
+  // Mock authMiddleware to provide a default authenticated non-admin user
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.mock('../../src/middleware/authMiddleware', () => ({
+      authMiddleware: jest.fn((req: AuthenticatedRequest, res, next) => {
+        req.user = { id: 'test-user-id', email: 'test@example.com', is_admin: false };
+        next();
+      })
+    }));
     // Generate valid JWT token for testing
     authToken = jwt.sign(jwtPayload, serverConfig.jwtSecret, { expiresIn: '7d' });
     
@@ -127,6 +135,8 @@ describe('Worlds Endpoints', () => {
     });
 
     it('should reject request without token', async () => {
+      // Temporarily unmock authMiddleware to test token absence
+      jest.unmock('../../src/middleware/authMiddleware'); 
       const response = await request(app)
         .get('/api/worlds')
         .expect(401);
@@ -136,6 +146,8 @@ describe('Worlds Endpoints', () => {
     });
 
     it('should reject request with invalid token', async () => {
+      // Temporarily unmock authMiddleware to test token invalidity
+      jest.unmock('../../src/middleware/authMiddleware');
       const response = await request(app)
         .get('/api/worlds')
         .set('Authorization', 'Bearer invalid-token')
@@ -143,6 +155,35 @@ describe('Worlds Endpoints', () => {
 
       expect(response.body.success).toBe(false);
       expect(response.body.code).toBe('TOKEN_INVALID');
+    });
+
+    it('should reject non-admin user from accessing worlds route', async () => {
+      // The default mock for authMiddleware in beforeEach already sets is_admin: false
+      const response = await request(app)
+        .get('/api/worlds')
+        .set('Authorization', `Bearer ${authToken}`) // Provide a token to pass authMiddleware
+        .expect(403);
+
+      expect(response.body.success).toBe(false);
+      expect(response.body.error).toBe('Forbidden: Admin access required');
+      expect(response.body.code).toBe('ADMIN_REQUIRED');
+    });
+
+    it('should allow admin user to access worlds route', async () => {
+      // Temporarily mock authMiddleware to set is_admin: true for this test
+      jest.spyOn(require('../../src/middleware/authMiddleware'), 'authMiddleware').mockImplementationOnce((req: AuthenticatedRequest, res, next) => {
+        req.user = { id: 'test-user-id', email: 'test@example.com', is_admin: true };
+        next();
+      });
+
+      const response = await request(app)
+        .get('/api/worlds')
+        .set('Authorization', `Bearer ${authToken}`)
+        .expect(200);
+
+      expect(response.body.success).toBe(true);
+      expect(response.body.data).toHaveLength(1);
+      expect(response.body.data[0].name).toBe('Test World');
     });
   });
 

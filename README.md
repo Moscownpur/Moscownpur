@@ -143,6 +143,11 @@ Moscownpur features advanced AI capabilities:
 
 ## 📖 Documentation
 
+- **[BFF README](./bff/README.md)**: A comprehensive guide to the Backend for Frontend (BFF) service, including its architecture, API endpoints, and setup instructions.
+- **[API Integration Guide](./API_INTEGRATION_GUIDE.md)**: Detailed instructions and best practices for integrating frontend applications with the BFF API.
+- **[Protocols](./PROTOCOLS.md)**: Communication standards, API patterns, and versioning rules.
+- **[System Design](./System.md)**: High-level overview of the system architecture.
+
 
 
 ## 🤝 Contributing
