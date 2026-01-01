@@ -9,6 +9,13 @@ export default {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+		fontFamily: {
+			sans: ['Inter', 'sans-serif'],
+			bungee: ['Bungee', 'sans-serif'],
+			nerko: ['"Nerko One"', 'cursive'],
+			borel: ['Borel', 'cursive'],
+			corinthia: ['Corinthia', 'cursive']
+		},
   		colors: {
   			background: 'var(--background)',
   			foreground: 'var(--foreground)',
