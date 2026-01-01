@@ -136,6 +136,14 @@ router.post('/exchange-supabase', async (req: Request, res: Response) => {
 
     // Verify Supabase token and get user info
     const { createClient } = await import('@supabase/supabase-js');
+    
+    console.log('Supabase config:', {
+      url: serverConfig.supabaseUrl,
+      hasAnonKey: !!serverConfig.supabaseAnonKey,
+      tokenLength: supabase_token?.length,
+      userId: user_id
+    });
+
     const supabase = createClient(
       serverConfig.supabaseUrl!,
       serverConfig.supabaseAnonKey!
@@ -143,8 +151,11 @@ router.post('/exchange-supabase', async (req: Request, res: Response) => {
 
     const { data: { user }, error } = await supabase.auth.getUser(supabase_token);
     
+    console.log('Supabase user verification:', { user: user?.id, error: error?.message });
+    
     if (error || !user || user.id !== user_id) {
-      throw new AppError('Invalid Supabase token', 401, 'INVALID_SUPABASE_TOKEN');
+      console.error('Token validation failed:', { error, userId: user?.id, expectedUserId: user_id });
+      throw new AppError(`Invalid Supabase token: ${error?.message || 'User not found'}`, 401, 'INVALID_SUPABASE_TOKEN');
     }
 
     // Get or create user in BFF database

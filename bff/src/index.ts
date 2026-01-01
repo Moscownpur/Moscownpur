@@ -10,7 +10,7 @@ import { errorHandler } from './middleware/errorHandler';
 import { requestLogger } from './middleware/requestLogger';
 import { authRouter as authRoutes } from './routes/auth';
 import { worldRouter as worldRoutes } from './routes/worlds';
-import { characterRouter as characterRoutes } from './routes/characters';
+import { charactersRouter as characterRoutes } from './routes/characters';
 import { chapterRouter as chapterRoutes } from './routes/chapters';
 import { sceneRouter as sceneRoutes } from './routes/scenes';
 import { dialogueRouter as dialogueRoutes } from './routes/dialogues';

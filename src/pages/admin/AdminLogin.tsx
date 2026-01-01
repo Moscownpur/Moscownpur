@@ -41,7 +41,7 @@ const AdminLogin: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-heading gradient-text-red mb-3"
+            className="text-heading gradient-text-cosmic mb-3"
           >
             Admin Portal
           </motion.h1>

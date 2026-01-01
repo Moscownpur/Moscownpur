@@ -3,7 +3,6 @@ import { generateText } from './ai';
 import {
   EntitySummary,
   MemoryTag,
-  AIChatLog,
   ContextTemplate,
   ContextBuilder,
   PromptVariables,
@@ -15,6 +14,44 @@ import {
   AIIntegrationConfig,
   MemoryLearningResult
 } from '../types/ai';
+
+// Memory cache with TTL
+class MemoryCache {
+  private cache = new Map<string, { data: any; timestamp: number; ttl: number }>();
+  
+  set(key: string, data: any, ttl: number = 300000): void { // 5 minutes default TTL
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+      ttl
+    });
+  }
+  
+  get(key: string): any | null {
+    const item = this.cache.get(key);
+    if (!item) return null;
+    
+    if (Date.now() - item.timestamp > item.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+    
+    return item.data;
+  }
+  
+  invalidate(pattern?: string): void {
+    if (!pattern) {
+      this.cache.clear();
+      return;
+    }
+    
+    for (const key of this.cache.keys()) {
+      if (key.includes(pattern)) {
+        this.cache.delete(key);
+      }
+    }
+  }
+}
 
 // Default AI configuration
 const DEFAULT_AI_CONFIG: AIIntegrationConfig = {
@@ -28,6 +65,7 @@ const DEFAULT_AI_CONFIG: AIIntegrationConfig = {
 
 export class AIMemoryEngine {
   private config: AIIntegrationConfig;
+  private cache = new MemoryCache();
 
   constructor(config: Partial<AIIntegrationConfig> = {}) {
     this.config = { ...DEFAULT_AI_CONFIG, ...config };
@@ -59,7 +97,60 @@ export class AIMemoryEngine {
       .single();
 
     if (error) throw error;
+    
+    // Invalidate cache for this entity
+    this.cache.invalidate(`${entityType}:${entityId}`);
     return data;
+  }
+
+  async batchCreateEntitySummaries(
+    summaries: Array<{
+      entityType: EntitySummary['entity_type'];
+      entityId: string;
+      summaryText: string;
+      memoryType?: EntitySummary['memory_type'];
+      tags?: string[];
+    }>
+  ): Promise<EntitySummary[]> {
+    // Group by entity type and ID for batch deactivation
+    const entityGroups = summaries.reduce((groups, summary) => {
+      const key = `${summary.entityType}:${summary.entityId}`;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(summary);
+      return groups;
+    }, {} as Record<string, typeof summaries>);
+
+    // Batch deactivate current summaries
+    const deactivationPromises = Object.keys(entityGroups).map(async (key) => {
+      const [entityType, entityId] = key.split(':');
+      await this.deactivateCurrentSummary(entityType, entityId);
+    });
+    await Promise.all(deactivationPromises);
+
+    // Batch insert new summaries
+    const insertData = summaries.map(summary => ({
+      entity_type: summary.entityType,
+      entity_id: summary.entityId,
+      summary_text: summary.summaryText,
+      memory_type: summary.memoryType || 'hard',
+      tags: summary.tags || [],
+      version: 1,
+      is_current: true
+    }));
+
+    const { data, error } = await supabase
+      .from('entity_summaries')
+      .insert(insertData)
+      .select();
+
+    if (error) throw error;
+    
+    // Invalidate cache for all affected entities
+    Object.keys(entityGroups).forEach(key => {
+      this.cache.invalidate(key);
+    });
+    
+    return data || [];
   }
 
   async updateEntitySummary(
@@ -82,6 +173,11 @@ export class AIMemoryEngine {
     entityId: string,
     filter: MemoryFilter = {}
   ): Promise<EntitySummary[]> {
+    // Check cache first
+    const cacheKey = `${entityType}:${entityId}:${JSON.stringify(filter)}`;
+    const cached = this.cache.get(cacheKey);
+    if (cached) return cached;
+
     let query = supabase
       .from('entity_summaries')
       .select('*')
@@ -103,7 +199,10 @@ export class AIMemoryEngine {
 
     const { data, error } = await query.order('relevance_score', { ascending: false });
     if (error) throw error;
-    return data || [];
+    
+    const result = data || [];
+    this.cache.set(cacheKey, result, 300000); // 5 minutes cache
+    return result;
   }
 
   async getRelevantMemories(

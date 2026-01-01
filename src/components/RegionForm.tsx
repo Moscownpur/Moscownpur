@@ -111,7 +111,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
   };
 
   return (
-    <motion.form 
+    <motion.form
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -124,7 +124,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
           <MapPin size={20} />
           Basic Information
         </h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-body font-medium mb-2">Region Name *</label>
@@ -137,7 +137,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
               required
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Region Type *</label>
             <select
@@ -187,8 +187,8 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
 
       {/* Cultural Information */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-green">Cultural Information</h3>
-        
+        <h3 className="text-subheading gradient-text-cosmic">Cultural Information</h3>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-body font-medium mb-2">Culture</label>
@@ -200,7 +200,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
               rows={3}
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Politics</label>
             <textarea
@@ -227,8 +227,8 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
 
       {/* Physical Information */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-blue">Physical Information</h3>
-        
+        <h3 className="text-subheading gradient-text-cosmic">Physical Information</h3>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-body font-medium mb-2">Climate</label>
@@ -240,7 +240,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
               placeholder="Describe the climate..."
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Map Reference</label>
             <input
@@ -267,7 +267,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
 
       {/* Languages */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-purple">Languages</h3>
+        <h3 className="text-subheading gradient-text-cosmic">Languages</h3>
         <div className="space-y-3">
           <div className="flex gap-2">
             <input
@@ -308,7 +308,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
 
       {/* Notable Inhabitants */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-orange">Notable Inhabitants</h3>
+        <h3 className="text-subheading gradient-text-cosmic">Notable Inhabitants</h3>
         <div className="space-y-3">
           <div className="flex gap-2">
             <input
@@ -349,7 +349,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
 
       {/* Important Events */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-red">Important Events</h3>
+        <h3 className="text-subheading gradient-text-cosmic">Important Events</h3>
         <div className="space-y-3">
           <div className="flex gap-2">
             <input
@@ -390,7 +390,7 @@ const RegionForm: React.FC<RegionFormProps> = ({ region, onSubmit, onCancel }) =
 
       {/* Resources */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-green">Resources</h3>
+        <h3 className="text-subheading gradient-text-cosmic">Resources</h3>
         <div className="space-y-3">
           <div className="flex gap-2">
             <input

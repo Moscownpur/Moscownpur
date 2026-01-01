@@ -104,7 +104,7 @@ const ChapterManagement: React.FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-display gradient-text-blue mb-4">
+          <h1 className="text-display gradient-text-cosmic mb-4">
             Chapter Management
           </h1>
           <p className="text-subheading text-white/60">
@@ -171,7 +171,7 @@ const ChapterManagement: React.FC = () => {
           <div className="w-24 h-24 glass-card rounded-3xl flex items-center justify-center mx-auto mb-8">
             <BookOpen className="w-12 h-12 text-white/60" />
           </div>
-          <h3 className="text-heading gradient-text-blue mb-6">
+          <h3 className="text-heading gradient-text-cosmic mb-6">
             No chapters found!
           </h3>
           <p className="text-body text-white/60 mb-10">
@@ -221,7 +221,7 @@ const ChapterManagement: React.FC = () => {
                         <GripVertical className="w-6 h-6 text-white/60" />
                       </div>
                       <div>
-                        <h3 className="text-subheading gradient-text-orange group-hover:gradient-text-sunset smooth-transition">
+                        <h3 className="text-subheading gradient-text-cosmic smooth-transition">
                           {chapter.title}
                         </h3>
                         <div className="flex items-center space-x-4 mt-2">

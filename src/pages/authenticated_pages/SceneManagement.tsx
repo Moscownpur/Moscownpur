@@ -16,12 +16,12 @@ const SceneManagement: React.FC = () => {
   const { events } = useEvents();
   const { chapters } = useChapters();
   const { user } = useAuth();
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingScene, setEditingScene] = useState<Scene | null>(null);
-  
+
   // Form state
   const [formData, setFormData] = useState({
     title: '',
@@ -32,14 +32,14 @@ const SceneManagement: React.FC = () => {
 
   const filteredScenes = scenes.filter(scene => {
     const matchesSearch = scene.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         scene.description.toLowerCase().includes(searchTerm.toLowerCase());
+      scene.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesEvent = !selectedEvent || scene.event_id === selectedEvent;
     return matchesSearch && matchesEvent;
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.title.trim() || !formData.description.trim() || !formData.event_id) {
       toast.error('Please fill in all required fields (Title, Description, and Event)');
       return;
@@ -65,7 +65,7 @@ const SceneManagement: React.FC = () => {
           created_by: user?.id || ''
         });
       }
-      
+
       setShowCreateModal(false);
       setEditingScene(null);
       setFormData({
@@ -111,12 +111,12 @@ const SceneManagement: React.FC = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8"
     >
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         className="flex items-center justify-between"
@@ -142,7 +142,7 @@ const SceneManagement: React.FC = () => {
       </motion.div>
 
       {/* Filters */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
@@ -178,7 +178,7 @@ const SceneManagement: React.FC = () => {
           <div className="animate-spin rounded-full h-16 w-16 border-2 border-white/20 border-t-white/80"></div>
         </div>
       ) : (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -199,7 +199,7 @@ const SceneManagement: React.FC = () => {
                     <Film className="w-7 h-7 text-white/80" />
                   </div>
                   <div>
-                    <h3 className="text-subheading gradient-text-orange group-hover:gradient-text-sunset smooth-transition">
+                    <h3 className="text-subheading gradient-text-cosmic group-hover:gradient-text-cosmic smooth-transition">
                       {scene.title}
                     </h3>
                     <span className="text-caption text-white/60 font-medium">
@@ -226,11 +226,11 @@ const SceneManagement: React.FC = () => {
                   </motion.button>
                 </div>
               </div>
-              
+
               <p className="text-body text-white/60 mb-6 line-clamp-3">
                 {scene.description}
               </p>
-              
+
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-caption text-white/60">
                   <Clock size={14} />
@@ -258,7 +258,7 @@ const SceneManagement: React.FC = () => {
       )}
 
       {filteredScenes.length === 0 && !loading && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center py-32"
@@ -286,8 +286,8 @@ const SceneManagement: React.FC = () => {
       )}
 
       {/* Scene Form Modal */}
-      <Modal 
-        isOpen={showCreateModal} 
+      <Modal
+        isOpen={showCreateModal}
         onClose={() => {
           setShowCreateModal(false);
           setEditingScene(null);

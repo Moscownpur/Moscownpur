@@ -226,7 +226,7 @@ const EventManagement: React.FC = () => {
                     <Clock className="w-7 h-7 text-white/80" />
                   </div>
                   <div>
-                    <h3 className="text-subheading gradient-text-orange group-hover:gradient-text-sunset smooth-transition">
+                    <h3 className="text-subheading gradient-text-cosmic smooth-transition">
                       {event.title}
                     </h3>
                     <span className={`text-caption font-medium ${getTypeColor(event.type)}`}>

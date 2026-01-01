@@ -61,7 +61,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
   const [newWeakness, setNewWeakness] = useState('');
   const [newFlaw, setNewFlaw] = useState('');
   const [newFear, setNewFear] = useState('');
-  
+
   // Relationship management
   const [newRelationship, setNewRelationship] = useState({
     character_id: '',
@@ -306,12 +306,12 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
         status: newRelationship.status,
         notes: newRelationship.notes.trim()
       };
-      
+
       setFormData(prev => ({
         ...prev,
         relationships: [...prev.relationships, relationship]
       }));
-      
+
       setNewRelationship({
         character_id: '',
         relationship_type: '',
@@ -329,7 +329,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
   };
 
   return (
-    <motion.form 
+    <motion.form
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -342,7 +342,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
           <Users size={20} />
           Basic Information
         </h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-body font-medium mb-2">Character Name *</label>
@@ -355,7 +355,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
               required
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Gender</label>
             <input
@@ -399,7 +399,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
               min="0"
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Species</label>
             <input
@@ -410,7 +410,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
               placeholder="Character species"
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Race</label>
             <input
@@ -434,7 +434,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
               placeholder="Place of origin"
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Current Location</label>
             <input
@@ -458,7 +458,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
               placeholder="Occupation"
             />
           </div>
-          
+
           <div>
             <label className="block text-body font-medium mb-2">Status</label>
             <select
@@ -499,7 +499,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
 
       {/* Aliases */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-purple">Aliases</h3>
+        <h3 className="text-subheading gradient-text-cosmic">Aliases</h3>
         <div className="space-y-3">
           <div className="flex gap-2">
             <input
@@ -540,7 +540,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
 
       {/* Physical Appearance */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-blue">Physical Appearance</h3>
+        <h3 className="text-subheading gradient-text-cosmic">Physical Appearance</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-body font-medium mb-2">Height</label>
@@ -597,7 +597,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
             />
           </div>
         </div>
-        
+
         {/* Distinguishing Marks */}
         <div className="space-y-3">
           <label className="block text-body font-medium mb-2">Distinguishing Marks</label>
@@ -640,8 +640,8 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
 
       {/* Personality */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-green">Personality</h3>
-        
+        <h3 className="text-subheading gradient-text-cosmic">Personality</h3>
+
         {/* Traits */}
         <div className="space-y-3">
           <label className="block text-body font-medium mb-2">Traits</label>
@@ -840,8 +840,8 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
 
       {/* Skills and Languages */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-orange">Skills & Languages</h3>
-        
+        <h3 className="text-subheading gradient-text-cosmic">Skills & Languages</h3>
+
         {/* Languages */}
         <div className="space-y-3">
           <label className="block text-body font-medium mb-2">Languages</label>
@@ -923,8 +923,8 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
 
       {/* Affiliations and Events */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-red">Affiliations & Events</h3>
-        
+        <h3 className="text-subheading gradient-text-cosmic">Affiliations & Events</h3>
+
         {/* Affiliations */}
         <div className="space-y-3">
           <label className="block text-body font-medium mb-2">Affiliations</label>
@@ -1006,7 +1006,7 @@ const CharacterForm: React.FC<CharacterFormProps> = ({ character, onSubmit, onCa
 
       {/* Relationships */}
       <div className="space-y-4">
-        <h3 className="text-subheading gradient-text-purple">Relationships</h3>
+        <h3 className="text-subheading gradient-text-cosmic">Relationships</h3>
         <div className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
             <input

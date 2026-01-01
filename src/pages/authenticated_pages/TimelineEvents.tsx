@@ -155,7 +155,7 @@ const TimelineEvents: React.FC = () => {
         className="flex items-center justify-between"
       >
         <div>
-          <h1 className="text-display gradient-text-sunset mb-4">
+          <h1 className="text-display gradient-text-cosmic mb-4">
             Timeline Events
           </h1>
           <p className="text-subheading text-white/60">
@@ -245,7 +245,7 @@ const TimelineEvents: React.FC = () => {
                     <BookOpen className="w-6 h-6 text-orange-400" />
                   </div>
                   <div>
-                    <h2 className="text-heading gradient-text-orange">
+                    <h2 className="text-heading gradient-text-cosmic">
                       {group.chapter.title}
                     </h2>
                     <p className="text-body text-white/60">
@@ -286,7 +286,7 @@ const TimelineEvents: React.FC = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-3">
-                          <h3 className="text-subheading gradient-text-orange group-hover:gradient-text-sunset smooth-transition">
+                          <h3 className="text-subheading gradient-text-cosmic smooth-transition">
                             {event.title}
                           </h3>
                           <span className="px-3 py-1 text-caption font-medium glass-card text-white/80 rounded-full">

@@ -115,7 +115,7 @@ const WorldManagement: React.FC = () => {
                       <Globe className="w-7 h-7 text-white/80" />
                     </div>
                     <div>
-                      <h3 className="text-subheading gradient-text-orange group-hover:gradient-text-sunset smooth-transition">
+                      <h3 className="text-subheading gradient-text-cosmic smooth-transition">
                         {world.name}
                       </h3>
                       <span className="text-caption text-white/60 font-medium">

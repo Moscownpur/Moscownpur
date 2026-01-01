@@ -126,11 +126,11 @@ const Dashboard: React.FC = () => {
   };
 
   const quickActions = [
-    { name: 'Add World', icon: Globe, gradient: 'gradient-text-purple', path: '/dashboard/worlds' },
-    { name: 'Add Chapter', icon: BookOpen, gradient: 'gradient-text-blue', path: '/dashboard/chapters' },
-    { name: 'Add Character', icon: Users, gradient: 'gradient-text-green', path: '/dashboard/characters' },
-    { name: 'Add Scene', icon: Film, gradient: 'gradient-text-orange', path: '/dashboard/scenes' },
-    { name: 'Manage Dialogues', icon: MessageSquare, gradient: 'gradient-text-cyan', path: '/dashboard/dialogues' },
+    { name: 'Add World', icon: Globe, gradient: 'gradient-text-cosmic', path: '/dashboard/worlds' },
+    { name: 'Add Chapter', icon: BookOpen, gradient: 'gradient-text-cosmic', path: '/dashboard/chapters' },
+    { name: 'Add Character', icon: Users, gradient: 'gradient-text-cosmic', path: '/dashboard/characters' },
+    { name: 'Add Scene', icon: Film, gradient: 'gradient-text-cosmic', path: '/dashboard/scenes' },
+    { name: 'Manage Dialogues', icon: MessageSquare, gradient: 'gradient-text-cosmic', path: '/dashboard/dialogues' },
   ];
 
   return (
@@ -237,7 +237,7 @@ const Dashboard: React.FC = () => {
                     <Link to={`/worlds/${world.id}`}>
                       <div className="glass-card rounded-2xl p-6 group smooth-transition hover:soft-glow">
                         <div className="flex items-start justify-between mb-4">
-                          <h3 className="text-subheading gradient-text-purple group-hover:gradient-text-pink smooth-transition">
+                          <h3 className="text-subheading gradient-text-cosmic smooth-transition">
                             {world.name}
                           </h3>
                           <span className="px-3 py-1 text-caption font-medium glass-card text-white/80 rounded-full">

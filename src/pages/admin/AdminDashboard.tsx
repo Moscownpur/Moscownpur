@@ -105,7 +105,7 @@ const AdminDashboard: React.FC = () => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-heading gradient-text-red">
+            <h1 className="text-heading gradient-text-cosmic">
               Admin Dashboard
             </h1>
             <p className="text-caption text-white/60">
@@ -228,7 +228,7 @@ const AdminDashboard: React.FC = () => {
               {activeTab === 'users' ? (
                 <div className="glass-card rounded-3xl overflow-hidden">
                   <div className="p-6 border-b border-white/5">
-                    <h2 className="text-subheading gradient-text-blue">
+                    <h2 className="text-subheading gradient-text-cosmic">
                       User Management ({filteredUsers.length})
                     </h2>
                   </div>
@@ -313,7 +313,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="space-y-6">
                   <div className="glass-card rounded-3xl p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-subheading gradient-text-red">Create / Edit Blog Post</h2>
+                      <h2 className="text-subheading gradient-text-cosmic">Create / Edit Blog Post</h2>
                       <button
                         onClick={() => setBlogForm({ title: '', category: '', tags: '', body: '' })}
                         className="px-3 py-2 glass-card rounded-xl text-white/80 hover:text-white"
@@ -359,7 +359,7 @@ const AdminDashboard: React.FC = () => {
 
                   <div className="glass-card rounded-3xl overflow-hidden">
                     <div className="p-6 border-b border-white/5 flex items-center justify-between">
-                      <h2 className="text-subheading gradient-text-red">All Blog Posts ({blogs.length})</h2>
+                      <h2 className="text-subheading gradient-text-cosmic">All Blog Posts ({blogs.length})</h2>
                       <button onClick={loadBlogs} className="px-4 py-2 glass-card rounded-xl">Refresh</button>
                     </div>
                     {blogLoading ? (
