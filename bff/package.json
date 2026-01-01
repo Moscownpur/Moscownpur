@@ -1,0 +1,55 @@
+{
+  "name": "realm-bff",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "node run-tests.js run",
+    "test:watch": "node run-tests.js watch",
+    "test:coverage": "node run-tests.js coverage"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.2.0",
+    "compression": "^1.7.5",
+    "express-rate-limit": "^7.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "@supabase/supabase-js": "^2.52.0",
+    "dotenv": "^17.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/compression": "^1.7.5",
+    "@types/jest": "^29.5.5",
+    "@types/supertest": "^2.0.16",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.5.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": ["<rootDir>/src", "<rootDir>/tests"],
+    "testMatch": ["**/__tests__/**/*.ts", "**/?(*.)+(spec|test).ts"],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.d.ts"
+    ],
+    "setupFilesAfterEnv": ["<rootDir>/tests/setup.ts"],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testTimeout": 10000,
+    "moduleNameMapping": {
+      "^@supabase/supabase-js$": "<rootDir>/node_modules/@supabase/supabase-js/dist/index.js"
+    }
+  }
+}

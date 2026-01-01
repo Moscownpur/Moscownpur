@@ -18,6 +18,36 @@ export interface World {
   updated_at: string;
 }
 
+export interface CharacterRelationship {
+  id: string;
+  character_id: string;
+  related_character_id: string;
+  relationship_type: 'family_parent' | 'family_child' | 'family_sibling' | 'family_spouse' | 'family_relative' |
+                      'friend_best' | 'friend_close' | 'friend_casual' | 'friend_ally' |
+                      'enemy_rival' | 'enemy_archenemy' | 'enemy_opponent' |
+                      'romantic_interest' | 'romantic_partner' | 'romantic_ex' |
+                      'professional_mentor' | 'professional_student' | 'professional_colleague' | 'professional_boss' | 'professional_subordinate' |
+                      'acquaintance' | 'stranger' | 'neighbor';
+  relationship_strength: number; // 1-10 scale
+  status: 'active' | 'inactive' | 'ended' | 'suspended';
+  description?: string;
+  history: RelationshipHistoryEntry[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RelationshipHistoryEntry {
+  date: string;
+  event: string;
+  impact: 'positive' | 'negative' | 'neutral';
+  notes?: string;
+}
+
+export interface CharacterRelationshipView extends CharacterRelationship {
+  character_name: string;
+  related_character_name: string;
+}
+
 export interface Character {
   id: string;
   name: string;
