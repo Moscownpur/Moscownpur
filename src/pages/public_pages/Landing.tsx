@@ -337,7 +337,7 @@ const Landing: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-10 py-5 bg-gradient-to-r from-primary to-orange-600 text-white text-lg font-bold rounded-2xl shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all flex items-center gap-3 mx-auto"
+                    className="px-10 py-5 gradient-bg-cosmic text-white text-lg font-bold rounded-2xl shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all flex items-center gap-3 mx-auto"
                   >
                     <MessageSquare size={24} />
                     Try the Demo

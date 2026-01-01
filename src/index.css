@@ -175,67 +175,20 @@
   }
 
   /* Professional Gradient Text Classes */
-  .gradient-text-orange {
-    background: linear-gradient(135deg, #F37335 0%, #FDC830 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-red {
-    background: linear-gradient(135deg, #dd1818 0%, #333333 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-purple {
-    background: linear-gradient(135deg, #8f94fb 0%, #4e54c8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-pink {
-    background: linear-gradient(135deg, #f80759 0%, #bc4e9c 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-green {
-    background: linear-gradient(135deg, #38ef7d 0%, #11998e 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-lime {
-    background: linear-gradient(135deg, #96c93d 0%, #00b09b 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-blue {
-    background: linear-gradient(135deg, #0575E6 0%, #00F260 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .gradient-text-sunset {
-    background: linear-gradient(135deg, #f7b733 0%, #fc4a1a 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
 
   .gradient-text-cosmic {
-    background: var(--cosmic-gradient);
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-lighter) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .bg-gradient-cosmic {
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-lighter) 100%);
+  }
+
+  .gradient-bg-cosmic {
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-lighter) 100%);
   }
 
   /* Glass Morphism Effects */
@@ -338,9 +291,7 @@
   }
 }
 
-:root {
-  --cosmic-gradient: linear-gradient(135deg, #F37335 0%, #FDC830 100%);
-}
+
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
@@ -362,7 +313,7 @@
 
 /* Selection */
 ::selection {
-  background: oklch(0.8280 0.1890 84.4290);
+  background: var(--primary);
   color: #ffffff;
 }
 

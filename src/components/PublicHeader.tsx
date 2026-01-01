@@ -5,6 +5,7 @@ import { Menu, X, Home, Sparkles, BookOpen, CreditCard, PenSquare, Info, Globe, 
 import logoImage from '/logo-v2.png';
 import { useResponsive } from '../hooks/useResponsive';
 import ThemeSwitcher from './ThemeSwitcher';
+import DarkModeToggle from './DarkModeToggle';
 
 const PublicHeader: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -89,7 +90,7 @@ const PublicHeader: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <h1 className="nerko-one-regular text-base sm:text-lg md:text-xl font-bold gradient-text-cosmic">
+          <h1 className="font-bungee text-base sm:text-lg md:text-xl font-bold gradient-text-cosmic">
             Moscownpur
           </h1>
         </Link>
@@ -121,14 +122,14 @@ const PublicHeader: React.FC = () => {
             );
           })}
           <ThemeSwitcher />
+          <DarkModeToggle />
         </div>
 
 
         {/* Mobile Hamburger Button */}
         <div className={`${!isDesktop ? 'flex' : 'hidden'} items-center gap-4`}>
           <ThemeSwitcher />
-
-          <motion.button
+          <DarkModeToggle />          <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -213,7 +214,7 @@ const PublicHeader: React.FC = () => {
       <style>
         {`
           .active button {
-            color: #818cf8 !important; /* Primary color for active tab */
+            color: var(--primary) !important; /* Primary color for active tab */
           }
         `}
       </style>
