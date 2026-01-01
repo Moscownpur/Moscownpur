@@ -6,6 +6,9 @@ interface ThemeContextType {
   setPrimaryColor: (color: string) => void;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
+  primaryOklch: string;
+  primaryDarkerOklch: string;
+  primaryLighterOklch: string;
 }
 
 // Create the context with a default undefined value
@@ -32,6 +35,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     // Default to 'dark' if no preference or invalid value
     return 'dark';
   });
+
+  // State to store the calculated OKLCH values
+  const [currentPrimaryOklch, setCurrentPrimaryOklch] = useState('oklch(0.8280 0.1890 84.4290)');
+  const [currentPrimaryDarkerOklch, setCurrentPrimaryDarkerOklch] = useState('oklch(0.7280 0.2290 84.4290)');
+  const [currentPrimaryLighterOklch, setCurrentPrimaryLighterOklch] = useState('oklch(0.9280 0.1490 84.4290)');
 
   // Define a map for color names to OKLCH values
   const oklchColorMap: { [key: string]: { primary: string; foreground: string } } = useMemo(() => ({
@@ -85,18 +93,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       // Parse the primary color's L, C, H values
       const [L, C, H] = colorData.primary.split(' ').map(parseFloat);
 
-      // Set the base primary color
-      root.style.setProperty('--primary', `oklch(${L} ${C} ${H})`);
+      // Store the raw Oklch values
+      const baseOklch = `oklch(${L} ${C} ${H})`;
+      const darkerOklch = `oklch(${Math.max(0, L - 0.1)} ${C + 0.04} ${H})`; // Slightly more saturation for depth
+      const lighterOklch = `oklch(${Math.min(1, L + 0.1)} ${Math.max(0, C - 0.04)} ${H})`; // Slightly less saturation for a washout effect
 
-      // Calculate and set a darker shade
-      const darkerL = Math.max(0, L - 0.1);
-      const darkerC = C + 0.04; // Slightly more saturation for depth
-      root.style.setProperty('--primary-darker', `oklch(${darkerL} ${darkerC} ${H})`);
-      
-      // Calculate and set a lighter shade
-      const lighterL = Math.min(1, L + 0.1);
-      const lighterC = Math.max(0, C - 0.04); // Slightly less saturation for a washout effect
-      root.style.setProperty('--primary-lighter', `oklch(${lighterL} ${lighterC} ${H})`);
+      setCurrentPrimaryOklch(baseOklch);
+      setCurrentPrimaryDarkerOklch(darkerOklch);
+      setCurrentPrimaryLighterOklch(lighterOklch);
+
+      // Set the base primary color
+      root.style.setProperty('--primary', baseOklch);
+      root.style.setProperty('--primary-darker', darkerOklch);
+      root.style.setProperty('--primary-lighter', lighterOklch);
     }
     
     localStorage.setItem('moscownpur-theme-color', primaryColor);
@@ -113,7 +122,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     setPrimaryColor,
     theme,
     toggleTheme,
-  }), [primaryColor, theme]);
+    primaryOklch: currentPrimaryOklch,
+    primaryDarkerOklch: currentPrimaryDarkerOklch,
+    primaryLighterOklch: currentPrimaryLighterOklch,
+  }), [primaryColor, theme, currentPrimaryOklch, currentPrimaryDarkerOklch, currentPrimaryLighterOklch]);
 
   return (
     <ThemeContext.Provider value={contextValue}>
